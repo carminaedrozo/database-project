@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="employee" idMethod="native" phpName="Employee">
+    <column name="User_Login" phpName="UserLogin" type="LONGVARCHAR" required="true"/>
+    <column name="Request_ID" phpName="RequestId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="request" name="employee_ibfk_1">
+      <reference local="Request_ID" foreign="Request_ID"/>
+    </foreign-key>
+    <index name="Request_ID">
+      <index-column name="Request_ID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="order" idMethod="native" phpName="Order">
+    <column name="Order_ID" phpName="OrderId" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Commission" phpName="Commission" type="INTEGER" required="true"/>
+    <column name="Amount" phpName="Amount" type="INTEGER" required="true"/>
+    <column name="Date" phpName="Date" type="DATE" required="true"/>
+    <column name="Delivery_Date" phpName="DeliveryDate" type="DATE" required="true"/>
+    <column name="ProductList_ID" phpName="ProductlistId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="orderlist" idMethod="native" phpName="Orderlist">
+    <column name="OrderList_ID" phpName="OrderlistId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Order_ID" phpName="OrderId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="product" idMethod="native" phpName="Product">
+    <column name="Product_ID" phpName="ProductId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Title" phpName="Title" type="LONGVARCHAR" required="true"/>
+    <column name="Author" phpName="Author" type="LONGVARCHAR" required="true"/>
+    <column name="Edition" phpName="Edition" type="INTEGER" required="true"/>
+    <column name="ISBN" phpName="Isbn" type="LONGVARCHAR" required="true"/>
+    <column name="Price" phpName="Price" type="DOUBLE" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="productlist" idMethod="native" phpName="Productlist">
+    <column name="ProductList_ID" phpName="ProductlistId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Product_ID" phpName="ProductId" type="INTEGER" required="true"/>
+    <column name="Count" phpName="Count" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="provider" idMethod="native" phpName="Provider">
+    <column name="Provider_ID" phpName="ProviderId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Provider_Name" phpName="ProviderName" type="LONGVARCHAR" required="true"/>
+    <column name="Provider_Phone" phpName="ProviderPhone" type="INTEGER" required="true"/>
+    <column name="Provider_Address" phpName="ProviderAddress" type="LONGVARCHAR" required="true"/>
+    <column name="OrderList_ID" phpName="OrderlistId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="request" idMethod="native" phpName="Request">
+    <column name="Request_ID" phpName="RequestId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="ProductList_ID" phpName="ProductlistId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="session" idMethod="native" phpName="Session">
+    <column name="Session_ID" phpName="SessionId" type="VARCHAR" size="16" sqlType="bit(16)" primaryKey="true" required="true"/>
+    <column name="Session_IP" phpName="SessionIp" type="LONGVARCHAR" required="true"/>
+    <column name="Session_State" phpName="SessionState" type="VARCHAR" size="3" sqlType="bit(3)" required="true"/>
+    <column name="Session_Time" phpName="SessionTime" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="User_Login" phpName="UserLogin" type="LONGVARCHAR" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="storage" idMethod="native" phpName="Storage">
+    <column name="User_Login" phpName="UserLogin" type="LONGVARCHAR" required="true"/>
+    <column name="ProductList_ID" phpName="ProductlistId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="user" idMethod="native" phpName="User">
+    <column name="User_Login" phpName="UserLogin" type="LONGVARCHAR" primaryKey="true" required="true"/>
+    <column name="User_Password" phpName="UserPassword" type="LONGVARCHAR" required="true"/>
+    <column name="User_Email" phpName="UserEmail" type="LONGVARCHAR" required="true"/>
+    <column name="User_FullName" phpName="UserFullname" type="LONGVARCHAR" required="true"/>
+    <column name="User_Status" phpName="UserStatus" type="VARCHAR" size="1" sqlType="bit(1)" required="true"/>
+    <column name="User_LastAccess" phpName="UserLastaccess" type="TIMESTAMP" required="true"/>
+    <column name="User_LastUpdate" phpName="UserLastupdate" type="TIMESTAMP" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>
