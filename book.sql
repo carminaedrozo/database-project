@@ -2,8 +2,8 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 30, 2018 at 01:02 AM
+-- Host: localhost
+-- Generation Time: Dec 03, 2018 at 03:08 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -36,16 +36,15 @@ CREATE TABLE `employee` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table `EmployeeOrderStatus`
 --
 
-CREATE TABLE `order` (
-  `Order_ID` int(11) NOT NULL,
-  `Commission` int(11) NOT NULL,
-  `Amount` int(11) NOT NULL,
-  `Date` date NOT NULL,
-  `Delivery_Date` date NOT NULL,
-  `ProductList_ID` int(11) NOT NULL
+CREATE TABLE `EmployeeOrderStatus` (
+  `ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `ReceivedCount` int(11) NOT NULL,
+  `FufilledStatus` int(11) NOT NULL,
+  `Count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -74,17 +73,16 @@ CREATE TABLE `product` (
   `Price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `productlist`
+-- Dumping data for table `product`
 --
 
-CREATE TABLE `productlist` (
-  `ProductList_ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `Count` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `product` (`Product_ID`, `Title`, `Author`, `Edition`, `ISBN`, `Price`) VALUES
+(1, 'Bard Tales', 'Samuel Harris', 5, '1234567', 55.75),
+(2, 'Narnia', 'Jim Carnal', 2, '1234568', 42.1),
+(3, 'Huckaberry Finn', 'Harper Lee', 1, '1234569', 88.9),
+(4, 'Twilight', 'Stephanie Meyer', 1, '', 12.5),
+(5, 'Breaking Dawn', 'Stephanie Meyer', 2, '1234560', 10);
 
 -- --------------------------------------------------------
 
@@ -103,12 +101,68 @@ CREATE TABLE `provider` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `request`
+-- Table structure for table `ProviderOrder`
 --
 
-CREATE TABLE `request` (
+CREATE TABLE `ProviderOrder` (
+  `Order_ID` int(11) NOT NULL,
+  `Commission` double NOT NULL,
+  `Amount` double NOT NULL,
+  `Date` date NOT NULL,
+  `Delivered_Date` date NOT NULL,
+  `Status_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ProviderOrder`
+--
+
+INSERT INTO `ProviderOrder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
+(1, 1, 2, '2018-12-05', '2018-12-31', 1),
+(2, 2, 42, '2018-12-01', '2018-12-04', 2),
+(3, 3, 12, '2018-11-06', '2018-12-05', 3),
+(4, 4, 8, '2018-10-02', '2018-11-15', 4),
+(5, 5, 1, '2018-12-07', '2018-12-12', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ProviderOrderStatus`
+--
+
+CREATE TABLE `ProviderOrderStatus` (
+  `ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `ReceivedCount` int(11) NOT NULL,
+  `FulfilledStatus` int(11) NOT NULL,
+  `Count` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `RequestList`
+--
+
+CREATE TABLE `RequestList` (
   `Request_ID` int(11) NOT NULL,
-  `ProductList_ID` int(11) NOT NULL
+  `Order_ID` int(11) NOT NULL,
+  `Status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `RequestOrder`
+--
+
+CREATE TABLE `RequestOrder` (
+  `Order_ID` int(11) NOT NULL,
+  `Commission` double NOT NULL,
+  `Amount` double NOT NULL,
+  `Date` date NOT NULL,
+  `Delivered_Date` date NOT NULL,
+  `Status_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -132,9 +186,20 @@ CREATE TABLE `session` (
 --
 
 CREATE TABLE `storage` (
-  `User_Login` text NOT NULL,
-  `ProductList_ID` int(11) NOT NULL
+  `Count` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `storage`
+--
+
+INSERT INTO `storage` (`Count`, `Product_ID`) VALUES
+(5, 1),
+(22, 2),
+(47, 3),
+(7, 4),
+(89, 5);
 
 -- --------------------------------------------------------
 
@@ -153,6 +218,17 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`User_Login`, `User_Password`, `User_Email`, `User_FullName`, `User_Status`, `User_LastAccess`, `User_LastUpdate`) VALUES
+('32Halbert32', 'choco55tree', 'RioatHalberto@gmail.com', 'Halberto Rio', b'1', '2018-11-23 07:08:00', '2018-11-02 19:22:08'),
+('Nikki32', 'IamNikki', 'NikolaTesla@gmail.com', 'Nikola Tesla', b'1', '2018-12-31 16:24:00', '2018-12-17 02:05:03'),
+('Oscarito17', 'Obed77', 'ObedisAmazing@yahoo.com', 'Oscar Rodriguez', b'0', '2018-12-18 14:19:03', '2018-12-17 05:06:05'),
+('Rebekah22', '1234', 'rebekah14@gmail.com', 'Rebekah Cardenas', b'0', '2018-11-05 02:09:22', '2018-11-22 07:28:32'),
+('sammmy22', 'catsarecool', 'Sammantha.King@yahoo.com', 'Samantha King', b'1', '2018-11-14 12:10:45', '2018-11-07 12:00:00');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -163,10 +239,10 @@ ALTER TABLE `employee`
   ADD KEY `Request_ID` (`Request_ID`);
 
 --
--- Indexes for table `order`
+-- Indexes for table `EmployeeOrderStatus`
 --
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`Order_ID`);
+ALTER TABLE `EmployeeOrderStatus`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `orderlist`
@@ -181,21 +257,27 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`Product_ID`);
 
 --
--- Indexes for table `productlist`
---
-ALTER TABLE `productlist`
-  ADD PRIMARY KEY (`ProductList_ID`);
-
---
 -- Indexes for table `provider`
 --
 ALTER TABLE `provider`
   ADD PRIMARY KEY (`Provider_ID`);
 
 --
--- Indexes for table `request`
+-- Indexes for table `ProviderOrder`
 --
-ALTER TABLE `request`
+ALTER TABLE `ProviderOrder`
+  ADD PRIMARY KEY (`Order_ID`);
+
+--
+-- Indexes for table `ProviderOrderStatus`
+--
+ALTER TABLE `ProviderOrderStatus`
+  ADD PRIMARY KEY (`ID`) USING BTREE;
+
+--
+-- Indexes for table `RequestList`
+--
+ALTER TABLE `RequestList`
   ADD PRIMARY KEY (`Request_ID`);
 
 --
@@ -215,6 +297,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `EmployeeOrderStatus`
+--
+ALTER TABLE `EmployeeOrderStatus`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
@@ -224,13 +312,7 @@ ALTER TABLE `orderlist`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `productlist`
---
-ALTER TABLE `productlist`
-  MODIFY `ProductList_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `provider`
@@ -239,9 +321,9 @@ ALTER TABLE `provider`
   MODIFY `Provider_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `request`
+-- AUTO_INCREMENT for table `RequestList`
 --
-ALTER TABLE `request`
+ALTER TABLE `RequestList`
   MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -252,7 +334,7 @@ ALTER TABLE `request`
 -- Constraints for table `employee`
 --
 ALTER TABLE `employee`
-  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Request_ID`) REFERENCES `request` (`Request_ID`);
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Request_ID`) REFERENCES `requestlist` (`Request_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
