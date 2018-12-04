@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2018 at 03:08 AM
+-- Generation Time: Dec 04, 2018 at 02:11 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -43,9 +43,20 @@ CREATE TABLE `EmployeeOrderStatus` (
   `ID` int(11) NOT NULL,
   `Product_ID` int(11) NOT NULL,
   `ReceivedCount` int(11) NOT NULL,
-  `FufilledStatus` int(11) NOT NULL,
+  `FufilledStatus` bit(11) NOT NULL,
   `Count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `EmployeeOrderStatus`
+--
+
+INSERT INTO `EmployeeOrderStatus` (`ID`, `Product_ID`, `ReceivedCount`, `FufilledStatus`, `Count`) VALUES
+(1, 0, 7, b'00000000000', 44),
+(2, 2, 9, b'00000000001', 22),
+(3, 3, 34, b'00000000000', 9),
+(4, 4, 78, b'00000000001', 90),
+(5, 5, 4, b'00000000000', 22);
 
 -- --------------------------------------------------------
 
@@ -57,6 +68,14 @@ CREATE TABLE `orderlist` (
   `OrderList_ID` int(11) NOT NULL,
   `Order_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderlist`
+--
+
+INSERT INTO `orderlist` (`OrderList_ID`, `Order_ID`) VALUES
+(1, 1),
+(3, 0);
 
 -- --------------------------------------------------------
 
@@ -93,10 +112,18 @@ INSERT INTO `product` (`Product_ID`, `Title`, `Author`, `Edition`, `ISBN`, `Pric
 CREATE TABLE `provider` (
   `Provider_ID` int(11) NOT NULL,
   `Provider_Name` text NOT NULL,
-  `Provider_Phone` int(11) NOT NULL,
+  `Provider_Phone` bigint(11) NOT NULL,
   `Provider_Address` text NOT NULL,
   `OrderList_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `provider`
+--
+
+INSERT INTO `provider` (`Provider_ID`, `Provider_Name`, `Provider_Phone`, `Provider_Address`, `OrderList_ID`) VALUES
+(1, 'Marina Bay', 9561111111, '212 N 1st St', 1),
+(2, 'Santa Anna', 9562222222, '515 S Bulberry Ave', 2);
 
 -- --------------------------------------------------------
 
@@ -138,6 +165,17 @@ CREATE TABLE `ProviderOrderStatus` (
   `Count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `ProviderOrderStatus`
+--
+
+INSERT INTO `ProviderOrderStatus` (`ID`, `Product_ID`, `ReceivedCount`, `FulfilledStatus`, `Count`) VALUES
+(1, 1, 12, 1, 14),
+(2, 2, 35, 1, 37),
+(3, 3, 12, 0, 78),
+(4, 4, 11, 0, 15),
+(5, 5, 90, 1, 200);
+
 -- --------------------------------------------------------
 
 --
@@ -164,6 +202,14 @@ CREATE TABLE `RequestOrder` (
   `Delivered_Date` date NOT NULL,
   `Status_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `RequestOrder`
+--
+
+INSERT INTO `RequestOrder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
+(0, 2.2, 555.9, '2018-12-19', '2018-12-31', 1),
+(1, 24.7, 900.77, '2018-12-04', '0000-00-00', 0);
 
 -- --------------------------------------------------------
 
@@ -208,9 +254,8 @@ INSERT INTO `storage` (`Count`, `Product_ID`) VALUES
 --
 
 CREATE TABLE `user` (
-  `User_Login` text NOT NULL,
-  `User_Password` text NOT NULL,
   `User_Email` text NOT NULL,
+  `User_Password` text NOT NULL,
   `User_FullName` text NOT NULL,
   `User_Status` bit(1) NOT NULL,
   `User_LastAccess` datetime NOT NULL,
@@ -221,12 +266,12 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`User_Login`, `User_Password`, `User_Email`, `User_FullName`, `User_Status`, `User_LastAccess`, `User_LastUpdate`) VALUES
-('32Halbert32', 'choco55tree', 'RioatHalberto@gmail.com', 'Halberto Rio', b'1', '2018-11-23 07:08:00', '2018-11-02 19:22:08'),
-('Nikki32', 'IamNikki', 'NikolaTesla@gmail.com', 'Nikola Tesla', b'1', '2018-12-31 16:24:00', '2018-12-17 02:05:03'),
-('Oscarito17', 'Obed77', 'ObedisAmazing@yahoo.com', 'Oscar Rodriguez', b'0', '2018-12-18 14:19:03', '2018-12-17 05:06:05'),
-('Rebekah22', '1234', 'rebekah14@gmail.com', 'Rebekah Cardenas', b'0', '2018-11-05 02:09:22', '2018-11-22 07:28:32'),
-('sammmy22', 'catsarecool', 'Sammantha.King@yahoo.com', 'Samantha King', b'1', '2018-11-14 12:10:45', '2018-11-07 12:00:00');
+INSERT INTO `user` (`User_Email`, `User_Password`, `User_FullName`, `User_Status`, `User_LastAccess`, `User_LastUpdate`) VALUES
+('RioatHalberto@gmail.com', 'choco55tree', 'Halberto Rio', b'1', '2018-11-23 07:08:00', '2018-11-02 19:22:08'),
+('NikolaTesla@gmail.com', 'IamNikki', 'Nikola Tesla', b'1', '2018-12-31 16:24:00', '2018-12-17 02:05:03'),
+('ObedisAmazing@yahoo.com', 'Obed77', 'Oscar Rodriguez', b'0', '2018-12-18 14:19:03', '2018-12-17 05:06:05'),
+('rebekah14@gmail.com', '1234', 'Rebekah Cardenas', b'0', '2018-11-05 02:09:22', '2018-11-22 07:28:32'),
+('Sammantha.King@yahoo.com', 'catsarecool', 'Samantha King', b'1', '2018-11-14 12:10:45', '2018-11-07 12:00:00');
 
 --
 -- Indexes for dumped tables
@@ -281,16 +326,16 @@ ALTER TABLE `RequestList`
   ADD PRIMARY KEY (`Request_ID`);
 
 --
+-- Indexes for table `RequestOrder`
+--
+ALTER TABLE `RequestOrder`
+  ADD PRIMARY KEY (`Order_ID`);
+
+--
 -- Indexes for table `session`
 --
 ALTER TABLE `session`
   ADD PRIMARY KEY (`Session_ID`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`User_Login`(25));
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -300,13 +345,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `EmployeeOrderStatus`
 --
 ALTER TABLE `EmployeeOrderStatus`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
-  MODIFY `OrderList_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderList_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -318,7 +363,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `Provider_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Provider_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `RequestList`
