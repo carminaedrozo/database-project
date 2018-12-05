@@ -13,8 +13,7 @@ $("#submitBtn").on("click", function (e) {
         type: "POST"
     }).done(function (response) {
         if (response.passwordMatched === "true") {
-            <?php
-                ?>
+
             window.location.href = baseurl + "/storage";
             console.log(response.email);
         } else {

@@ -61,11 +61,12 @@ $app->post('/login', function ($request, $response, $args) {
 });
 
 $app->get('/storage', function ($request, $response, $args) {
-    $storage = StorageQuery::create()->find();
-    $this->view->render('storage.html', [
+    $storage = StorageQuery::create()->orderB()->find();
+    $this->view->render($response, 'storage.html', [
         "storage" => $storage
     ]);
 
+    return $response;
 });
 //////////////////////
 // App run
