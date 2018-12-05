@@ -1,0 +1,24 @@
+
+html, body {
+  height: 100%
+}
+
+#submitBtn {
+  color:purple;
+
+}
+
+#footer1 {
+    position:relative;
+    margin-top: -150px;
+    height: 150px;
+    clear: both;
+    padding-top:20px;
+    color: purple;
+}
+/* h1 {
+    color: blue;
+}
+p {
+    color: red;
+} */
