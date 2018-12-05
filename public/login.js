@@ -1,23 +1,26 @@
 $("#submitBtn").on("click", function (e) {
 
-    $("#failLogin").addClass("d-none");
-
-    var username = $("#exampleInputEmail1").val();
-    var password = $("#exampleInputPassword1").val();
-
+    var email = $("#inputEmail").val();
+    var password = $("#inputPassword").val();
 
     $.ajax({
         url: baseurl + "/login",
         data: {
-            "username": username,
+            "email": email,
             "password": password
         },
         dataType: "json",
         type: "POST"
     }).done(function (response) {
-
-
-});
+        if (response.passwordMatched === "true") {
+            <?php
+                ?>
+            window.location.href = baseurl + "/storage";
+            console.log(response.email);
+        } else {
+            console.log("feelsbad");
+        }
+    });
     return false;
 });
 

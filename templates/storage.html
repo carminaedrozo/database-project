@@ -1,0 +1,16 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Storage
+{% endblock %}
+
+{% block script %}
+<script src="{{ base_url() }}/../storage.js"></script>
+{% endblock %}
+
+
+{% block content %}
+{ % for storage in storage %}
+<p>{{ storage.getProductID() }} </p>
+{% endfor %}
+{% endblock %}

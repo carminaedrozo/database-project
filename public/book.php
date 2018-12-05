@@ -46,13 +46,13 @@ $app->get('/', function ($request, $response, $args) {
 
 $app->post('/login', function ($request, $response, $args) {
 
-    $u = UserQuery::create()->filterByUserEmail($request->getParam("username"))->findOne();
+    $u = UserQuery::create()->filterByUserEmail($request->getParam("email"))->findOne();
 
     $data = null;
     $typedpword = $request->getParam("password");
 
     if ($u->login($typedpword)){
-        $data = array('passwordMatched' => 'true', 'uname' => $u->getusername());
+        $data = array('passwordMatched' => 'true', 'email' => $u->getUserEmail());
     } else {
         $data = array('passwordMatched' => 'false');
     }
@@ -60,6 +60,13 @@ $app->post('/login', function ($request, $response, $args) {
     return $newResponse;
 });
 
+$app->get('/storage', function ($request, $response, $args) {
+    $storage = StorageQuery::create()->find();
+    $this->view->render('storage.html', [
+        "storage" => $storage
+    ]);
+
+});
 //////////////////////
 // App run
 //////////////////////
