@@ -43,6 +43,11 @@ $app->get('/', function ($request, $response, $args) {
 //////////////////////
 // AJAX Handlers
 //////////////////////
+$app->get('/home-login', function ($request, $response, $args) {
+
+    $this->view->render($response, 'index.html');
+    return $response;
+});
 
 $app->post('/login', function ($request, $response, $args) {
 
