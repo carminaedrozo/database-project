@@ -1,10 +1,6 @@
 
-html, body {
-  height: 100%
-}
 
 #submitBtn {
-  color:#ffc4e8;
   font-family: 'Montserrat', sans-serif;
 
 }
@@ -22,10 +18,16 @@ a {
 #password{
   font-family: 'Montserrat', sans-serif;
 }
-/* #footerfooter {
-    height: 100rem;
+#footerfooter {
+    height: 5rem;
 
-} */
+}
+
+#bordersignin {
+  border-width:12px !important;
+}
+
+body { background: #ffc4e8 !important;}
 /* h1 {
     color: blue;
 }
