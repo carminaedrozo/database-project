@@ -51,13 +51,13 @@ $app->get('/home-login', function ($request, $response, $args) {
 
 $app->post('/login', function ($request, $response, $args) {
 
-    $u = UserQuery::create()->filterByUserEmail($request->getParam("email"))->findOne();
+    $u = UserQuery::create()->filterByEmail($request->getParam("email"))->findOne();
 
     $data = null;
     $typedpword = $request->getParam("password");
 
     if ($u->login($typedpword)){
-        $data = array('passwordMatched' => 'true', 'email' => $u->getUserEmail());
+        $data = array('passwordMatched' => 'true', 'email' => $u->getEmail());
     } else {
         $data = array('passwordMatched' => 'false');
     }
@@ -66,11 +66,7 @@ $app->post('/login', function ($request, $response, $args) {
 });
 
 $app->get('/storage', function ($request, $response, $args) {
-    $storage = StorageQuery::create()->orderB()->find();
-    $this->view->render($response, 'storage.html', [
-        "storage" => $storage
-    ]);
-
+    $this->view->render($response, 'storage.html');
     return $response;
 });
 //////////////////////
