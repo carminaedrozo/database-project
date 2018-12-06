@@ -5,14 +5,7 @@ Punto Fijo
 {% endblock %}
 
 {% block script %}
-<script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="js/new-age.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +21,7 @@ Punto Fijo
           <div class="col-lg-7 my-auto">
             <div class="header-content mx-auto">
               <h1 class="mb-5">New Age is an app landing page that will help you beautifully showcase your new mobile app, or anything else!</h1>
-              <a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Login!</a>
+              <a href="{{ base_url() }}/home-login" class="btn btn-outline btn-xl js-scroll-trigger">Login!</a>
             </div>
           </div>
           <div class="col-lg-5 my-auto">
@@ -37,7 +30,7 @@ Punto Fijo
                 <div class="device">
                   <div class="screen">
                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
-                    <img src="img/demo-screen-1.jpg" class="img-fluid" alt="">
+                    <img src="" class="img-fluid" alt="">
                   </div>
                   <div class="button">
                     <!-- You can hook the "home button" to some JavaScript events or just remove it -->
