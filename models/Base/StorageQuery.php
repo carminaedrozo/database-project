@@ -19,11 +19,13 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildStorageQuery orderByUserLogin($order = Criteria::ASC) Order by the User_Login column
- * @method     ChildStorageQuery orderByProductlistId($order = Criteria::ASC) Order by the ProductList_ID column
+ * @method     ChildStorageQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildStorageQuery orderByCount($order = Criteria::ASC) Order by the count column
+ * @method     ChildStorageQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
  *
- * @method     ChildStorageQuery groupByUserLogin() Group by the User_Login column
- * @method     ChildStorageQuery groupByProductlistId() Group by the ProductList_ID column
+ * @method     ChildStorageQuery groupById() Group by the id column
+ * @method     ChildStorageQuery groupByCount() Group by the count column
+ * @method     ChildStorageQuery groupByProductId() Group by the product_id column
  *
  * @method     ChildStorageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildStorageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -36,18 +38,21 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildStorage findOne(ConnectionInterface $con = null) Return the first ChildStorage matching the query
  * @method     ChildStorage findOneOrCreate(ConnectionInterface $con = null) Return the first ChildStorage matching the query, or a new ChildStorage object populated from the query conditions when no match is found
  *
- * @method     ChildStorage findOneByUserLogin(string $User_Login) Return the first ChildStorage filtered by the User_Login column
- * @method     ChildStorage findOneByProductlistId(int $ProductList_ID) Return the first ChildStorage filtered by the ProductList_ID column *
+ * @method     ChildStorage findOneById(int $id) Return the first ChildStorage filtered by the id column
+ * @method     ChildStorage findOneByCount(int $count) Return the first ChildStorage filtered by the count column
+ * @method     ChildStorage findOneByProductId(int $product_id) Return the first ChildStorage filtered by the product_id column *
 
  * @method     ChildStorage requirePk($key, ConnectionInterface $con = null) Return the ChildStorage by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStorage requireOne(ConnectionInterface $con = null) Return the first ChildStorage matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildStorage requireOneByUserLogin(string $User_Login) Return the first ChildStorage filtered by the User_Login column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildStorage requireOneByProductlistId(int $ProductList_ID) Return the first ChildStorage filtered by the ProductList_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStorage requireOneById(int $id) Return the first ChildStorage filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStorage requireOneByCount(int $count) Return the first ChildStorage filtered by the count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStorage requireOneByProductId(int $product_id) Return the first ChildStorage filtered by the product_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildStorage[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildStorage objects based on current ModelCriteria
- * @method     ChildStorage[]|ObjectCollection findByUserLogin(string $User_Login) Return ChildStorage objects filtered by the User_Login column
- * @method     ChildStorage[]|ObjectCollection findByProductlistId(int $ProductList_ID) Return ChildStorage objects filtered by the ProductList_ID column
+ * @method     ChildStorage[]|ObjectCollection findById(int $id) Return ChildStorage objects filtered by the id column
+ * @method     ChildStorage[]|ObjectCollection findByCount(int $count) Return ChildStorage objects filtered by the count column
+ * @method     ChildStorage[]|ObjectCollection findByProductId(int $product_id) Return ChildStorage objects filtered by the product_id column
  * @method     ChildStorage[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -150,41 +155,16 @@ abstract class StorageQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the User_Login column
+     * Filter the query on the id column
      *
      * Example usage:
      * <code>
-     * $query->filterByUserLogin('fooValue');   // WHERE User_Login = 'fooValue'
-     * $query->filterByUserLogin('%fooValue%', Criteria::LIKE); // WHERE User_Login LIKE '%fooValue%'
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     string $userLogin The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildStorageQuery The current query, for fluid interface
-     */
-    public function filterByUserLogin($userLogin = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($userLogin)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(StorageTableMap::COL_USER_LOGIN, $userLogin, $comparison);
-    }
-
-    /**
-     * Filter the query on the ProductList_ID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByProductlistId(1234); // WHERE ProductList_ID = 1234
-     * $query->filterByProductlistId(array(12, 34)); // WHERE ProductList_ID IN (12, 34)
-     * $query->filterByProductlistId(array('min' => 12)); // WHERE ProductList_ID > 12
-     * </code>
-     *
-     * @param     mixed $productlistId The value to use as filter.
+     * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -192,16 +172,16 @@ abstract class StorageQuery extends ModelCriteria
      *
      * @return $this|ChildStorageQuery The current query, for fluid interface
      */
-    public function filterByProductlistId($productlistId = null, $comparison = null)
+    public function filterById($id = null, $comparison = null)
     {
-        if (is_array($productlistId)) {
+        if (is_array($id)) {
             $useMinMax = false;
-            if (isset($productlistId['min'])) {
-                $this->addUsingAlias(StorageTableMap::COL_PRODUCTLIST_ID, $productlistId['min'], Criteria::GREATER_EQUAL);
+            if (isset($id['min'])) {
+                $this->addUsingAlias(StorageTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($productlistId['max'])) {
-                $this->addUsingAlias(StorageTableMap::COL_PRODUCTLIST_ID, $productlistId['max'], Criteria::LESS_EQUAL);
+            if (isset($id['max'])) {
+                $this->addUsingAlias(StorageTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -212,7 +192,89 @@ abstract class StorageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StorageTableMap::COL_PRODUCTLIST_ID, $productlistId, $comparison);
+        return $this->addUsingAlias(StorageTableMap::COL_ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the count column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCount(1234); // WHERE count = 1234
+     * $query->filterByCount(array(12, 34)); // WHERE count IN (12, 34)
+     * $query->filterByCount(array('min' => 12)); // WHERE count > 12
+     * </code>
+     *
+     * @param     mixed $count The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildStorageQuery The current query, for fluid interface
+     */
+    public function filterByCount($count = null, $comparison = null)
+    {
+        if (is_array($count)) {
+            $useMinMax = false;
+            if (isset($count['min'])) {
+                $this->addUsingAlias(StorageTableMap::COL_COUNT, $count['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($count['max'])) {
+                $this->addUsingAlias(StorageTableMap::COL_COUNT, $count['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(StorageTableMap::COL_COUNT, $count, $comparison);
+    }
+
+    /**
+     * Filter the query on the product_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductId(1234); // WHERE product_id = 1234
+     * $query->filterByProductId(array(12, 34)); // WHERE product_id IN (12, 34)
+     * $query->filterByProductId(array('min' => 12)); // WHERE product_id > 12
+     * </code>
+     *
+     * @param     mixed $productId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildStorageQuery The current query, for fluid interface
+     */
+    public function filterByProductId($productId = null, $comparison = null)
+    {
+        if (is_array($productId)) {
+            $useMinMax = false;
+            if (isset($productId['min'])) {
+                $this->addUsingAlias(StorageTableMap::COL_PRODUCT_ID, $productId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productId['max'])) {
+                $this->addUsingAlias(StorageTableMap::COL_PRODUCT_ID, $productId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(StorageTableMap::COL_PRODUCT_ID, $productId, $comparison);
     }
 
     /**

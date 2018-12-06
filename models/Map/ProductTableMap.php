@@ -72,9 +72,9 @@ class ProductTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 6;
 
     /**
-     * the column name for the Product_ID field
+     * the column name for the id field
      */
-    const COL_PRODUCT_ID = 'product.Product_ID';
+    const COL_ID = 'product.id';
 
     /**
      * the column name for the Title field
@@ -113,10 +113,10 @@ class ProductTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('ProductId', 'Title', 'Author', 'Edition', 'Isbn', 'Price', ),
-        self::TYPE_CAMELNAME     => array('productId', 'title', 'author', 'edition', 'isbn', 'price', ),
-        self::TYPE_COLNAME       => array(ProductTableMap::COL_PRODUCT_ID, ProductTableMap::COL_TITLE, ProductTableMap::COL_AUTHOR, ProductTableMap::COL_EDITION, ProductTableMap::COL_ISBN, ProductTableMap::COL_PRICE, ),
-        self::TYPE_FIELDNAME     => array('Product_ID', 'Title', 'Author', 'Edition', 'ISBN', 'Price', ),
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Author', 'Edition', 'Isbn', 'Price', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'author', 'edition', 'isbn', 'price', ),
+        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID, ProductTableMap::COL_TITLE, ProductTableMap::COL_AUTHOR, ProductTableMap::COL_EDITION, ProductTableMap::COL_ISBN, ProductTableMap::COL_PRICE, ),
+        self::TYPE_FIELDNAME     => array('id', 'Title', 'Author', 'Edition', 'ISBN', 'Price', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
@@ -127,10 +127,10 @@ class ProductTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('ProductId' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'Isbn' => 4, 'Price' => 5, ),
-        self::TYPE_CAMELNAME     => array('productId' => 0, 'title' => 1, 'author' => 2, 'edition' => 3, 'isbn' => 4, 'price' => 5, ),
-        self::TYPE_COLNAME       => array(ProductTableMap::COL_PRODUCT_ID => 0, ProductTableMap::COL_TITLE => 1, ProductTableMap::COL_AUTHOR => 2, ProductTableMap::COL_EDITION => 3, ProductTableMap::COL_ISBN => 4, ProductTableMap::COL_PRICE => 5, ),
-        self::TYPE_FIELDNAME     => array('Product_ID' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'ISBN' => 4, 'Price' => 5, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'Isbn' => 4, 'Price' => 5, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'author' => 2, 'edition' => 3, 'isbn' => 4, 'price' => 5, ),
+        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID => 0, ProductTableMap::COL_TITLE => 1, ProductTableMap::COL_AUTHOR => 2, ProductTableMap::COL_EDITION => 3, ProductTableMap::COL_ISBN => 4, ProductTableMap::COL_PRICE => 5, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'ISBN' => 4, 'Price' => 5, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
@@ -151,7 +151,7 @@ class ProductTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('Product_ID', 'ProductId', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('Title', 'Title', 'LONGVARCHAR', true, null, null);
         $this->addColumn('Author', 'Author', 'LONGVARCHAR', true, null, null);
         $this->addColumn('Edition', 'Edition', 'INTEGER', true, null, null);
@@ -182,11 +182,11 @@ class ProductTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -206,7 +206,7 @@ class ProductTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -307,14 +307,14 @@ class ProductTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProductTableMap::COL_PRODUCT_ID);
+            $criteria->addSelectColumn(ProductTableMap::COL_ID);
             $criteria->addSelectColumn(ProductTableMap::COL_TITLE);
             $criteria->addSelectColumn(ProductTableMap::COL_AUTHOR);
             $criteria->addSelectColumn(ProductTableMap::COL_EDITION);
             $criteria->addSelectColumn(ProductTableMap::COL_ISBN);
             $criteria->addSelectColumn(ProductTableMap::COL_PRICE);
         } else {
-            $criteria->addSelectColumn($alias . '.Product_ID');
+            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.Title');
             $criteria->addSelectColumn($alias . '.Author');
             $criteria->addSelectColumn($alias . '.Edition');
@@ -371,7 +371,7 @@ class ProductTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(ProductTableMap::DATABASE_NAME);
-            $criteria->add(ProductTableMap::COL_PRODUCT_ID, (array) $values, Criteria::IN);
+            $criteria->add(ProductTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = ProductQuery::create()->mergeWith($criteria);
@@ -419,8 +419,8 @@ class ProductTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Product object
         }
 
-        if ($criteria->containsKey(ProductTableMap::COL_PRODUCT_ID) && $criteria->keyContainsValue(ProductTableMap::COL_PRODUCT_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductTableMap::COL_PRODUCT_ID.')');
+        if ($criteria->containsKey(ProductTableMap::COL_ID) && $criteria->keyContainsValue(ProductTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductTableMap::COL_ID.')');
         }
 
 

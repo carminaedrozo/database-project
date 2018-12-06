@@ -148,7 +148,7 @@ class ProviderTableMap extends TableMap
         // columns
         $this->addPrimaryKey('Provider_ID', 'ProviderId', 'INTEGER', true, null, null);
         $this->addColumn('Provider_Name', 'ProviderName', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('Provider_Phone', 'ProviderPhone', 'INTEGER', true, null, null);
+        $this->addColumn('Provider_Phone', 'ProviderPhone', 'BIGINT', true, 11, null);
         $this->addColumn('Provider_Address', 'ProviderAddress', 'LONGVARCHAR', true, null, null);
         $this->addColumn('OrderList_ID', 'OrderlistId', 'INTEGER', true, null, null);
     } // initialize()

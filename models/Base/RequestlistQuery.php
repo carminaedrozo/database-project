@@ -2,11 +2,11 @@
 
 namespace Base;
 
-use \Request as ChildRequest;
-use \RequestQuery as ChildRequestQuery;
+use \Requestlist as ChildRequestlist;
+use \RequestlistQuery as ChildRequestlistQuery;
 use \Exception;
 use \PDO;
-use Map\RequestTableMap;
+use Map\RequestlistTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -16,84 +16,89 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'request' table.
+ * Base class that represents a query for the 'requestlist' table.
  *
  *
  *
- * @method     ChildRequestQuery orderByRequestId($order = Criteria::ASC) Order by the Request_ID column
- * @method     ChildRequestQuery orderByProductlistId($order = Criteria::ASC) Order by the ProductList_ID column
+ * @method     ChildRequestlistQuery orderByRequestId($order = Criteria::ASC) Order by the Request_ID column
+ * @method     ChildRequestlistQuery orderByOrderId($order = Criteria::ASC) Order by the Order_ID column
+ * @method     ChildRequestlistQuery orderByStatus($order = Criteria::ASC) Order by the Status column
  *
- * @method     ChildRequestQuery groupByRequestId() Group by the Request_ID column
- * @method     ChildRequestQuery groupByProductlistId() Group by the ProductList_ID column
+ * @method     ChildRequestlistQuery groupByRequestId() Group by the Request_ID column
+ * @method     ChildRequestlistQuery groupByOrderId() Group by the Order_ID column
+ * @method     ChildRequestlistQuery groupByStatus() Group by the Status column
  *
- * @method     ChildRequestQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildRequestQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildRequestQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildRequestlistQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildRequestlistQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildRequestlistQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildRequestQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
- * @method     ChildRequestQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
- * @method     ChildRequestQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ * @method     ChildRequestlistQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
+ * @method     ChildRequestlistQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
+ * @method     ChildRequestlistQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildRequestQuery leftJoinEmployee($relationAlias = null) Adds a LEFT JOIN clause to the query using the Employee relation
- * @method     ChildRequestQuery rightJoinEmployee($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Employee relation
- * @method     ChildRequestQuery innerJoinEmployee($relationAlias = null) Adds a INNER JOIN clause to the query using the Employee relation
+ * @method     ChildRequestlistQuery leftJoinEmployee($relationAlias = null) Adds a LEFT JOIN clause to the query using the Employee relation
+ * @method     ChildRequestlistQuery rightJoinEmployee($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Employee relation
+ * @method     ChildRequestlistQuery innerJoinEmployee($relationAlias = null) Adds a INNER JOIN clause to the query using the Employee relation
  *
- * @method     ChildRequestQuery joinWithEmployee($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Employee relation
+ * @method     ChildRequestlistQuery joinWithEmployee($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Employee relation
  *
- * @method     ChildRequestQuery leftJoinWithEmployee() Adds a LEFT JOIN clause and with to the query using the Employee relation
- * @method     ChildRequestQuery rightJoinWithEmployee() Adds a RIGHT JOIN clause and with to the query using the Employee relation
- * @method     ChildRequestQuery innerJoinWithEmployee() Adds a INNER JOIN clause and with to the query using the Employee relation
+ * @method     ChildRequestlistQuery leftJoinWithEmployee() Adds a LEFT JOIN clause and with to the query using the Employee relation
+ * @method     ChildRequestlistQuery rightJoinWithEmployee() Adds a RIGHT JOIN clause and with to the query using the Employee relation
+ * @method     ChildRequestlistQuery innerJoinWithEmployee() Adds a INNER JOIN clause and with to the query using the Employee relation
  *
  * @method     \EmployeeQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildRequest findOne(ConnectionInterface $con = null) Return the first ChildRequest matching the query
- * @method     ChildRequest findOneOrCreate(ConnectionInterface $con = null) Return the first ChildRequest matching the query, or a new ChildRequest object populated from the query conditions when no match is found
+ * @method     ChildRequestlist findOne(ConnectionInterface $con = null) Return the first ChildRequestlist matching the query
+ * @method     ChildRequestlist findOneOrCreate(ConnectionInterface $con = null) Return the first ChildRequestlist matching the query, or a new ChildRequestlist object populated from the query conditions when no match is found
  *
- * @method     ChildRequest findOneByRequestId(int $Request_ID) Return the first ChildRequest filtered by the Request_ID column
- * @method     ChildRequest findOneByProductlistId(int $ProductList_ID) Return the first ChildRequest filtered by the ProductList_ID column *
+ * @method     ChildRequestlist findOneByRequestId(int $Request_ID) Return the first ChildRequestlist filtered by the Request_ID column
+ * @method     ChildRequestlist findOneByOrderId(int $Order_ID) Return the first ChildRequestlist filtered by the Order_ID column
+ * @method     ChildRequestlist findOneByStatus(int $Status) Return the first ChildRequestlist filtered by the Status column *
 
- * @method     ChildRequest requirePk($key, ConnectionInterface $con = null) Return the ChildRequest by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildRequest requireOne(ConnectionInterface $con = null) Return the first ChildRequest matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestlist requirePk($key, ConnectionInterface $con = null) Return the ChildRequestlist by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestlist requireOne(ConnectionInterface $con = null) Return the first ChildRequestlist matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildRequest requireOneByRequestId(int $Request_ID) Return the first ChildRequest filtered by the Request_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildRequest requireOneByProductlistId(int $ProductList_ID) Return the first ChildRequest filtered by the ProductList_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestlist requireOneByRequestId(int $Request_ID) Return the first ChildRequestlist filtered by the Request_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestlist requireOneByOrderId(int $Order_ID) Return the first ChildRequestlist filtered by the Order_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestlist requireOneByStatus(int $Status) Return the first ChildRequestlist filtered by the Status column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildRequest[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildRequest objects based on current ModelCriteria
- * @method     ChildRequest[]|ObjectCollection findByRequestId(int $Request_ID) Return ChildRequest objects filtered by the Request_ID column
- * @method     ChildRequest[]|ObjectCollection findByProductlistId(int $ProductList_ID) Return ChildRequest objects filtered by the ProductList_ID column
- * @method     ChildRequest[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildRequestlist[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildRequestlist objects based on current ModelCriteria
+ * @method     ChildRequestlist[]|ObjectCollection findByRequestId(int $Request_ID) Return ChildRequestlist objects filtered by the Request_ID column
+ * @method     ChildRequestlist[]|ObjectCollection findByOrderId(int $Order_ID) Return ChildRequestlist objects filtered by the Order_ID column
+ * @method     ChildRequestlist[]|ObjectCollection findByStatus(int $Status) Return ChildRequestlist objects filtered by the Status column
+ * @method     ChildRequestlist[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class RequestQuery extends ModelCriteria
+abstract class RequestlistQuery extends ModelCriteria
 {
     protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
-     * Initializes internal state of \Base\RequestQuery object.
+     * Initializes internal state of \Base\RequestlistQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\Request', $modelAlias = null)
+    public function __construct($dbName = 'default', $modelName = '\\Requestlist', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildRequestQuery object.
+     * Returns a new ChildRequestlistQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildRequestQuery
+     * @return ChildRequestlistQuery
      */
     public static function create($modelAlias = null, Criteria $criteria = null)
     {
-        if ($criteria instanceof ChildRequestQuery) {
+        if ($criteria instanceof ChildRequestlistQuery) {
             return $criteria;
         }
-        $query = new ChildRequestQuery();
+        $query = new ChildRequestlistQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -116,7 +121,7 @@ abstract class RequestQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildRequest|array|mixed the result, formatted by the current formatter
+     * @return ChildRequestlist|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
@@ -125,7 +130,7 @@ abstract class RequestQuery extends ModelCriteria
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         $this->basePreSelect($con);
@@ -138,7 +143,7 @@ abstract class RequestQuery extends ModelCriteria
             return $this->findPkComplex($key, $con);
         }
 
-        if ((null !== ($obj = RequestTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+        if ((null !== ($obj = RequestlistTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -155,11 +160,11 @@ abstract class RequestQuery extends ModelCriteria
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildRequest A model object, or null if the key is not found
+     * @return ChildRequestlist A model object, or null if the key is not found
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT Request_ID, ProductList_ID FROM request WHERE Request_ID = :p0';
+        $sql = 'SELECT Request_ID, Order_ID, Status FROM requestlist WHERE Request_ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -170,10 +175,10 @@ abstract class RequestQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            /** @var ChildRequest $obj */
-            $obj = new ChildRequest();
+            /** @var ChildRequestlist $obj */
+            $obj = new ChildRequestlist();
             $obj->hydrate($row);
-            RequestTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+            RequestlistTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
         }
         $stmt->closeCursor();
 
@@ -186,7 +191,7 @@ abstract class RequestQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildRequest|array|mixed the result, formatted by the current formatter
+     * @return ChildRequestlist|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, ConnectionInterface $con)
     {
@@ -228,12 +233,12 @@ abstract class RequestQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -241,12 +246,12 @@ abstract class RequestQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -265,18 +270,18 @@ abstract class RequestQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
     public function filterByRequestId($requestId = null, $comparison = null)
     {
         if (is_array($requestId)) {
             $useMinMax = false;
             if (isset($requestId['min'])) {
-                $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $requestId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $requestId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($requestId['max'])) {
-                $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $requestId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $requestId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -287,37 +292,37 @@ abstract class RequestQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $requestId, $comparison);
+        return $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $requestId, $comparison);
     }
 
     /**
-     * Filter the query on the ProductList_ID column
+     * Filter the query on the Order_ID column
      *
      * Example usage:
      * <code>
-     * $query->filterByProductlistId(1234); // WHERE ProductList_ID = 1234
-     * $query->filterByProductlistId(array(12, 34)); // WHERE ProductList_ID IN (12, 34)
-     * $query->filterByProductlistId(array('min' => 12)); // WHERE ProductList_ID > 12
+     * $query->filterByOrderId(1234); // WHERE Order_ID = 1234
+     * $query->filterByOrderId(array(12, 34)); // WHERE Order_ID IN (12, 34)
+     * $query->filterByOrderId(array('min' => 12)); // WHERE Order_ID > 12
      * </code>
      *
-     * @param     mixed $productlistId The value to use as filter.
+     * @param     mixed $orderId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
-    public function filterByProductlistId($productlistId = null, $comparison = null)
+    public function filterByOrderId($orderId = null, $comparison = null)
     {
-        if (is_array($productlistId)) {
+        if (is_array($orderId)) {
             $useMinMax = false;
-            if (isset($productlistId['min'])) {
-                $this->addUsingAlias(RequestTableMap::COL_PRODUCTLIST_ID, $productlistId['min'], Criteria::GREATER_EQUAL);
+            if (isset($orderId['min'])) {
+                $this->addUsingAlias(RequestlistTableMap::COL_ORDER_ID, $orderId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($productlistId['max'])) {
-                $this->addUsingAlias(RequestTableMap::COL_PRODUCTLIST_ID, $productlistId['max'], Criteria::LESS_EQUAL);
+            if (isset($orderId['max'])) {
+                $this->addUsingAlias(RequestlistTableMap::COL_ORDER_ID, $orderId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -328,7 +333,48 @@ abstract class RequestQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(RequestTableMap::COL_PRODUCTLIST_ID, $productlistId, $comparison);
+        return $this->addUsingAlias(RequestlistTableMap::COL_ORDER_ID, $orderId, $comparison);
+    }
+
+    /**
+     * Filter the query on the Status column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByStatus(1234); // WHERE Status = 1234
+     * $query->filterByStatus(array(12, 34)); // WHERE Status IN (12, 34)
+     * $query->filterByStatus(array('min' => 12)); // WHERE Status > 12
+     * </code>
+     *
+     * @param     mixed $status The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
+     */
+    public function filterByStatus($status = null, $comparison = null)
+    {
+        if (is_array($status)) {
+            $useMinMax = false;
+            if (isset($status['min'])) {
+                $this->addUsingAlias(RequestlistTableMap::COL_STATUS, $status['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($status['max'])) {
+                $this->addUsingAlias(RequestlistTableMap::COL_STATUS, $status['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(RequestlistTableMap::COL_STATUS, $status, $comparison);
     }
 
     /**
@@ -337,13 +383,13 @@ abstract class RequestQuery extends ModelCriteria
      * @param \Employee|ObjectCollection $employee the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildRequestQuery The current query, for fluid interface
+     * @return ChildRequestlistQuery The current query, for fluid interface
      */
     public function filterByEmployee($employee, $comparison = null)
     {
         if ($employee instanceof \Employee) {
             return $this
-                ->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $employee->getRequestId(), $comparison);
+                ->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $employee->getRequestId(), $comparison);
         } elseif ($employee instanceof ObjectCollection) {
             return $this
                 ->useEmployeeQuery()
@@ -360,7 +406,7 @@ abstract class RequestQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
     public function joinEmployee($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -407,21 +453,21 @@ abstract class RequestQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   ChildRequest $request Object to remove from the list of results
+     * @param   ChildRequestlist $requestlist Object to remove from the list of results
      *
-     * @return $this|ChildRequestQuery The current query, for fluid interface
+     * @return $this|ChildRequestlistQuery The current query, for fluid interface
      */
-    public function prune($request = null)
+    public function prune($requestlist = null)
     {
-        if ($request) {
-            $this->addUsingAlias(RequestTableMap::COL_REQUEST_ID, $request->getRequestId(), Criteria::NOT_EQUAL);
+        if ($requestlist) {
+            $this->addUsingAlias(RequestlistTableMap::COL_REQUEST_ID, $requestlist->getRequestId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the request table.
+     * Deletes all rows from the requestlist table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -429,7 +475,7 @@ abstract class RequestQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         // use transaction because $criteria could contain info
@@ -440,8 +486,8 @@ abstract class RequestQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            RequestTableMap::clearInstancePool();
-            RequestTableMap::clearRelatedInstancePool();
+            RequestlistTableMap::clearInstancePool();
+            RequestlistTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
@@ -459,26 +505,26 @@ abstract class RequestQuery extends ModelCriteria
     public function delete(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(RequestTableMap::DATABASE_NAME);
+        $criteria->setDbName(RequestlistTableMap::DATABASE_NAME);
 
         // use transaction because $criteria could contain info
         // for more than one table or we could emulating ON DELETE CASCADE, etc.
         return $con->transaction(function () use ($con, $criteria) {
             $affectedRows = 0; // initialize var to track total num of affected rows
 
-            RequestTableMap::removeInstanceFromPool($criteria);
+            RequestlistTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
-            RequestTableMap::clearRelatedInstancePool();
+            RequestlistTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
     }
 
-} // RequestQuery
+} // RequestlistQuery

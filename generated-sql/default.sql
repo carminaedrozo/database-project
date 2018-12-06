@@ -16,24 +16,23 @@ CREATE TABLE `employee`
     INDEX `Request_ID` (`Request_ID`),
     CONSTRAINT `employee_ibfk_1`
         FOREIGN KEY (`Request_ID`)
-        REFERENCES `request` (`Request_ID`)
+        REFERENCES `requestlist` (`Request_ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- order
+-- employeeorderstatus
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `employeeorderstatus`;
 
-CREATE TABLE `order`
+CREATE TABLE `employeeorderstatus`
 (
-    `Order_ID` INTEGER NOT NULL,
-    `Commission` INTEGER NOT NULL,
-    `Amount` INTEGER NOT NULL,
-    `Date` DATE NOT NULL,
-    `Delivery_Date` DATE NOT NULL,
-    `ProductList_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`Order_ID`)
+    `ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `Product_ID` INTEGER NOT NULL,
+    `ReceivedCount` INTEGER NOT NULL,
+    `FufilledStatus` bit(11) NOT NULL,
+    `Count` INTEGER NOT NULL,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -57,27 +56,13 @@ DROP TABLE IF EXISTS `product`;
 
 CREATE TABLE `product`
 (
-    `Product_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `Title` TEXT NOT NULL,
     `Author` TEXT NOT NULL,
     `Edition` INTEGER NOT NULL,
     `ISBN` TEXT NOT NULL,
     `Price` DOUBLE NOT NULL,
-    PRIMARY KEY (`Product_ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- productlist
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `productlist`;
-
-CREATE TABLE `productlist`
-(
-    `ProductList_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Product_ID` INTEGER NOT NULL,
-    `Count` INTEGER NOT NULL,
-    PRIMARY KEY (`ProductList_ID`)
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -90,23 +75,74 @@ CREATE TABLE `provider`
 (
     `Provider_ID` INTEGER NOT NULL AUTO_INCREMENT,
     `Provider_Name` TEXT NOT NULL,
-    `Provider_Phone` INTEGER NOT NULL,
+    `Provider_Phone` BIGINT(11) NOT NULL,
     `Provider_Address` TEXT NOT NULL,
     `OrderList_ID` INTEGER NOT NULL,
     PRIMARY KEY (`Provider_ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- request
+-- providerorder
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `request`;
+DROP TABLE IF EXISTS `providerorder`;
 
-CREATE TABLE `request`
+CREATE TABLE `providerorder`
+(
+    `Order_ID` INTEGER NOT NULL,
+    `Commission` DOUBLE NOT NULL,
+    `Amount` DOUBLE NOT NULL,
+    `Date` DATE NOT NULL,
+    `Delivered_Date` DATE NOT NULL,
+    `Status_ID` INTEGER NOT NULL,
+    PRIMARY KEY (`Order_ID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- providerorderstatus
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `providerorderstatus`;
+
+CREATE TABLE `providerorderstatus`
+(
+    `ID` INTEGER NOT NULL,
+    `Product_ID` INTEGER NOT NULL,
+    `ReceivedCount` INTEGER NOT NULL,
+    `FulfilledStatus` INTEGER NOT NULL,
+    `Count` INTEGER NOT NULL,
+    PRIMARY KEY (`ID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- requestlist
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `requestlist`;
+
+CREATE TABLE `requestlist`
 (
     `Request_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `ProductList_ID` INTEGER NOT NULL,
+    `Order_ID` INTEGER NOT NULL,
+    `Status` INTEGER NOT NULL,
     PRIMARY KEY (`Request_ID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- requestorder
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `requestorder`;
+
+CREATE TABLE `requestorder`
+(
+    `Order_ID` INTEGER NOT NULL,
+    `Commission` DOUBLE NOT NULL,
+    `Amount` DOUBLE NOT NULL,
+    `Date` DATE NOT NULL,
+    `Delivered_Date` DATE NOT NULL,
+    `Status_ID` INTEGER NOT NULL,
+    PRIMARY KEY (`Order_ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -133,8 +169,9 @@ DROP TABLE IF EXISTS `storage`;
 
 CREATE TABLE `storage`
 (
-    `User_Login` TEXT NOT NULL,
-    `ProductList_ID` INTEGER NOT NULL
+    `id` INTEGER NOT NULL,
+    `count` INTEGER NOT NULL,
+    `product_id` INTEGER NOT NULL
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -145,14 +182,12 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
 (
-    `User_Login` TEXT NOT NULL,
-    `User_Password` TEXT NOT NULL,
-    `User_Email` TEXT NOT NULL,
-    `User_FullName` TEXT NOT NULL,
-    `User_Status` bit(1) NOT NULL,
-    `User_LastAccess` DATETIME NOT NULL,
-    `User_LastUpdate` DATETIME NOT NULL,
-    PRIMARY KEY (`User_Login`)
+    `email` TEXT NOT NULL,
+    `password` TEXT NOT NULL,
+    `full_name` TEXT NOT NULL,
+    `status` bit(1) NOT NULL,
+    `last_access` DATETIME NOT NULL,
+    `last_update` DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

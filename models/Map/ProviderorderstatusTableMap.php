@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Request;
-use \RequestQuery;
+use \Providerorderstatus;
+use \ProviderorderstatusQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'request' table.
+ * This class defines the structure of the 'providerorderstatus' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class RequestTableMap extends TableMap
+class ProviderorderstatusTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class RequestTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.RequestTableMap';
+    const CLASS_NAME = '.Map.ProviderorderstatusTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class RequestTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'request';
+    const TABLE_NAME = 'providerorderstatus';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Request';
+    const OM_CLASS = '\\Providerorderstatus';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Request';
+    const CLASS_DEFAULT = 'Providerorderstatus';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,17 +69,32 @@ class RequestTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
-     * the column name for the Request_ID field
+     * the column name for the ID field
      */
-    const COL_REQUEST_ID = 'request.Request_ID';
+    const COL_ID = 'providerorderstatus.ID';
 
     /**
-     * the column name for the ProductList_ID field
+     * the column name for the Product_ID field
      */
-    const COL_PRODUCTLIST_ID = 'request.ProductList_ID';
+    const COL_PRODUCT_ID = 'providerorderstatus.Product_ID';
+
+    /**
+     * the column name for the ReceivedCount field
+     */
+    const COL_RECEIVEDCOUNT = 'providerorderstatus.ReceivedCount';
+
+    /**
+     * the column name for the FulfilledStatus field
+     */
+    const COL_FULFILLEDSTATUS = 'providerorderstatus.FulfilledStatus';
+
+    /**
+     * the column name for the Count field
+     */
+    const COL_COUNT = 'providerorderstatus.Count';
 
     /**
      * The default string format for model objects of the related table
@@ -93,11 +108,11 @@ class RequestTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('RequestId', 'ProductlistId', ),
-        self::TYPE_CAMELNAME     => array('requestId', 'productlistId', ),
-        self::TYPE_COLNAME       => array(RequestTableMap::COL_REQUEST_ID, RequestTableMap::COL_PRODUCTLIST_ID, ),
-        self::TYPE_FIELDNAME     => array('Request_ID', 'ProductList_ID', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Receivedcount', 'Fulfilledstatus', 'Count', ),
+        self::TYPE_CAMELNAME     => array('id', 'productId', 'receivedcount', 'fulfilledstatus', 'count', ),
+        self::TYPE_COLNAME       => array(ProviderorderstatusTableMap::COL_ID, ProviderorderstatusTableMap::COL_PRODUCT_ID, ProviderorderstatusTableMap::COL_RECEIVEDCOUNT, ProviderorderstatusTableMap::COL_FULFILLEDSTATUS, ProviderorderstatusTableMap::COL_COUNT, ),
+        self::TYPE_FIELDNAME     => array('ID', 'Product_ID', 'ReceivedCount', 'FulfilledStatus', 'Count', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -107,11 +122,11 @@ class RequestTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('RequestId' => 0, 'ProductlistId' => 1, ),
-        self::TYPE_CAMELNAME     => array('requestId' => 0, 'productlistId' => 1, ),
-        self::TYPE_COLNAME       => array(RequestTableMap::COL_REQUEST_ID => 0, RequestTableMap::COL_PRODUCTLIST_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('Request_ID' => 0, 'ProductList_ID' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Receivedcount' => 2, 'Fulfilledstatus' => 3, 'Count' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'productId' => 1, 'receivedcount' => 2, 'fulfilledstatus' => 3, 'count' => 4, ),
+        self::TYPE_COLNAME       => array(ProviderorderstatusTableMap::COL_ID => 0, ProviderorderstatusTableMap::COL_PRODUCT_ID => 1, ProviderorderstatusTableMap::COL_RECEIVEDCOUNT => 2, ProviderorderstatusTableMap::COL_FULFILLEDSTATUS => 3, ProviderorderstatusTableMap::COL_COUNT => 4, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'Product_ID' => 1, 'ReceivedCount' => 2, 'FulfilledStatus' => 3, 'Count' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -124,15 +139,18 @@ class RequestTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('request');
-        $this->setPhpName('Request');
+        $this->setName('providerorderstatus');
+        $this->setPhpName('Providerorderstatus');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Request');
+        $this->setClassName('\\Providerorderstatus');
         $this->setPackage('');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('Request_ID', 'RequestId', 'INTEGER', true, null, null);
-        $this->addColumn('ProductList_ID', 'ProductlistId', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('Product_ID', 'ProductId', 'INTEGER', true, null, null);
+        $this->addColumn('ReceivedCount', 'Receivedcount', 'INTEGER', true, null, null);
+        $this->addColumn('FulfilledStatus', 'Fulfilledstatus', 'INTEGER', true, null, null);
+        $this->addColumn('Count', 'Count', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -140,13 +158,6 @@ class RequestTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Employee', '\\Employee', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':Request_ID',
-    1 => ':Request_ID',
-  ),
-), null, null, 'Employees', false);
     } // buildRelations()
 
     /**
@@ -165,11 +176,11 @@ class RequestTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -189,7 +200,7 @@ class RequestTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -206,7 +217,7 @@ class RequestTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? RequestTableMap::CLASS_DEFAULT : RequestTableMap::OM_CLASS;
+        return $withPrefix ? ProviderorderstatusTableMap::CLASS_DEFAULT : ProviderorderstatusTableMap::OM_CLASS;
     }
 
     /**
@@ -220,22 +231,22 @@ class RequestTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Request object, last column rank)
+     * @return array           (Providerorderstatus object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = RequestTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = RequestTableMap::getInstanceFromPool($key))) {
+        $key = ProviderorderstatusTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = ProviderorderstatusTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + RequestTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + ProviderorderstatusTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = RequestTableMap::OM_CLASS;
-            /** @var Request $obj */
+            $cls = ProviderorderstatusTableMap::OM_CLASS;
+            /** @var Providerorderstatus $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            RequestTableMap::addInstanceToPool($obj, $key);
+            ProviderorderstatusTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -258,18 +269,18 @@ class RequestTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = RequestTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = RequestTableMap::getInstanceFromPool($key))) {
+            $key = ProviderorderstatusTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = ProviderorderstatusTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Request $obj */
+                /** @var Providerorderstatus $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                RequestTableMap::addInstanceToPool($obj, $key);
+                ProviderorderstatusTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -290,11 +301,17 @@ class RequestTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(RequestTableMap::COL_REQUEST_ID);
-            $criteria->addSelectColumn(RequestTableMap::COL_PRODUCTLIST_ID);
+            $criteria->addSelectColumn(ProviderorderstatusTableMap::COL_ID);
+            $criteria->addSelectColumn(ProviderorderstatusTableMap::COL_PRODUCT_ID);
+            $criteria->addSelectColumn(ProviderorderstatusTableMap::COL_RECEIVEDCOUNT);
+            $criteria->addSelectColumn(ProviderorderstatusTableMap::COL_FULFILLEDSTATUS);
+            $criteria->addSelectColumn(ProviderorderstatusTableMap::COL_COUNT);
         } else {
-            $criteria->addSelectColumn($alias . '.Request_ID');
-            $criteria->addSelectColumn($alias . '.ProductList_ID');
+            $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.Product_ID');
+            $criteria->addSelectColumn($alias . '.ReceivedCount');
+            $criteria->addSelectColumn($alias . '.FulfilledStatus');
+            $criteria->addSelectColumn($alias . '.Count');
         }
     }
 
@@ -307,7 +324,7 @@ class RequestTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(RequestTableMap::DATABASE_NAME)->getTable(RequestTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(ProviderorderstatusTableMap::DATABASE_NAME)->getTable(ProviderorderstatusTableMap::TABLE_NAME);
     }
 
     /**
@@ -315,16 +332,16 @@ class RequestTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(RequestTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(RequestTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new RequestTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(ProviderorderstatusTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(ProviderorderstatusTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new ProviderorderstatusTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Request or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Providerorderstatus or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Request object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Providerorderstatus object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -335,27 +352,27 @@ class RequestTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderstatusTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Request) { // it's a model object
+        } elseif ($values instanceof \Providerorderstatus) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(RequestTableMap::DATABASE_NAME);
-            $criteria->add(RequestTableMap::COL_REQUEST_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(ProviderorderstatusTableMap::DATABASE_NAME);
+            $criteria->add(ProviderorderstatusTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = RequestQuery::create()->mergeWith($criteria);
+        $query = ProviderorderstatusQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            RequestTableMap::clearInstancePool();
+            ProviderorderstatusTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                RequestTableMap::removeInstanceFromPool($singleval);
+                ProviderorderstatusTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -363,20 +380,20 @@ class RequestTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the request table.
+     * Deletes all rows from the providerorderstatus table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return RequestQuery::create()->doDeleteAll($con);
+        return ProviderorderstatusQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Request or Criteria object.
+     * Performs an INSERT on the database, given a Providerorderstatus or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Request object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Providerorderstatus object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -385,22 +402,18 @@ class RequestTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderstatusTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Request object
-        }
-
-        if ($criteria->containsKey(RequestTableMap::COL_REQUEST_ID) && $criteria->keyContainsValue(RequestTableMap::COL_REQUEST_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.RequestTableMap::COL_REQUEST_ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from Providerorderstatus object
         }
 
 
         // Set the correct dbName
-        $query = RequestQuery::create()->mergeWith($criteria);
+        $query = ProviderorderstatusQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -409,7 +422,7 @@ class RequestTableMap extends TableMap
         });
     }
 
-} // RequestTableMap
+} // ProviderorderstatusTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-RequestTableMap::buildTableMap();
+ProviderorderstatusTableMap::buildTableMap();

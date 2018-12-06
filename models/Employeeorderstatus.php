@@ -1,9 +1,9 @@
 <?php
 
-use Base\ProductlistQuery as BaseProductlistQuery;
+use Base\Employeeorderstatus as BaseEmployeeorderstatus;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'productlist' table.
+ * Skeleton subclass for representing a row from the 'employeeorderstatus' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\ProductlistQuery as BaseProductlistQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class ProductlistQuery extends BaseProductlistQuery
+class Employeeorderstatus extends BaseEmployeeorderstatus
 {
 
 }

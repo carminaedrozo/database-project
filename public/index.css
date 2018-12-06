@@ -1,21 +1,40 @@
 
-html, body {
-  height: 100%
-}
 
 #submitBtn {
-  color:purple;
+    font-family: 'Montserrat', sans-serif;
+
+}
+a {
+    color:#ffc4e8;
+    font-family: 'Text Me One', sans-serif;
+    font-size: 22px;
+}
+#signin {
+    font-family: 'Montserrat', sans-serif;
+}
+#email {
+    font-family: 'Montserrat', sans-serif;
+}
+#password{
+    font-family: 'Montserrat', sans-serif;
+}
+#footerfooter {
+    height: 5rem;
 
 }
 
-#footer1 {
-    position:relative;
-    margin-top: -150px;
-    height: 150px;
-    clear: both;
-    padding-top:20px;
-    color: purple;
+#bordersignin {
+    border-width:12px !important;
+    border-color: #3a4547;
+    border-radius: 5px;
+    /* border-style: inset; */
 }
+
+#signinboxcolor {
+    background-color: #64c4d1;
+}
+
+body { background: #e8d5e3 !important;}
 /* h1 {
     color: blue;
 }

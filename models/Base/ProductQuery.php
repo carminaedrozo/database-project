@@ -19,14 +19,14 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildProductQuery orderByProductId($order = Criteria::ASC) Order by the Product_ID column
+ * @method     ChildProductQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildProductQuery orderByTitle($order = Criteria::ASC) Order by the Title column
  * @method     ChildProductQuery orderByAuthor($order = Criteria::ASC) Order by the Author column
  * @method     ChildProductQuery orderByEdition($order = Criteria::ASC) Order by the Edition column
  * @method     ChildProductQuery orderByIsbn($order = Criteria::ASC) Order by the ISBN column
  * @method     ChildProductQuery orderByPrice($order = Criteria::ASC) Order by the Price column
  *
- * @method     ChildProductQuery groupByProductId() Group by the Product_ID column
+ * @method     ChildProductQuery groupById() Group by the id column
  * @method     ChildProductQuery groupByTitle() Group by the Title column
  * @method     ChildProductQuery groupByAuthor() Group by the Author column
  * @method     ChildProductQuery groupByEdition() Group by the Edition column
@@ -44,7 +44,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProduct findOne(ConnectionInterface $con = null) Return the first ChildProduct matching the query
  * @method     ChildProduct findOneOrCreate(ConnectionInterface $con = null) Return the first ChildProduct matching the query, or a new ChildProduct object populated from the query conditions when no match is found
  *
- * @method     ChildProduct findOneByProductId(int $Product_ID) Return the first ChildProduct filtered by the Product_ID column
+ * @method     ChildProduct findOneById(int $id) Return the first ChildProduct filtered by the id column
  * @method     ChildProduct findOneByTitle(string $Title) Return the first ChildProduct filtered by the Title column
  * @method     ChildProduct findOneByAuthor(string $Author) Return the first ChildProduct filtered by the Author column
  * @method     ChildProduct findOneByEdition(int $Edition) Return the first ChildProduct filtered by the Edition column
@@ -54,7 +54,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProduct requirePk($key, ConnectionInterface $con = null) Return the ChildProduct by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProduct requireOne(ConnectionInterface $con = null) Return the first ChildProduct matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildProduct requireOneByProductId(int $Product_ID) Return the first ChildProduct filtered by the Product_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneById(int $id) Return the first ChildProduct filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProduct requireOneByTitle(string $Title) Return the first ChildProduct filtered by the Title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProduct requireOneByAuthor(string $Author) Return the first ChildProduct filtered by the Author column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProduct requireOneByEdition(int $Edition) Return the first ChildProduct filtered by the Edition column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -62,7 +62,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProduct requireOneByPrice(double $Price) Return the first ChildProduct filtered by the Price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProduct[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildProduct objects based on current ModelCriteria
- * @method     ChildProduct[]|ObjectCollection findByProductId(int $Product_ID) Return ChildProduct objects filtered by the Product_ID column
+ * @method     ChildProduct[]|ObjectCollection findById(int $id) Return ChildProduct objects filtered by the id column
  * @method     ChildProduct[]|ObjectCollection findByTitle(string $Title) Return ChildProduct objects filtered by the Title column
  * @method     ChildProduct[]|ObjectCollection findByAuthor(string $Author) Return ChildProduct objects filtered by the Author column
  * @method     ChildProduct[]|ObjectCollection findByEdition(int $Edition) Return ChildProduct objects filtered by the Edition column
@@ -166,7 +166,7 @@ abstract class ProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT Product_ID, Title, Author, Edition, ISBN, Price FROM product WHERE Product_ID = :p0';
+        $sql = 'SELECT id, Title, Author, Edition, ISBN, Price FROM product WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -240,7 +240,7 @@ abstract class ProductQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(ProductTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -253,20 +253,20 @@ abstract class ProductQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(ProductTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the Product_ID column
+     * Filter the query on the id column
      *
      * Example usage:
      * <code>
-     * $query->filterByProductId(1234); // WHERE Product_ID = 1234
-     * $query->filterByProductId(array(12, 34)); // WHERE Product_ID IN (12, 34)
-     * $query->filterByProductId(array('min' => 12)); // WHERE Product_ID > 12
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $productId The value to use as filter.
+     * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -274,16 +274,16 @@ abstract class ProductQuery extends ModelCriteria
      *
      * @return $this|ChildProductQuery The current query, for fluid interface
      */
-    public function filterByProductId($productId = null, $comparison = null)
+    public function filterById($id = null, $comparison = null)
     {
-        if (is_array($productId)) {
+        if (is_array($id)) {
             $useMinMax = false;
-            if (isset($productId['min'])) {
-                $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $productId['min'], Criteria::GREATER_EQUAL);
+            if (isset($id['min'])) {
+                $this->addUsingAlias(ProductTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($productId['max'])) {
-                $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $productId['max'], Criteria::LESS_EQUAL);
+            if (isset($id['max'])) {
+                $this->addUsingAlias(ProductTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -294,7 +294,7 @@ abstract class ProductQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $productId, $comparison);
+        return $this->addUsingAlias(ProductTableMap::COL_ID, $id, $comparison);
     }
 
     /**
@@ -464,7 +464,7 @@ abstract class ProductQuery extends ModelCriteria
     public function prune($product = null)
     {
         if ($product) {
-            $this->addUsingAlias(ProductTableMap::COL_PRODUCT_ID, $product->getProductId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(ProductTableMap::COL_ID, $product->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

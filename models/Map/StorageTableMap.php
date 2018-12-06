@@ -60,7 +60,7 @@ class StorageTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -70,17 +70,22 @@ class StorageTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
-     * the column name for the User_Login field
+     * the column name for the id field
      */
-    const COL_USER_LOGIN = 'storage.User_Login';
+    const COL_ID = 'storage.id';
 
     /**
-     * the column name for the ProductList_ID field
+     * the column name for the count field
      */
-    const COL_PRODUCTLIST_ID = 'storage.ProductList_ID';
+    const COL_COUNT = 'storage.count';
+
+    /**
+     * the column name for the product_id field
+     */
+    const COL_PRODUCT_ID = 'storage.product_id';
 
     /**
      * The default string format for model objects of the related table
@@ -94,11 +99,11 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserLogin', 'ProductlistId', ),
-        self::TYPE_CAMELNAME     => array('userLogin', 'productlistId', ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_USER_LOGIN, StorageTableMap::COL_PRODUCTLIST_ID, ),
-        self::TYPE_FIELDNAME     => array('User_Login', 'ProductList_ID', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Count', 'ProductId', ),
+        self::TYPE_CAMELNAME     => array('id', 'count', 'productId', ),
+        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID, StorageTableMap::COL_COUNT, StorageTableMap::COL_PRODUCT_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'count', 'product_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -108,11 +113,11 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserLogin' => 0, 'ProductlistId' => 1, ),
-        self::TYPE_CAMELNAME     => array('userLogin' => 0, 'productlistId' => 1, ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_USER_LOGIN => 0, StorageTableMap::COL_PRODUCTLIST_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('User_Login' => 0, 'ProductList_ID' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Count' => 1, 'ProductId' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'count' => 1, 'productId' => 2, ),
+        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID => 0, StorageTableMap::COL_COUNT => 1, StorageTableMap::COL_PRODUCT_ID => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'count' => 1, 'product_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -132,8 +137,9 @@ class StorageTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addColumn('User_Login', 'UserLogin', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('ProductList_ID', 'ProductlistId', 'INTEGER', true, null, null);
+        $this->addColumn('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('count', 'Count', 'INTEGER', true, null, null);
+        $this->addColumn('product_id', 'ProductId', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -275,11 +281,13 @@ class StorageTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StorageTableMap::COL_USER_LOGIN);
-            $criteria->addSelectColumn(StorageTableMap::COL_PRODUCTLIST_ID);
+            $criteria->addSelectColumn(StorageTableMap::COL_ID);
+            $criteria->addSelectColumn(StorageTableMap::COL_COUNT);
+            $criteria->addSelectColumn(StorageTableMap::COL_PRODUCT_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.User_Login');
-            $criteria->addSelectColumn($alias . '.ProductList_ID');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.count');
+            $criteria->addSelectColumn($alias . '.product_id');
         }
     }
 

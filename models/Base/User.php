@@ -62,53 +62,46 @@ abstract class User implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the user_login field.
+     * The value for the email field.
      *
      * @var        string
      */
-    protected $user_login;
+    protected $email;
 
     /**
-     * The value for the user_password field.
+     * The value for the password field.
      *
      * @var        string
      */
-    protected $user_password;
+    protected $password;
 
     /**
-     * The value for the user_email field.
+     * The value for the full_name field.
      *
      * @var        string
      */
-    protected $user_email;
+    protected $full_name;
 
     /**
-     * The value for the user_fullname field.
+     * The value for the status field.
      *
      * @var        string
      */
-    protected $user_fullname;
+    protected $status;
 
     /**
-     * The value for the user_status field.
-     *
-     * @var        string
-     */
-    protected $user_status;
-
-    /**
-     * The value for the user_lastaccess field.
+     * The value for the last_access field.
      *
      * @var        DateTime
      */
-    protected $user_lastaccess;
+    protected $last_access;
 
     /**
-     * The value for the user_lastupdate field.
+     * The value for the last_update field.
      *
      * @var        DateTime
      */
-    protected $user_lastupdate;
+    protected $last_update;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -344,57 +337,47 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Get the [user_login] column value.
+     * Get the [email] column value.
      *
      * @return string
      */
-    public function getUserLogin()
+    public function getEmail()
     {
-        return $this->user_login;
+        return $this->email;
     }
 
     /**
-     * Get the [user_password] column value.
+     * Get the [password] column value.
      *
      * @return string
      */
-    public function getUserPassword()
+    public function getPassword()
     {
-        return $this->user_password;
+        return $this->password;
     }
 
     /**
-     * Get the [user_email] column value.
+     * Get the [full_name] column value.
      *
      * @return string
      */
-    public function getUserEmail()
+    public function getFullName()
     {
-        return $this->user_email;
+        return $this->full_name;
     }
 
     /**
-     * Get the [user_fullname] column value.
+     * Get the [status] column value.
      *
      * @return string
      */
-    public function getUserFullname()
+    public function getStatus()
     {
-        return $this->user_fullname;
+        return $this->status;
     }
 
     /**
-     * Get the [user_status] column value.
-     *
-     * @return string
-     */
-    public function getUserStatus()
-    {
-        return $this->user_status;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [user_lastaccess] column value.
+     * Get the [optionally formatted] temporal [last_access] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
@@ -404,17 +387,17 @@ abstract class User implements ActiveRecordInterface
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getUserLastaccess($format = NULL)
+    public function getLastAccess($format = NULL)
     {
         if ($format === null) {
-            return $this->user_lastaccess;
+            return $this->last_access;
         } else {
-            return $this->user_lastaccess instanceof \DateTimeInterface ? $this->user_lastaccess->format($format) : null;
+            return $this->last_access instanceof \DateTimeInterface ? $this->last_access->format($format) : null;
         }
     }
 
     /**
-     * Get the [optionally formatted] temporal [user_lastupdate] column value.
+     * Get the [optionally formatted] temporal [last_update] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
@@ -424,154 +407,134 @@ abstract class User implements ActiveRecordInterface
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getUserLastupdate($format = NULL)
+    public function getLastUpdate($format = NULL)
     {
         if ($format === null) {
-            return $this->user_lastupdate;
+            return $this->last_update;
         } else {
-            return $this->user_lastupdate instanceof \DateTimeInterface ? $this->user_lastupdate->format($format) : null;
+            return $this->last_update instanceof \DateTimeInterface ? $this->last_update->format($format) : null;
         }
     }
 
     /**
-     * Set the value of [user_login] column.
+     * Set the value of [email] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserLogin($v)
+    public function setEmail($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->user_login !== $v) {
-            $this->user_login = $v;
-            $this->modifiedColumns[UserTableMap::COL_USER_LOGIN] = true;
+        if ($this->email !== $v) {
+            $this->email = $v;
+            $this->modifiedColumns[UserTableMap::COL_EMAIL] = true;
         }
 
         return $this;
-    } // setUserLogin()
+    } // setEmail()
 
     /**
-     * Set the value of [user_password] column.
+     * Set the value of [password] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserPassword($v)
+    public function setPassword($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->user_password !== $v) {
-            $this->user_password = $v;
-            $this->modifiedColumns[UserTableMap::COL_USER_PASSWORD] = true;
+        if ($this->password !== $v) {
+            $this->password = $v;
+            $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
         }
 
         return $this;
-    } // setUserPassword()
+    } // setPassword()
 
     /**
-     * Set the value of [user_email] column.
+     * Set the value of [full_name] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserEmail($v)
+    public function setFullName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->user_email !== $v) {
-            $this->user_email = $v;
-            $this->modifiedColumns[UserTableMap::COL_USER_EMAIL] = true;
+        if ($this->full_name !== $v) {
+            $this->full_name = $v;
+            $this->modifiedColumns[UserTableMap::COL_FULL_NAME] = true;
         }
 
         return $this;
-    } // setUserEmail()
+    } // setFullName()
 
     /**
-     * Set the value of [user_fullname] column.
+     * Set the value of [status] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserFullname($v)
+    public function setStatus($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->user_fullname !== $v) {
-            $this->user_fullname = $v;
-            $this->modifiedColumns[UserTableMap::COL_USER_FULLNAME] = true;
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[UserTableMap::COL_STATUS] = true;
         }
 
         return $this;
-    } // setUserFullname()
+    } // setStatus()
 
     /**
-     * Set the value of [user_status] column.
-     *
-     * @param string $v new value
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function setUserStatus($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->user_status !== $v) {
-            $this->user_status = $v;
-            $this->modifiedColumns[UserTableMap::COL_USER_STATUS] = true;
-        }
-
-        return $this;
-    } // setUserStatus()
-
-    /**
-     * Sets the value of [user_lastaccess] column to a normalized version of the date/time value specified.
+     * Sets the value of [last_access] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserLastaccess($v)
+    public function setLastAccess($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->user_lastaccess !== null || $dt !== null) {
-            if ($this->user_lastaccess === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->user_lastaccess->format("Y-m-d H:i:s.u")) {
-                $this->user_lastaccess = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[UserTableMap::COL_USER_LASTACCESS] = true;
+        if ($this->last_access !== null || $dt !== null) {
+            if ($this->last_access === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->last_access->format("Y-m-d H:i:s.u")) {
+                $this->last_access = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[UserTableMap::COL_LAST_ACCESS] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setUserLastaccess()
+    } // setLastAccess()
 
     /**
-     * Sets the value of [user_lastupdate] column to a normalized version of the date/time value specified.
+     * Sets the value of [last_update] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setUserLastupdate($v)
+    public function setLastUpdate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->user_lastupdate !== null || $dt !== null) {
-            if ($this->user_lastupdate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->user_lastupdate->format("Y-m-d H:i:s.u")) {
-                $this->user_lastupdate = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[UserTableMap::COL_USER_LASTUPDATE] = true;
+        if ($this->last_update !== null || $dt !== null) {
+            if ($this->last_update === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->last_update->format("Y-m-d H:i:s.u")) {
+                $this->last_update = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[UserTableMap::COL_LAST_UPDATE] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setUserLastupdate()
+    } // setLastUpdate()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -609,32 +572,29 @@ abstract class User implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UserTableMap::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_login = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UserTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->email = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('UserPassword', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_password = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->password = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('UserEmail', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_email = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('FullName', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->full_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('UserFullname', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_fullname = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('UserStatus', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_status = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UserTableMap::translateFieldName('UserLastaccess', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('LastAccess', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->user_lastaccess = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->last_access = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UserTableMap::translateFieldName('UserLastupdate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UserTableMap::translateFieldName('LastUpdate', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->user_lastupdate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->last_update = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -643,7 +603,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -840,26 +800,23 @@ abstract class User implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UserTableMap::COL_USER_LOGIN)) {
-            $modifiedColumns[':p' . $index++]  = 'User_Login';
+        if ($this->isColumnModified(UserTableMap::COL_EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = 'email';
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_PASSWORD)) {
-            $modifiedColumns[':p' . $index++]  = 'User_Password';
+        if ($this->isColumnModified(UserTableMap::COL_PASSWORD)) {
+            $modifiedColumns[':p' . $index++]  = 'password';
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = 'User_Email';
+        if ($this->isColumnModified(UserTableMap::COL_FULL_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'full_name';
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_FULLNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'User_FullName';
+        if ($this->isColumnModified(UserTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'status';
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_STATUS)) {
-            $modifiedColumns[':p' . $index++]  = 'User_Status';
+        if ($this->isColumnModified(UserTableMap::COL_LAST_ACCESS)) {
+            $modifiedColumns[':p' . $index++]  = 'last_access';
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_LASTACCESS)) {
-            $modifiedColumns[':p' . $index++]  = 'User_LastAccess';
-        }
-        if ($this->isColumnModified(UserTableMap::COL_USER_LASTUPDATE)) {
-            $modifiedColumns[':p' . $index++]  = 'User_LastUpdate';
+        if ($this->isColumnModified(UserTableMap::COL_LAST_UPDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'last_update';
         }
 
         $sql = sprintf(
@@ -872,26 +829,23 @@ abstract class User implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'User_Login':
-                        $stmt->bindValue($identifier, $this->user_login, PDO::PARAM_STR);
+                    case 'email':
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'User_Password':
-                        $stmt->bindValue($identifier, $this->user_password, PDO::PARAM_STR);
+                    case 'password':
+                        $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
-                    case 'User_Email':
-                        $stmt->bindValue($identifier, $this->user_email, PDO::PARAM_STR);
+                    case 'full_name':
+                        $stmt->bindValue($identifier, $this->full_name, PDO::PARAM_STR);
                         break;
-                    case 'User_FullName':
-                        $stmt->bindValue($identifier, $this->user_fullname, PDO::PARAM_STR);
+                    case 'status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
                         break;
-                    case 'User_Status':
-                        $stmt->bindValue($identifier, $this->user_status, PDO::PARAM_STR);
+                    case 'last_access':
+                        $stmt->bindValue($identifier, $this->last_access ? $this->last_access->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'User_LastAccess':
-                        $stmt->bindValue($identifier, $this->user_lastaccess ? $this->user_lastaccess->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'User_LastUpdate':
-                        $stmt->bindValue($identifier, $this->user_lastupdate ? $this->user_lastupdate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'last_update':
+                        $stmt->bindValue($identifier, $this->last_update ? $this->last_update->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -949,25 +903,22 @@ abstract class User implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getUserLogin();
+                return $this->getEmail();
                 break;
             case 1:
-                return $this->getUserPassword();
+                return $this->getPassword();
                 break;
             case 2:
-                return $this->getUserEmail();
+                return $this->getFullName();
                 break;
             case 3:
-                return $this->getUserFullname();
+                return $this->getStatus();
                 break;
             case 4:
-                return $this->getUserStatus();
+                return $this->getLastAccess();
                 break;
             case 5:
-                return $this->getUserLastaccess();
-                break;
-            case 6:
-                return $this->getUserLastupdate();
+                return $this->getLastUpdate();
                 break;
             default:
                 return null;
@@ -998,20 +949,19 @@ abstract class User implements ActiveRecordInterface
         $alreadyDumpedObjects['User'][$this->hashCode()] = true;
         $keys = UserTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getUserLogin(),
-            $keys[1] => $this->getUserPassword(),
-            $keys[2] => $this->getUserEmail(),
-            $keys[3] => $this->getUserFullname(),
-            $keys[4] => $this->getUserStatus(),
-            $keys[5] => $this->getUserLastaccess(),
-            $keys[6] => $this->getUserLastupdate(),
+            $keys[0] => $this->getEmail(),
+            $keys[1] => $this->getPassword(),
+            $keys[2] => $this->getFullName(),
+            $keys[3] => $this->getStatus(),
+            $keys[4] => $this->getLastAccess(),
+            $keys[5] => $this->getLastUpdate(),
         );
-        if ($result[$keys[5]] instanceof \DateTimeInterface) {
-            $result[$keys[5]] = $result[$keys[5]]->format('c');
+        if ($result[$keys[4]] instanceof \DateTimeInterface) {
+            $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
-        if ($result[$keys[6]] instanceof \DateTimeInterface) {
-            $result[$keys[6]] = $result[$keys[6]]->format('c');
+        if ($result[$keys[5]] instanceof \DateTimeInterface) {
+            $result[$keys[5]] = $result[$keys[5]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1053,25 +1003,22 @@ abstract class User implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setUserLogin($value);
+                $this->setEmail($value);
                 break;
             case 1:
-                $this->setUserPassword($value);
+                $this->setPassword($value);
                 break;
             case 2:
-                $this->setUserEmail($value);
+                $this->setFullName($value);
                 break;
             case 3:
-                $this->setUserFullname($value);
+                $this->setStatus($value);
                 break;
             case 4:
-                $this->setUserStatus($value);
+                $this->setLastAccess($value);
                 break;
             case 5:
-                $this->setUserLastaccess($value);
-                break;
-            case 6:
-                $this->setUserLastupdate($value);
+                $this->setLastUpdate($value);
                 break;
         } // switch()
 
@@ -1100,25 +1047,22 @@ abstract class User implements ActiveRecordInterface
         $keys = UserTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setUserLogin($arr[$keys[0]]);
+            $this->setEmail($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setUserPassword($arr[$keys[1]]);
+            $this->setPassword($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setUserEmail($arr[$keys[2]]);
+            $this->setFullName($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setUserFullname($arr[$keys[3]]);
+            $this->setStatus($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setUserStatus($arr[$keys[4]]);
+            $this->setLastAccess($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setUserLastaccess($arr[$keys[5]]);
-        }
-        if (array_key_exists($keys[6], $arr)) {
-            $this->setUserLastupdate($arr[$keys[6]]);
+            $this->setLastUpdate($arr[$keys[5]]);
         }
     }
 
@@ -1161,26 +1105,23 @@ abstract class User implements ActiveRecordInterface
     {
         $criteria = new Criteria(UserTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(UserTableMap::COL_USER_LOGIN)) {
-            $criteria->add(UserTableMap::COL_USER_LOGIN, $this->user_login);
+        if ($this->isColumnModified(UserTableMap::COL_EMAIL)) {
+            $criteria->add(UserTableMap::COL_EMAIL, $this->email);
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_PASSWORD)) {
-            $criteria->add(UserTableMap::COL_USER_PASSWORD, $this->user_password);
+        if ($this->isColumnModified(UserTableMap::COL_PASSWORD)) {
+            $criteria->add(UserTableMap::COL_PASSWORD, $this->password);
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_EMAIL)) {
-            $criteria->add(UserTableMap::COL_USER_EMAIL, $this->user_email);
+        if ($this->isColumnModified(UserTableMap::COL_FULL_NAME)) {
+            $criteria->add(UserTableMap::COL_FULL_NAME, $this->full_name);
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_FULLNAME)) {
-            $criteria->add(UserTableMap::COL_USER_FULLNAME, $this->user_fullname);
+        if ($this->isColumnModified(UserTableMap::COL_STATUS)) {
+            $criteria->add(UserTableMap::COL_STATUS, $this->status);
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_STATUS)) {
-            $criteria->add(UserTableMap::COL_USER_STATUS, $this->user_status);
+        if ($this->isColumnModified(UserTableMap::COL_LAST_ACCESS)) {
+            $criteria->add(UserTableMap::COL_LAST_ACCESS, $this->last_access);
         }
-        if ($this->isColumnModified(UserTableMap::COL_USER_LASTACCESS)) {
-            $criteria->add(UserTableMap::COL_USER_LASTACCESS, $this->user_lastaccess);
-        }
-        if ($this->isColumnModified(UserTableMap::COL_USER_LASTUPDATE)) {
-            $criteria->add(UserTableMap::COL_USER_LASTUPDATE, $this->user_lastupdate);
+        if ($this->isColumnModified(UserTableMap::COL_LAST_UPDATE)) {
+            $criteria->add(UserTableMap::COL_LAST_UPDATE, $this->last_update);
         }
 
         return $criteria;
@@ -1198,8 +1139,7 @@ abstract class User implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildUserQuery::create();
-        $criteria->add(UserTableMap::COL_USER_LOGIN, $this->user_login);
+        throw new LogicException('The User object has no primary key');
 
         return $criteria;
     }
@@ -1212,7 +1152,7 @@ abstract class User implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getUserLogin();
+        $validPk = false;
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1227,23 +1167,27 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return string
+     * Returns NULL since this table doesn't have a primary key.
+     * This method exists only for BC and is deprecated!
+     * @return null
      */
     public function getPrimaryKey()
     {
-        return $this->getUserLogin();
+        return null;
     }
 
     /**
-     * Generic method to set the primary key (user_login column).
+     * Dummy primary key setter.
      *
-     * @param       string $key Primary key.
-     * @return void
+     * This function only exists to preserve backwards compatibility.  It is no longer
+     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
+     * release of Propel.
+     *
+     * @deprecated
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($pk)
     {
-        $this->setUserLogin($key);
+        // do nothing, because this object doesn't have any primary keys
     }
 
     /**
@@ -1252,7 +1196,7 @@ abstract class User implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getUserLogin();
+        return ;
     }
 
     /**
@@ -1268,13 +1212,12 @@ abstract class User implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUserLogin($this->getUserLogin());
-        $copyObj->setUserPassword($this->getUserPassword());
-        $copyObj->setUserEmail($this->getUserEmail());
-        $copyObj->setUserFullname($this->getUserFullname());
-        $copyObj->setUserStatus($this->getUserStatus());
-        $copyObj->setUserLastaccess($this->getUserLastaccess());
-        $copyObj->setUserLastupdate($this->getUserLastupdate());
+        $copyObj->setEmail($this->getEmail());
+        $copyObj->setPassword($this->getPassword());
+        $copyObj->setFullName($this->getFullName());
+        $copyObj->setStatus($this->getStatus());
+        $copyObj->setLastAccess($this->getLastAccess());
+        $copyObj->setLastUpdate($this->getLastUpdate());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1309,13 +1252,12 @@ abstract class User implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->user_login = null;
-        $this->user_password = null;
-        $this->user_email = null;
-        $this->user_fullname = null;
-        $this->user_status = null;
-        $this->user_lastaccess = null;
-        $this->user_lastupdate = null;
+        $this->email = null;
+        $this->password = null;
+        $this->full_name = null;
+        $this->status = null;
+        $this->last_access = null;
+        $this->last_update = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

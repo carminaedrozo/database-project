@@ -60,11 +60,11 @@ abstract class Product implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the product_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $product_id;
+    protected $id;
 
     /**
      * The value for the title field.
@@ -335,13 +335,13 @@ abstract class Product implements ActiveRecordInterface
     }
 
     /**
-     * Get the [product_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getProductId()
+    public function getId()
     {
-        return $this->product_id;
+        return $this->id;
     }
 
     /**
@@ -395,24 +395,24 @@ abstract class Product implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [product_id] column.
+     * Set the value of [id] column.
      *
      * @param int $v new value
      * @return $this|\Product The current object (for fluent API support)
      */
-    public function setProductId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[ProductTableMap::COL_PRODUCT_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[ProductTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setProductId()
+    } // setId()
 
     /**
      * Set the value of [title] column.
@@ -550,8 +550,8 @@ abstract class Product implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProductTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->product_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProductTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProductTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
@@ -770,14 +770,14 @@ abstract class Product implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ProductTableMap::COL_PRODUCT_ID] = true;
-        if (null !== $this->product_id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductTableMap::COL_PRODUCT_ID . ')');
+        $this->modifiedColumns[ProductTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProductTableMap::COL_PRODUCT_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Product_ID';
+        if ($this->isColumnModified(ProductTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
         if ($this->isColumnModified(ProductTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'Title';
@@ -805,8 +805,8 @@ abstract class Product implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'Product_ID':
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case 'Title':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -836,7 +836,7 @@ abstract class Product implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setProductId($pk);
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -886,7 +886,7 @@ abstract class Product implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getProductId();
+                return $this->getId();
                 break;
             case 1:
                 return $this->getTitle();
@@ -932,7 +932,7 @@ abstract class Product implements ActiveRecordInterface
         $alreadyDumpedObjects['Product'][$this->hashCode()] = true;
         $keys = ProductTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getProductId(),
+            $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getAuthor(),
             $keys[3] => $this->getEdition(),
@@ -978,7 +978,7 @@ abstract class Product implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setProductId($value);
+                $this->setId($value);
                 break;
             case 1:
                 $this->setTitle($value);
@@ -1022,7 +1022,7 @@ abstract class Product implements ActiveRecordInterface
         $keys = ProductTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setProductId($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setTitle($arr[$keys[1]]);
@@ -1080,8 +1080,8 @@ abstract class Product implements ActiveRecordInterface
     {
         $criteria = new Criteria(ProductTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProductTableMap::COL_PRODUCT_ID)) {
-            $criteria->add(ProductTableMap::COL_PRODUCT_ID, $this->product_id);
+        if ($this->isColumnModified(ProductTableMap::COL_ID)) {
+            $criteria->add(ProductTableMap::COL_ID, $this->id);
         }
         if ($this->isColumnModified(ProductTableMap::COL_TITLE)) {
             $criteria->add(ProductTableMap::COL_TITLE, $this->title);
@@ -1115,7 +1115,7 @@ abstract class Product implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildProductQuery::create();
-        $criteria->add(ProductTableMap::COL_PRODUCT_ID, $this->product_id);
+        $criteria->add(ProductTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1128,7 +1128,7 @@ abstract class Product implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getProductId();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1148,18 +1148,18 @@ abstract class Product implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getProductId();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (product_id column).
+     * Generic method to set the primary key (id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setProductId($key);
+        $this->setId($key);
     }
 
     /**
@@ -1168,7 +1168,7 @@ abstract class Product implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getProductId();
+        return null === $this->getId();
     }
 
     /**
@@ -1191,7 +1191,7 @@ abstract class Product implements ActiveRecordInterface
         $copyObj->setPrice($this->getPrice());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setProductId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1224,7 +1224,7 @@ abstract class Product implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->product_id = null;
+        $this->id = null;
         $this->title = null;
         $this->author = null;
         $this->edition = null;

@@ -2,11 +2,11 @@
 
 namespace Base;
 
-use \Order as ChildOrder;
-use \OrderQuery as ChildOrderQuery;
+use \Requestorder as ChildRequestorder;
+use \RequestorderQuery as ChildRequestorderQuery;
 use \Exception;
 use \PDO;
-use Map\OrderTableMap;
+use Map\RequestorderTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -15,92 +15,92 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'order' table.
+ * Base class that represents a query for the 'requestorder' table.
  *
  *
  *
- * @method     ChildOrderQuery orderByOrderId($order = Criteria::ASC) Order by the Order_ID column
- * @method     ChildOrderQuery orderByCommission($order = Criteria::ASC) Order by the Commission column
- * @method     ChildOrderQuery orderByAmount($order = Criteria::ASC) Order by the Amount column
- * @method     ChildOrderQuery orderByDate($order = Criteria::ASC) Order by the Date column
- * @method     ChildOrderQuery orderByDeliveryDate($order = Criteria::ASC) Order by the Delivery_Date column
- * @method     ChildOrderQuery orderByProductlistId($order = Criteria::ASC) Order by the ProductList_ID column
+ * @method     ChildRequestorderQuery orderByOrderId($order = Criteria::ASC) Order by the Order_ID column
+ * @method     ChildRequestorderQuery orderByCommission($order = Criteria::ASC) Order by the Commission column
+ * @method     ChildRequestorderQuery orderByAmount($order = Criteria::ASC) Order by the Amount column
+ * @method     ChildRequestorderQuery orderByDate($order = Criteria::ASC) Order by the Date column
+ * @method     ChildRequestorderQuery orderByDeliveredDate($order = Criteria::ASC) Order by the Delivered_Date column
+ * @method     ChildRequestorderQuery orderByStatusId($order = Criteria::ASC) Order by the Status_ID column
  *
- * @method     ChildOrderQuery groupByOrderId() Group by the Order_ID column
- * @method     ChildOrderQuery groupByCommission() Group by the Commission column
- * @method     ChildOrderQuery groupByAmount() Group by the Amount column
- * @method     ChildOrderQuery groupByDate() Group by the Date column
- * @method     ChildOrderQuery groupByDeliveryDate() Group by the Delivery_Date column
- * @method     ChildOrderQuery groupByProductlistId() Group by the ProductList_ID column
+ * @method     ChildRequestorderQuery groupByOrderId() Group by the Order_ID column
+ * @method     ChildRequestorderQuery groupByCommission() Group by the Commission column
+ * @method     ChildRequestorderQuery groupByAmount() Group by the Amount column
+ * @method     ChildRequestorderQuery groupByDate() Group by the Date column
+ * @method     ChildRequestorderQuery groupByDeliveredDate() Group by the Delivered_Date column
+ * @method     ChildRequestorderQuery groupByStatusId() Group by the Status_ID column
  *
- * @method     ChildOrderQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildOrderQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildOrderQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildRequestorderQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildRequestorderQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildRequestorderQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildOrderQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
- * @method     ChildOrderQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
- * @method     ChildOrderQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ * @method     ChildRequestorderQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
+ * @method     ChildRequestorderQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
+ * @method     ChildRequestorderQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildOrder findOne(ConnectionInterface $con = null) Return the first ChildOrder matching the query
- * @method     ChildOrder findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOrder matching the query, or a new ChildOrder object populated from the query conditions when no match is found
+ * @method     ChildRequestorder findOne(ConnectionInterface $con = null) Return the first ChildRequestorder matching the query
+ * @method     ChildRequestorder findOneOrCreate(ConnectionInterface $con = null) Return the first ChildRequestorder matching the query, or a new ChildRequestorder object populated from the query conditions when no match is found
  *
- * @method     ChildOrder findOneByOrderId(int $Order_ID) Return the first ChildOrder filtered by the Order_ID column
- * @method     ChildOrder findOneByCommission(int $Commission) Return the first ChildOrder filtered by the Commission column
- * @method     ChildOrder findOneByAmount(int $Amount) Return the first ChildOrder filtered by the Amount column
- * @method     ChildOrder findOneByDate(string $Date) Return the first ChildOrder filtered by the Date column
- * @method     ChildOrder findOneByDeliveryDate(string $Delivery_Date) Return the first ChildOrder filtered by the Delivery_Date column
- * @method     ChildOrder findOneByProductlistId(int $ProductList_ID) Return the first ChildOrder filtered by the ProductList_ID column *
+ * @method     ChildRequestorder findOneByOrderId(int $Order_ID) Return the first ChildRequestorder filtered by the Order_ID column
+ * @method     ChildRequestorder findOneByCommission(double $Commission) Return the first ChildRequestorder filtered by the Commission column
+ * @method     ChildRequestorder findOneByAmount(double $Amount) Return the first ChildRequestorder filtered by the Amount column
+ * @method     ChildRequestorder findOneByDate(string $Date) Return the first ChildRequestorder filtered by the Date column
+ * @method     ChildRequestorder findOneByDeliveredDate(string $Delivered_Date) Return the first ChildRequestorder filtered by the Delivered_Date column
+ * @method     ChildRequestorder findOneByStatusId(int $Status_ID) Return the first ChildRequestorder filtered by the Status_ID column *
 
- * @method     ChildOrder requirePk($key, ConnectionInterface $con = null) Return the ChildOrder by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOne(ConnectionInterface $con = null) Return the first ChildOrder matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requirePk($key, ConnectionInterface $con = null) Return the ChildRequestorder by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOne(ConnectionInterface $con = null) Return the first ChildRequestorder matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildOrder requireOneByOrderId(int $Order_ID) Return the first ChildOrder filtered by the Order_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOneByCommission(int $Commission) Return the first ChildOrder filtered by the Commission column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOneByAmount(int $Amount) Return the first ChildOrder filtered by the Amount column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOneByDate(string $Date) Return the first ChildOrder filtered by the Date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOneByDeliveryDate(string $Delivery_Date) Return the first ChildOrder filtered by the Delivery_Date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrder requireOneByProductlistId(int $ProductList_ID) Return the first ChildOrder filtered by the ProductList_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByOrderId(int $Order_ID) Return the first ChildRequestorder filtered by the Order_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByCommission(double $Commission) Return the first ChildRequestorder filtered by the Commission column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByAmount(double $Amount) Return the first ChildRequestorder filtered by the Amount column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByDate(string $Date) Return the first ChildRequestorder filtered by the Date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByDeliveredDate(string $Delivered_Date) Return the first ChildRequestorder filtered by the Delivered_Date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildRequestorder requireOneByStatusId(int $Status_ID) Return the first ChildRequestorder filtered by the Status_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildOrder[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildOrder objects based on current ModelCriteria
- * @method     ChildOrder[]|ObjectCollection findByOrderId(int $Order_ID) Return ChildOrder objects filtered by the Order_ID column
- * @method     ChildOrder[]|ObjectCollection findByCommission(int $Commission) Return ChildOrder objects filtered by the Commission column
- * @method     ChildOrder[]|ObjectCollection findByAmount(int $Amount) Return ChildOrder objects filtered by the Amount column
- * @method     ChildOrder[]|ObjectCollection findByDate(string $Date) Return ChildOrder objects filtered by the Date column
- * @method     ChildOrder[]|ObjectCollection findByDeliveryDate(string $Delivery_Date) Return ChildOrder objects filtered by the Delivery_Date column
- * @method     ChildOrder[]|ObjectCollection findByProductlistId(int $ProductList_ID) Return ChildOrder objects filtered by the ProductList_ID column
- * @method     ChildOrder[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildRequestorder[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildRequestorder objects based on current ModelCriteria
+ * @method     ChildRequestorder[]|ObjectCollection findByOrderId(int $Order_ID) Return ChildRequestorder objects filtered by the Order_ID column
+ * @method     ChildRequestorder[]|ObjectCollection findByCommission(double $Commission) Return ChildRequestorder objects filtered by the Commission column
+ * @method     ChildRequestorder[]|ObjectCollection findByAmount(double $Amount) Return ChildRequestorder objects filtered by the Amount column
+ * @method     ChildRequestorder[]|ObjectCollection findByDate(string $Date) Return ChildRequestorder objects filtered by the Date column
+ * @method     ChildRequestorder[]|ObjectCollection findByDeliveredDate(string $Delivered_Date) Return ChildRequestorder objects filtered by the Delivered_Date column
+ * @method     ChildRequestorder[]|ObjectCollection findByStatusId(int $Status_ID) Return ChildRequestorder objects filtered by the Status_ID column
+ * @method     ChildRequestorder[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class OrderQuery extends ModelCriteria
+abstract class RequestorderQuery extends ModelCriteria
 {
     protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
-     * Initializes internal state of \Base\OrderQuery object.
+     * Initializes internal state of \Base\RequestorderQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\Order', $modelAlias = null)
+    public function __construct($dbName = 'default', $modelName = '\\Requestorder', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildOrderQuery object.
+     * Returns a new ChildRequestorderQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildOrderQuery
+     * @return ChildRequestorderQuery
      */
     public static function create($modelAlias = null, Criteria $criteria = null)
     {
-        if ($criteria instanceof ChildOrderQuery) {
+        if ($criteria instanceof ChildRequestorderQuery) {
             return $criteria;
         }
-        $query = new ChildOrderQuery();
+        $query = new ChildRequestorderQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -123,7 +123,7 @@ abstract class OrderQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildOrder|array|mixed the result, formatted by the current formatter
+     * @return ChildRequestorder|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
@@ -132,7 +132,7 @@ abstract class OrderQuery extends ModelCriteria
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(OrderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequestorderTableMap::DATABASE_NAME);
         }
 
         $this->basePreSelect($con);
@@ -145,7 +145,7 @@ abstract class OrderQuery extends ModelCriteria
             return $this->findPkComplex($key, $con);
         }
 
-        if ((null !== ($obj = OrderTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+        if ((null !== ($obj = RequestorderTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -162,11 +162,11 @@ abstract class OrderQuery extends ModelCriteria
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildOrder A model object, or null if the key is not found
+     * @return ChildRequestorder A model object, or null if the key is not found
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT Order_ID, Commission, Amount, Date, Delivery_Date, ProductList_ID FROM order WHERE Order_ID = :p0';
+        $sql = 'SELECT Order_ID, Commission, Amount, Date, Delivered_Date, Status_ID FROM requestorder WHERE Order_ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -177,10 +177,10 @@ abstract class OrderQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            /** @var ChildOrder $obj */
-            $obj = new ChildOrder();
+            /** @var ChildRequestorder $obj */
+            $obj = new ChildRequestorder();
             $obj->hydrate($row);
-            OrderTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+            RequestorderTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
         }
         $stmt->closeCursor();
 
@@ -193,7 +193,7 @@ abstract class OrderQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildOrder|array|mixed the result, formatted by the current formatter
+     * @return ChildRequestorder|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, ConnectionInterface $con)
     {
@@ -235,12 +235,12 @@ abstract class OrderQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -248,12 +248,12 @@ abstract class OrderQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -272,18 +272,18 @@ abstract class OrderQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByOrderId($orderId = null, $comparison = null)
     {
         if (is_array($orderId)) {
             $useMinMax = false;
             if (isset($orderId['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $orderId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $orderId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($orderId['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $orderId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $orderId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -294,7 +294,7 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $orderId, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $orderId, $comparison);
     }
 
     /**
@@ -313,18 +313,18 @@ abstract class OrderQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByCommission($commission = null, $comparison = null)
     {
         if (is_array($commission)) {
             $useMinMax = false;
             if (isset($commission['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_COMMISSION, $commission['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_COMMISSION, $commission['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($commission['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_COMMISSION, $commission['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_COMMISSION, $commission['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -335,7 +335,7 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_COMMISSION, $commission, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_COMMISSION, $commission, $comparison);
     }
 
     /**
@@ -354,18 +354,18 @@ abstract class OrderQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByAmount($amount = null, $comparison = null)
     {
         if (is_array($amount)) {
             $useMinMax = false;
             if (isset($amount['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_AMOUNT, $amount['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_AMOUNT, $amount['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($amount['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_AMOUNT, $amount['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_AMOUNT, $amount['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -376,7 +376,7 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_AMOUNT, $amount, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_AMOUNT, $amount, $comparison);
     }
 
     /**
@@ -397,18 +397,18 @@ abstract class OrderQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
     public function filterByDate($date = null, $comparison = null)
     {
         if (is_array($date)) {
             $useMinMax = false;
             if (isset($date['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_DATE, $date['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_DATE, $date['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($date['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_DATE, $date['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(RequestorderTableMap::COL_DATE, $date['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -419,20 +419,20 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_DATE, $date, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_DATE, $date, $comparison);
     }
 
     /**
-     * Filter the query on the Delivery_Date column
+     * Filter the query on the Delivered_Date column
      *
      * Example usage:
      * <code>
-     * $query->filterByDeliveryDate('2011-03-14'); // WHERE Delivery_Date = '2011-03-14'
-     * $query->filterByDeliveryDate('now'); // WHERE Delivery_Date = '2011-03-14'
-     * $query->filterByDeliveryDate(array('max' => 'yesterday')); // WHERE Delivery_Date > '2011-03-13'
+     * $query->filterByDeliveredDate('2011-03-14'); // WHERE Delivered_Date = '2011-03-14'
+     * $query->filterByDeliveredDate('now'); // WHERE Delivered_Date = '2011-03-14'
+     * $query->filterByDeliveredDate(array('max' => 'yesterday')); // WHERE Delivered_Date > '2011-03-13'
      * </code>
      *
-     * @param     mixed $deliveryDate The value to use as filter.
+     * @param     mixed $deliveredDate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -440,18 +440,18 @@ abstract class OrderQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
-    public function filterByDeliveryDate($deliveryDate = null, $comparison = null)
+    public function filterByDeliveredDate($deliveredDate = null, $comparison = null)
     {
-        if (is_array($deliveryDate)) {
+        if (is_array($deliveredDate)) {
             $useMinMax = false;
-            if (isset($deliveryDate['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_DELIVERY_DATE, $deliveryDate['min'], Criteria::GREATER_EQUAL);
+            if (isset($deliveredDate['min'])) {
+                $this->addUsingAlias(RequestorderTableMap::COL_DELIVERED_DATE, $deliveredDate['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($deliveryDate['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_DELIVERY_DATE, $deliveryDate['max'], Criteria::LESS_EQUAL);
+            if (isset($deliveredDate['max'])) {
+                $this->addUsingAlias(RequestorderTableMap::COL_DELIVERED_DATE, $deliveredDate['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -462,37 +462,37 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_DELIVERY_DATE, $deliveryDate, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_DELIVERED_DATE, $deliveredDate, $comparison);
     }
 
     /**
-     * Filter the query on the ProductList_ID column
+     * Filter the query on the Status_ID column
      *
      * Example usage:
      * <code>
-     * $query->filterByProductlistId(1234); // WHERE ProductList_ID = 1234
-     * $query->filterByProductlistId(array(12, 34)); // WHERE ProductList_ID IN (12, 34)
-     * $query->filterByProductlistId(array('min' => 12)); // WHERE ProductList_ID > 12
+     * $query->filterByStatusId(1234); // WHERE Status_ID = 1234
+     * $query->filterByStatusId(array(12, 34)); // WHERE Status_ID IN (12, 34)
+     * $query->filterByStatusId(array('min' => 12)); // WHERE Status_ID > 12
      * </code>
      *
-     * @param     mixed $productlistId The value to use as filter.
+     * @param     mixed $statusId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
-    public function filterByProductlistId($productlistId = null, $comparison = null)
+    public function filterByStatusId($statusId = null, $comparison = null)
     {
-        if (is_array($productlistId)) {
+        if (is_array($statusId)) {
             $useMinMax = false;
-            if (isset($productlistId['min'])) {
-                $this->addUsingAlias(OrderTableMap::COL_PRODUCTLIST_ID, $productlistId['min'], Criteria::GREATER_EQUAL);
+            if (isset($statusId['min'])) {
+                $this->addUsingAlias(RequestorderTableMap::COL_STATUS_ID, $statusId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($productlistId['max'])) {
-                $this->addUsingAlias(OrderTableMap::COL_PRODUCTLIST_ID, $productlistId['max'], Criteria::LESS_EQUAL);
+            if (isset($statusId['max'])) {
+                $this->addUsingAlias(RequestorderTableMap::COL_STATUS_ID, $statusId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -503,27 +503,27 @@ abstract class OrderQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderTableMap::COL_PRODUCTLIST_ID, $productlistId, $comparison);
+        return $this->addUsingAlias(RequestorderTableMap::COL_STATUS_ID, $statusId, $comparison);
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildOrder $order Object to remove from the list of results
+     * @param   ChildRequestorder $requestorder Object to remove from the list of results
      *
-     * @return $this|ChildOrderQuery The current query, for fluid interface
+     * @return $this|ChildRequestorderQuery The current query, for fluid interface
      */
-    public function prune($order = null)
+    public function prune($requestorder = null)
     {
-        if ($order) {
-            $this->addUsingAlias(OrderTableMap::COL_ORDER_ID, $order->getOrderId(), Criteria::NOT_EQUAL);
+        if ($requestorder) {
+            $this->addUsingAlias(RequestorderTableMap::COL_ORDER_ID, $requestorder->getOrderId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the order table.
+     * Deletes all rows from the requestorder table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -531,7 +531,7 @@ abstract class OrderQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestorderTableMap::DATABASE_NAME);
         }
 
         // use transaction because $criteria could contain info
@@ -542,8 +542,8 @@ abstract class OrderQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            OrderTableMap::clearInstancePool();
-            OrderTableMap::clearRelatedInstancePool();
+            RequestorderTableMap::clearInstancePool();
+            RequestorderTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
@@ -561,26 +561,26 @@ abstract class OrderQuery extends ModelCriteria
     public function delete(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestorderTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(OrderTableMap::DATABASE_NAME);
+        $criteria->setDbName(RequestorderTableMap::DATABASE_NAME);
 
         // use transaction because $criteria could contain info
         // for more than one table or we could emulating ON DELETE CASCADE, etc.
         return $con->transaction(function () use ($con, $criteria) {
             $affectedRows = 0; // initialize var to track total num of affected rows
 
-            OrderTableMap::removeInstanceFromPool($criteria);
+            RequestorderTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
-            OrderTableMap::clearRelatedInstancePool();
+            RequestorderTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
     }
 
-} // OrderQuery
+} // RequestorderQuery

@@ -1,10 +1,11 @@
 {
-	"minimum-stability": "dev",
     "require": {
         "slim/slim": "^3.11",
         "slim/twig-view": "^2.4",
-		"propel/propel": "^2.0@dev"
-    },"autoload": {
+        "propel/propel": "^2.0@dev"
+    },
+	"minimum-stability": "dev",
+	"autoload": {
       "classmap" : ["models"]
     }
 }

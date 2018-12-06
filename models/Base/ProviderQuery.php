@@ -44,7 +44,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildProvider findOneByProviderId(int $Provider_ID) Return the first ChildProvider filtered by the Provider_ID column
  * @method     ChildProvider findOneByProviderName(string $Provider_Name) Return the first ChildProvider filtered by the Provider_Name column
- * @method     ChildProvider findOneByProviderPhone(int $Provider_Phone) Return the first ChildProvider filtered by the Provider_Phone column
+ * @method     ChildProvider findOneByProviderPhone(string $Provider_Phone) Return the first ChildProvider filtered by the Provider_Phone column
  * @method     ChildProvider findOneByProviderAddress(string $Provider_Address) Return the first ChildProvider filtered by the Provider_Address column
  * @method     ChildProvider findOneByOrderlistId(int $OrderList_ID) Return the first ChildProvider filtered by the OrderList_ID column *
 
@@ -53,14 +53,14 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildProvider requireOneByProviderId(int $Provider_ID) Return the first ChildProvider filtered by the Provider_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProvider requireOneByProviderName(string $Provider_Name) Return the first ChildProvider filtered by the Provider_Name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProvider requireOneByProviderPhone(int $Provider_Phone) Return the first ChildProvider filtered by the Provider_Phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProvider requireOneByProviderPhone(string $Provider_Phone) Return the first ChildProvider filtered by the Provider_Phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProvider requireOneByProviderAddress(string $Provider_Address) Return the first ChildProvider filtered by the Provider_Address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProvider requireOneByOrderlistId(int $OrderList_ID) Return the first ChildProvider filtered by the OrderList_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProvider[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildProvider objects based on current ModelCriteria
  * @method     ChildProvider[]|ObjectCollection findByProviderId(int $Provider_ID) Return ChildProvider objects filtered by the Provider_ID column
  * @method     ChildProvider[]|ObjectCollection findByProviderName(string $Provider_Name) Return ChildProvider objects filtered by the Provider_Name column
- * @method     ChildProvider[]|ObjectCollection findByProviderPhone(int $Provider_Phone) Return ChildProvider objects filtered by the Provider_Phone column
+ * @method     ChildProvider[]|ObjectCollection findByProviderPhone(string $Provider_Phone) Return ChildProvider objects filtered by the Provider_Phone column
  * @method     ChildProvider[]|ObjectCollection findByProviderAddress(string $Provider_Address) Return ChildProvider objects filtered by the Provider_Address column
  * @method     ChildProvider[]|ObjectCollection findByOrderlistId(int $OrderList_ID) Return ChildProvider objects filtered by the OrderList_ID column
  * @method     ChildProvider[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit

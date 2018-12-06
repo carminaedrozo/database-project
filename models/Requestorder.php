@@ -1,9 +1,9 @@
 <?php
 
-use Base\Request as BaseRequest;
+use Base\Requestorder as BaseRequestorder;
 
 /**
- * Skeleton subclass for representing a row from the 'request' table.
+ * Skeleton subclass for representing a row from the 'requestorder' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Request as BaseRequest;
  * long as it does not already exist in the output directory.
  *
  */
-class Request extends BaseRequest
+class Requestorder extends BaseRequestorder
 {
 
 }

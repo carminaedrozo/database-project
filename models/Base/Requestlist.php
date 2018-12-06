@@ -4,12 +4,12 @@ namespace Base;
 
 use \Employee as ChildEmployee;
 use \EmployeeQuery as ChildEmployeeQuery;
-use \Request as ChildRequest;
-use \RequestQuery as ChildRequestQuery;
+use \Requestlist as ChildRequestlist;
+use \RequestlistQuery as ChildRequestlistQuery;
 use \Exception;
 use \PDO;
 use Map\EmployeeTableMap;
-use Map\RequestTableMap;
+use Map\RequestlistTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -24,18 +24,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'request' table.
+ * Base class that represents a row from the 'requestlist' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Request implements ActiveRecordInterface
+abstract class Requestlist implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\RequestTableMap';
+    const TABLE_MAP = '\\Map\\RequestlistTableMap';
 
 
     /**
@@ -72,11 +72,18 @@ abstract class Request implements ActiveRecordInterface
     protected $request_id;
 
     /**
-     * The value for the productlist_id field.
+     * The value for the order_id field.
      *
      * @var        int
      */
-    protected $productlist_id;
+    protected $order_id;
+
+    /**
+     * The value for the status field.
+     *
+     * @var        int
+     */
+    protected $status;
 
     /**
      * @var        ObjectCollection|ChildEmployee[] Collection to store aggregation of ChildEmployee objects.
@@ -99,7 +106,7 @@ abstract class Request implements ActiveRecordInterface
     protected $employeesScheduledForDeletion = null;
 
     /**
-     * Initializes internal state of Base\Request object.
+     * Initializes internal state of Base\Requestlist object.
      */
     public function __construct()
     {
@@ -194,9 +201,9 @@ abstract class Request implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Request</code> instance.  If
-     * <code>obj</code> is an instance of <code>Request</code>, delegates to
-     * <code>equals(Request)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Requestlist</code> instance.  If
+     * <code>obj</code> is an instance of <code>Requestlist</code>, delegates to
+     * <code>equals(Requestlist)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -262,7 +269,7 @@ abstract class Request implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Request The current object, for fluid interface
+     * @return $this|Requestlist The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -334,20 +341,30 @@ abstract class Request implements ActiveRecordInterface
     }
 
     /**
-     * Get the [productlist_id] column value.
+     * Get the [order_id] column value.
      *
      * @return int
      */
-    public function getProductlistId()
+    public function getOrderId()
     {
-        return $this->productlist_id;
+        return $this->order_id;
+    }
+
+    /**
+     * Get the [status] column value.
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
      * Set the value of [request_id] column.
      *
      * @param int $v new value
-     * @return $this|\Request The current object (for fluent API support)
+     * @return $this|\Requestlist The current object (for fluent API support)
      */
     public function setRequestId($v)
     {
@@ -357,31 +374,51 @@ abstract class Request implements ActiveRecordInterface
 
         if ($this->request_id !== $v) {
             $this->request_id = $v;
-            $this->modifiedColumns[RequestTableMap::COL_REQUEST_ID] = true;
+            $this->modifiedColumns[RequestlistTableMap::COL_REQUEST_ID] = true;
         }
 
         return $this;
     } // setRequestId()
 
     /**
-     * Set the value of [productlist_id] column.
+     * Set the value of [order_id] column.
      *
      * @param int $v new value
-     * @return $this|\Request The current object (for fluent API support)
+     * @return $this|\Requestlist The current object (for fluent API support)
      */
-    public function setProductlistId($v)
+    public function setOrderId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->productlist_id !== $v) {
-            $this->productlist_id = $v;
-            $this->modifiedColumns[RequestTableMap::COL_PRODUCTLIST_ID] = true;
+        if ($this->order_id !== $v) {
+            $this->order_id = $v;
+            $this->modifiedColumns[RequestlistTableMap::COL_ORDER_ID] = true;
         }
 
         return $this;
-    } // setProductlistId()
+    } // setOrderId()
+
+    /**
+     * Set the value of [status] column.
+     *
+     * @param int $v new value
+     * @return $this|\Requestlist The current object (for fluent API support)
+     */
+    public function setStatus($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[RequestlistTableMap::COL_STATUS] = true;
+        }
+
+        return $this;
+    } // setStatus()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -419,11 +456,14 @@ abstract class Request implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestTableMap::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestlistTableMap::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->request_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestTableMap::translateFieldName('ProductlistId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->productlist_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestlistTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->order_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : RequestlistTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,10 +472,10 @@ abstract class Request implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = RequestTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = RequestlistTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Request'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Requestlist'), 0, $e);
         }
     }
 
@@ -477,13 +517,13 @@ abstract class Request implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildRequestQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildRequestlistQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -504,8 +544,8 @@ abstract class Request implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Request::setDeleted()
-     * @see Request::isDeleted()
+     * @see Requestlist::setDeleted()
+     * @see Requestlist::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -514,11 +554,11 @@ abstract class Request implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildRequestQuery::create()
+            $deleteQuery = ChildRequestlistQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -553,7 +593,7 @@ abstract class Request implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestlistTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -572,7 +612,7 @@ abstract class Request implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                RequestTableMap::addInstanceToPool($this);
+                RequestlistTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -646,21 +686,24 @@ abstract class Request implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[RequestTableMap::COL_REQUEST_ID] = true;
+        $this->modifiedColumns[RequestlistTableMap::COL_REQUEST_ID] = true;
         if (null !== $this->request_id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . RequestTableMap::COL_REQUEST_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . RequestlistTableMap::COL_REQUEST_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(RequestTableMap::COL_REQUEST_ID)) {
+        if ($this->isColumnModified(RequestlistTableMap::COL_REQUEST_ID)) {
             $modifiedColumns[':p' . $index++]  = 'Request_ID';
         }
-        if ($this->isColumnModified(RequestTableMap::COL_PRODUCTLIST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ProductList_ID';
+        if ($this->isColumnModified(RequestlistTableMap::COL_ORDER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'Order_ID';
+        }
+        if ($this->isColumnModified(RequestlistTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'Status';
         }
 
         $sql = sprintf(
-            'INSERT INTO request (%s) VALUES (%s)',
+            'INSERT INTO requestlist (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -672,8 +715,11 @@ abstract class Request implements ActiveRecordInterface
                     case 'Request_ID':
                         $stmt->bindValue($identifier, $this->request_id, PDO::PARAM_INT);
                         break;
-                    case 'ProductList_ID':
-                        $stmt->bindValue($identifier, $this->productlist_id, PDO::PARAM_INT);
+                    case 'Order_ID':
+                        $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
+                        break;
+                    case 'Status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -721,7 +767,7 @@ abstract class Request implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestlistTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -741,7 +787,10 @@ abstract class Request implements ActiveRecordInterface
                 return $this->getRequestId();
                 break;
             case 1:
-                return $this->getProductlistId();
+                return $this->getOrderId();
+                break;
+            case 2:
+                return $this->getStatus();
                 break;
             default:
                 return null;
@@ -767,14 +816,15 @@ abstract class Request implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Request'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Requestlist'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Request'][$this->hashCode()] = true;
-        $keys = RequestTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Requestlist'][$this->hashCode()] = true;
+        $keys = RequestlistTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getRequestId(),
-            $keys[1] => $this->getProductlistId(),
+            $keys[1] => $this->getOrderId(),
+            $keys[2] => $this->getStatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -811,11 +861,11 @@ abstract class Request implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Request
+     * @return $this|\Requestlist
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestlistTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -826,7 +876,7 @@ abstract class Request implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Request
+     * @return $this|\Requestlist
      */
     public function setByPosition($pos, $value)
     {
@@ -835,7 +885,10 @@ abstract class Request implements ActiveRecordInterface
                 $this->setRequestId($value);
                 break;
             case 1:
-                $this->setProductlistId($value);
+                $this->setOrderId($value);
+                break;
+            case 2:
+                $this->setStatus($value);
                 break;
         } // switch()
 
@@ -861,13 +914,16 @@ abstract class Request implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = RequestTableMap::getFieldNames($keyType);
+        $keys = RequestlistTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setRequestId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setProductlistId($arr[$keys[1]]);
+            $this->setOrderId($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setStatus($arr[$keys[2]]);
         }
     }
 
@@ -888,7 +944,7 @@ abstract class Request implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Request The current object, for fluid interface
+     * @return $this|\Requestlist The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -908,13 +964,16 @@ abstract class Request implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(RequestTableMap::DATABASE_NAME);
+        $criteria = new Criteria(RequestlistTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(RequestTableMap::COL_REQUEST_ID)) {
-            $criteria->add(RequestTableMap::COL_REQUEST_ID, $this->request_id);
+        if ($this->isColumnModified(RequestlistTableMap::COL_REQUEST_ID)) {
+            $criteria->add(RequestlistTableMap::COL_REQUEST_ID, $this->request_id);
         }
-        if ($this->isColumnModified(RequestTableMap::COL_PRODUCTLIST_ID)) {
-            $criteria->add(RequestTableMap::COL_PRODUCTLIST_ID, $this->productlist_id);
+        if ($this->isColumnModified(RequestlistTableMap::COL_ORDER_ID)) {
+            $criteria->add(RequestlistTableMap::COL_ORDER_ID, $this->order_id);
+        }
+        if ($this->isColumnModified(RequestlistTableMap::COL_STATUS)) {
+            $criteria->add(RequestlistTableMap::COL_STATUS, $this->status);
         }
 
         return $criteria;
@@ -932,8 +991,8 @@ abstract class Request implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildRequestQuery::create();
-        $criteria->add(RequestTableMap::COL_REQUEST_ID, $this->request_id);
+        $criteria = ChildRequestlistQuery::create();
+        $criteria->add(RequestlistTableMap::COL_REQUEST_ID, $this->request_id);
 
         return $criteria;
     }
@@ -995,14 +1054,15 @@ abstract class Request implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Request (or compatible) type.
+     * @param      object $copyObj An object of \Requestlist (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setProductlistId($this->getProductlistId());
+        $copyObj->setOrderId($this->getOrderId());
+        $copyObj->setStatus($this->getStatus());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1032,7 +1092,7 @@ abstract class Request implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Request Clone of current object.
+     * @return \Requestlist Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1114,7 +1174,7 @@ abstract class Request implements ActiveRecordInterface
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildRequest is new, it will return
+     * If this ChildRequestlist is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
@@ -1131,7 +1191,7 @@ abstract class Request implements ActiveRecordInterface
                 $this->initEmployees();
             } else {
                 $collEmployees = ChildEmployeeQuery::create(null, $criteria)
-                    ->filterByRequest($this)
+                    ->filterByRequestlist($this)
                     ->find($con);
 
                 if (null !== $criteria) {
@@ -1174,7 +1234,7 @@ abstract class Request implements ActiveRecordInterface
      *
      * @param      Collection $employees A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildRequest The current object (for fluent API support)
+     * @return $this|ChildRequestlist The current object (for fluent API support)
      */
     public function setEmployees(Collection $employees, ConnectionInterface $con = null)
     {
@@ -1185,7 +1245,7 @@ abstract class Request implements ActiveRecordInterface
         $this->employeesScheduledForDeletion = $employeesToDelete;
 
         foreach ($employeesToDelete as $employeeRemoved) {
-            $employeeRemoved->setRequest(null);
+            $employeeRemoved->setRequestlist(null);
         }
 
         $this->collEmployees = null;
@@ -1226,7 +1286,7 @@ abstract class Request implements ActiveRecordInterface
             }
 
             return $query
-                ->filterByRequest($this)
+                ->filterByRequestlist($this)
                 ->count($con);
         }
 
@@ -1238,7 +1298,7 @@ abstract class Request implements ActiveRecordInterface
      * through the ChildEmployee foreign key attribute.
      *
      * @param  ChildEmployee $l ChildEmployee
-     * @return $this|\Request The current object (for fluent API support)
+     * @return $this|\Requestlist The current object (for fluent API support)
      */
     public function addEmployee(ChildEmployee $l)
     {
@@ -1264,12 +1324,12 @@ abstract class Request implements ActiveRecordInterface
     protected function doAddEmployee(ChildEmployee $employee)
     {
         $this->collEmployees[]= $employee;
-        $employee->setRequest($this);
+        $employee->setRequestlist($this);
     }
 
     /**
      * @param  ChildEmployee $employee The ChildEmployee object to remove.
-     * @return $this|ChildRequest The current object (for fluent API support)
+     * @return $this|ChildRequestlist The current object (for fluent API support)
      */
     public function removeEmployee(ChildEmployee $employee)
     {
@@ -1281,7 +1341,7 @@ abstract class Request implements ActiveRecordInterface
                 $this->employeesScheduledForDeletion->clear();
             }
             $this->employeesScheduledForDeletion[]= clone $employee;
-            $employee->setRequest(null);
+            $employee->setRequestlist(null);
         }
 
         return $this;
@@ -1295,7 +1355,8 @@ abstract class Request implements ActiveRecordInterface
     public function clear()
     {
         $this->request_id = null;
-        $this->productlist_id = null;
+        $this->order_id = null;
+        $this->status = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1331,7 +1392,7 @@ abstract class Request implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(RequestTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(RequestlistTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

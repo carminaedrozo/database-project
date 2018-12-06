@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'layout-dashboard.html' %}
 
 {% block title %}
 Book
@@ -10,27 +10,36 @@ Book
 
 
 {% block content %}
-<div class="row justify-content-md-center mt-5">
-
-    <div class="card" style="width: 36rem;">
-        <div class="card-body">
-            <form>
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <div class="form-group">
-                    <label for="inputEmail">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
-                           placeholder="Email Address">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.
-                    </small>
+<div class="row justify-content-md-center mt-5 z">
+    <div class="card mb-3" id = "bordersignin">
+        <div class="card" style="width: 36rem;">
+            <div class="p-3 text-white" id = signinboxcolor>
+                <div class="card-body" id = signinbox>
+                    <form>
+                        <h1 class="h3 mb-3 font-weight-normal" id = "signin">Please sign in</h1>
+                        <div class="form-group">
+                            <label for="inputEmail" id = "email">Email address</label>
+                            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+                                   placeholder="Email Address">
+                            <small id="emailHelp" class="form-text text-muted">
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" id = "password">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        </div>
+                        <button class="btn btn-lg btn-dark btn-block" id="submitBtn" type="submit">Sign in</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="inputPassword">Password</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" id="submitBtn" type="submit">Sign in</button>
-            </form>
+            </div>
         </div>
     </div>
+    <nav class="navbar fixed-bottom navbar-dark bg-dark" id = "footerfooter">
+        <a class="navbar-brand" href="#"></a>
+        <!-- <div class="p-3 mb-2 bg-info text-white">
+        </div> -->
+
+    </nav>
 
 </div>
 {% endblock %}

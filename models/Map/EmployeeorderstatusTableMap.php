@@ -2,14 +2,13 @@
 
 namespace Map;
 
-use \Employee;
-use \EmployeeQuery;
+use \Employeeorderstatus;
+use \EmployeeorderstatusQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -17,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'employee' table.
+ * This class defines the structure of the 'employeeorderstatus' table.
  *
  *
  *
@@ -27,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class EmployeeTableMap extends TableMap
+class EmployeeorderstatusTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -35,7 +34,7 @@ class EmployeeTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.EmployeeTableMap';
+    const CLASS_NAME = '.Map.EmployeeorderstatusTableMap';
 
     /**
      * The default database name for this class
@@ -45,22 +44,22 @@ class EmployeeTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'employee';
+    const TABLE_NAME = 'employeeorderstatus';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Employee';
+    const OM_CLASS = '\\Employeeorderstatus';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Employee';
+    const CLASS_DEFAULT = 'Employeeorderstatus';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -70,17 +69,32 @@ class EmployeeTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
-     * the column name for the User_Login field
+     * the column name for the ID field
      */
-    const COL_USER_LOGIN = 'employee.User_Login';
+    const COL_ID = 'employeeorderstatus.ID';
 
     /**
-     * the column name for the Request_ID field
+     * the column name for the Product_ID field
      */
-    const COL_REQUEST_ID = 'employee.Request_ID';
+    const COL_PRODUCT_ID = 'employeeorderstatus.Product_ID';
+
+    /**
+     * the column name for the ReceivedCount field
+     */
+    const COL_RECEIVEDCOUNT = 'employeeorderstatus.ReceivedCount';
+
+    /**
+     * the column name for the FufilledStatus field
+     */
+    const COL_FUFILLEDSTATUS = 'employeeorderstatus.FufilledStatus';
+
+    /**
+     * the column name for the Count field
+     */
+    const COL_COUNT = 'employeeorderstatus.Count';
 
     /**
      * The default string format for model objects of the related table
@@ -94,11 +108,11 @@ class EmployeeTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserLogin', 'RequestId', ),
-        self::TYPE_CAMELNAME     => array('userLogin', 'requestId', ),
-        self::TYPE_COLNAME       => array(EmployeeTableMap::COL_USER_LOGIN, EmployeeTableMap::COL_REQUEST_ID, ),
-        self::TYPE_FIELDNAME     => array('User_Login', 'Request_ID', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Receivedcount', 'Fufilledstatus', 'Count', ),
+        self::TYPE_CAMELNAME     => array('id', 'productId', 'receivedcount', 'fufilledstatus', 'count', ),
+        self::TYPE_COLNAME       => array(EmployeeorderstatusTableMap::COL_ID, EmployeeorderstatusTableMap::COL_PRODUCT_ID, EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT, EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS, EmployeeorderstatusTableMap::COL_COUNT, ),
+        self::TYPE_FIELDNAME     => array('ID', 'Product_ID', 'ReceivedCount', 'FufilledStatus', 'Count', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -108,11 +122,11 @@ class EmployeeTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserLogin' => 0, 'RequestId' => 1, ),
-        self::TYPE_CAMELNAME     => array('userLogin' => 0, 'requestId' => 1, ),
-        self::TYPE_COLNAME       => array(EmployeeTableMap::COL_USER_LOGIN => 0, EmployeeTableMap::COL_REQUEST_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('User_Login' => 0, 'Request_ID' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Receivedcount' => 2, 'Fufilledstatus' => 3, 'Count' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'productId' => 1, 'receivedcount' => 2, 'fufilledstatus' => 3, 'count' => 4, ),
+        self::TYPE_COLNAME       => array(EmployeeorderstatusTableMap::COL_ID => 0, EmployeeorderstatusTableMap::COL_PRODUCT_ID => 1, EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT => 2, EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS => 3, EmployeeorderstatusTableMap::COL_COUNT => 4, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'Product_ID' => 1, 'ReceivedCount' => 2, 'FufilledStatus' => 3, 'Count' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -125,15 +139,18 @@ class EmployeeTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('employee');
-        $this->setPhpName('Employee');
+        $this->setName('employeeorderstatus');
+        $this->setPhpName('Employeeorderstatus');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Employee');
+        $this->setClassName('\\Employeeorderstatus');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('User_Login', 'UserLogin', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('Request_ID', 'RequestId', 'INTEGER', 'requestlist', 'Request_ID', true, null, null);
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('Product_ID', 'ProductId', 'INTEGER', true, null, null);
+        $this->addColumn('ReceivedCount', 'Receivedcount', 'INTEGER', true, null, null);
+        $this->addColumn('FufilledStatus', 'Fufilledstatus', 'VARCHAR', true, 11, null);
+        $this->addColumn('Count', 'Count', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -141,13 +158,6 @@ class EmployeeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Requestlist', '\\Requestlist', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':Request_ID',
-    1 => ':Request_ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -165,7 +175,12 @@ class EmployeeTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -182,7 +197,11 @@ class EmployeeTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -198,7 +217,7 @@ class EmployeeTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? EmployeeTableMap::CLASS_DEFAULT : EmployeeTableMap::OM_CLASS;
+        return $withPrefix ? EmployeeorderstatusTableMap::CLASS_DEFAULT : EmployeeorderstatusTableMap::OM_CLASS;
     }
 
     /**
@@ -212,22 +231,22 @@ class EmployeeTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Employee object, last column rank)
+     * @return array           (Employeeorderstatus object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = EmployeeTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = EmployeeTableMap::getInstanceFromPool($key))) {
+        $key = EmployeeorderstatusTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = EmployeeorderstatusTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + EmployeeTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + EmployeeorderstatusTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = EmployeeTableMap::OM_CLASS;
-            /** @var Employee $obj */
+            $cls = EmployeeorderstatusTableMap::OM_CLASS;
+            /** @var Employeeorderstatus $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            EmployeeTableMap::addInstanceToPool($obj, $key);
+            EmployeeorderstatusTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -250,18 +269,18 @@ class EmployeeTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = EmployeeTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = EmployeeTableMap::getInstanceFromPool($key))) {
+            $key = EmployeeorderstatusTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = EmployeeorderstatusTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Employee $obj */
+                /** @var Employeeorderstatus $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                EmployeeTableMap::addInstanceToPool($obj, $key);
+                EmployeeorderstatusTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -282,11 +301,17 @@ class EmployeeTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(EmployeeTableMap::COL_USER_LOGIN);
-            $criteria->addSelectColumn(EmployeeTableMap::COL_REQUEST_ID);
+            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_ID);
+            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_PRODUCT_ID);
+            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT);
+            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS);
+            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_COUNT);
         } else {
-            $criteria->addSelectColumn($alias . '.User_Login');
-            $criteria->addSelectColumn($alias . '.Request_ID');
+            $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.Product_ID');
+            $criteria->addSelectColumn($alias . '.ReceivedCount');
+            $criteria->addSelectColumn($alias . '.FufilledStatus');
+            $criteria->addSelectColumn($alias . '.Count');
         }
     }
 
@@ -299,7 +324,7 @@ class EmployeeTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(EmployeeTableMap::DATABASE_NAME)->getTable(EmployeeTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(EmployeeorderstatusTableMap::DATABASE_NAME)->getTable(EmployeeorderstatusTableMap::TABLE_NAME);
     }
 
     /**
@@ -307,16 +332,16 @@ class EmployeeTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EmployeeTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EmployeeTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EmployeeTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EmployeeorderstatusTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(EmployeeorderstatusTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new EmployeeorderstatusTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Employee or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Employeeorderstatus or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Employee object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Employeeorderstatus object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -327,26 +352,27 @@ class EmployeeTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Employee) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+        } elseif ($values instanceof \Employeeorderstatus) { // it's a model object
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Employee object has no primary key');
+            $criteria = new Criteria(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $criteria->add(EmployeeorderstatusTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = EmployeeQuery::create()->mergeWith($criteria);
+        $query = EmployeeorderstatusQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            EmployeeTableMap::clearInstancePool();
+            EmployeeorderstatusTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                EmployeeTableMap::removeInstanceFromPool($singleval);
+                EmployeeorderstatusTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -354,20 +380,20 @@ class EmployeeTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the employee table.
+     * Deletes all rows from the employeeorderstatus table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return EmployeeQuery::create()->doDeleteAll($con);
+        return EmployeeorderstatusQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Employee or Criteria object.
+     * Performs an INSERT on the database, given a Employeeorderstatus or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Employee object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Employeeorderstatus object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -376,18 +402,22 @@ class EmployeeTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Employee object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Employeeorderstatus object
+        }
+
+        if ($criteria->containsKey(EmployeeorderstatusTableMap::COL_ID) && $criteria->keyContainsValue(EmployeeorderstatusTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.EmployeeorderstatusTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = EmployeeQuery::create()->mergeWith($criteria);
+        $query = EmployeeorderstatusQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -396,7 +426,7 @@ class EmployeeTableMap extends TableMap
         });
     }
 
-} // EmployeeTableMap
+} // EmployeeorderstatusTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-EmployeeTableMap::buildTableMap();
+EmployeeorderstatusTableMap::buildTableMap();

@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Order;
-use \OrderQuery;
+use \Providerorder;
+use \ProviderorderQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'order' table.
+ * This class defines the structure of the 'providerorder' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class OrderTableMap extends TableMap
+class ProviderorderTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class OrderTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.OrderTableMap';
+    const CLASS_NAME = '.Map.ProviderorderTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class OrderTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'order';
+    const TABLE_NAME = 'providerorder';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Order';
+    const OM_CLASS = '\\Providerorder';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Order';
+    const CLASS_DEFAULT = 'Providerorder';
 
     /**
      * The total number of columns
@@ -74,32 +74,32 @@ class OrderTableMap extends TableMap
     /**
      * the column name for the Order_ID field
      */
-    const COL_ORDER_ID = 'order.Order_ID';
+    const COL_ORDER_ID = 'providerorder.Order_ID';
 
     /**
      * the column name for the Commission field
      */
-    const COL_COMMISSION = 'order.Commission';
+    const COL_COMMISSION = 'providerorder.Commission';
 
     /**
      * the column name for the Amount field
      */
-    const COL_AMOUNT = 'order.Amount';
+    const COL_AMOUNT = 'providerorder.Amount';
 
     /**
      * the column name for the Date field
      */
-    const COL_DATE = 'order.Date';
+    const COL_DATE = 'providerorder.Date';
 
     /**
-     * the column name for the Delivery_Date field
+     * the column name for the Delivered_Date field
      */
-    const COL_DELIVERY_DATE = 'order.Delivery_Date';
+    const COL_DELIVERED_DATE = 'providerorder.Delivered_Date';
 
     /**
-     * the column name for the ProductList_ID field
+     * the column name for the Status_ID field
      */
-    const COL_PRODUCTLIST_ID = 'order.ProductList_ID';
+    const COL_STATUS_ID = 'providerorder.Status_ID';
 
     /**
      * The default string format for model objects of the related table
@@ -113,10 +113,10 @@ class OrderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderId', 'Commission', 'Amount', 'Date', 'DeliveryDate', 'ProductlistId', ),
-        self::TYPE_CAMELNAME     => array('orderId', 'commission', 'amount', 'date', 'deliveryDate', 'productlistId', ),
-        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID, OrderTableMap::COL_COMMISSION, OrderTableMap::COL_AMOUNT, OrderTableMap::COL_DATE, OrderTableMap::COL_DELIVERY_DATE, OrderTableMap::COL_PRODUCTLIST_ID, ),
-        self::TYPE_FIELDNAME     => array('Order_ID', 'Commission', 'Amount', 'Date', 'Delivery_Date', 'ProductList_ID', ),
+        self::TYPE_PHPNAME       => array('OrderId', 'Commission', 'Amount', 'Date', 'DeliveredDate', 'StatusId', ),
+        self::TYPE_CAMELNAME     => array('orderId', 'commission', 'amount', 'date', 'deliveredDate', 'statusId', ),
+        self::TYPE_COLNAME       => array(ProviderorderTableMap::COL_ORDER_ID, ProviderorderTableMap::COL_COMMISSION, ProviderorderTableMap::COL_AMOUNT, ProviderorderTableMap::COL_DATE, ProviderorderTableMap::COL_DELIVERED_DATE, ProviderorderTableMap::COL_STATUS_ID, ),
+        self::TYPE_FIELDNAME     => array('Order_ID', 'Commission', 'Amount', 'Date', 'Delivered_Date', 'Status_ID', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
@@ -127,10 +127,10 @@ class OrderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderId' => 0, 'Commission' => 1, 'Amount' => 2, 'Date' => 3, 'DeliveryDate' => 4, 'ProductlistId' => 5, ),
-        self::TYPE_CAMELNAME     => array('orderId' => 0, 'commission' => 1, 'amount' => 2, 'date' => 3, 'deliveryDate' => 4, 'productlistId' => 5, ),
-        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID => 0, OrderTableMap::COL_COMMISSION => 1, OrderTableMap::COL_AMOUNT => 2, OrderTableMap::COL_DATE => 3, OrderTableMap::COL_DELIVERY_DATE => 4, OrderTableMap::COL_PRODUCTLIST_ID => 5, ),
-        self::TYPE_FIELDNAME     => array('Order_ID' => 0, 'Commission' => 1, 'Amount' => 2, 'Date' => 3, 'Delivery_Date' => 4, 'ProductList_ID' => 5, ),
+        self::TYPE_PHPNAME       => array('OrderId' => 0, 'Commission' => 1, 'Amount' => 2, 'Date' => 3, 'DeliveredDate' => 4, 'StatusId' => 5, ),
+        self::TYPE_CAMELNAME     => array('orderId' => 0, 'commission' => 1, 'amount' => 2, 'date' => 3, 'deliveredDate' => 4, 'statusId' => 5, ),
+        self::TYPE_COLNAME       => array(ProviderorderTableMap::COL_ORDER_ID => 0, ProviderorderTableMap::COL_COMMISSION => 1, ProviderorderTableMap::COL_AMOUNT => 2, ProviderorderTableMap::COL_DATE => 3, ProviderorderTableMap::COL_DELIVERED_DATE => 4, ProviderorderTableMap::COL_STATUS_ID => 5, ),
+        self::TYPE_FIELDNAME     => array('Order_ID' => 0, 'Commission' => 1, 'Amount' => 2, 'Date' => 3, 'Delivered_Date' => 4, 'Status_ID' => 5, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
@@ -144,19 +144,19 @@ class OrderTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('order');
-        $this->setPhpName('Order');
+        $this->setName('providerorder');
+        $this->setPhpName('Providerorder');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Order');
+        $this->setClassName('\\Providerorder');
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('Order_ID', 'OrderId', 'INTEGER', true, null, null);
-        $this->addColumn('Commission', 'Commission', 'INTEGER', true, null, null);
-        $this->addColumn('Amount', 'Amount', 'INTEGER', true, null, null);
+        $this->addColumn('Commission', 'Commission', 'DOUBLE', true, null, null);
+        $this->addColumn('Amount', 'Amount', 'DOUBLE', true, null, null);
         $this->addColumn('Date', 'Date', 'DATE', true, null, null);
-        $this->addColumn('Delivery_Date', 'DeliveryDate', 'DATE', true, null, null);
-        $this->addColumn('ProductList_ID', 'ProductlistId', 'INTEGER', true, null, null);
+        $this->addColumn('Delivered_Date', 'DeliveredDate', 'DATE', true, null, null);
+        $this->addColumn('Status_ID', 'StatusId', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -223,7 +223,7 @@ class OrderTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? OrderTableMap::CLASS_DEFAULT : OrderTableMap::OM_CLASS;
+        return $withPrefix ? ProviderorderTableMap::CLASS_DEFAULT : ProviderorderTableMap::OM_CLASS;
     }
 
     /**
@@ -237,22 +237,22 @@ class OrderTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Order object, last column rank)
+     * @return array           (Providerorder object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = OrderTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = OrderTableMap::getInstanceFromPool($key))) {
+        $key = ProviderorderTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = ProviderorderTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + OrderTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + ProviderorderTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = OrderTableMap::OM_CLASS;
-            /** @var Order $obj */
+            $cls = ProviderorderTableMap::OM_CLASS;
+            /** @var Providerorder $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            OrderTableMap::addInstanceToPool($obj, $key);
+            ProviderorderTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -275,18 +275,18 @@ class OrderTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = OrderTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = OrderTableMap::getInstanceFromPool($key))) {
+            $key = ProviderorderTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = ProviderorderTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Order $obj */
+                /** @var Providerorder $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                OrderTableMap::addInstanceToPool($obj, $key);
+                ProviderorderTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -307,19 +307,19 @@ class OrderTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(OrderTableMap::COL_ORDER_ID);
-            $criteria->addSelectColumn(OrderTableMap::COL_COMMISSION);
-            $criteria->addSelectColumn(OrderTableMap::COL_AMOUNT);
-            $criteria->addSelectColumn(OrderTableMap::COL_DATE);
-            $criteria->addSelectColumn(OrderTableMap::COL_DELIVERY_DATE);
-            $criteria->addSelectColumn(OrderTableMap::COL_PRODUCTLIST_ID);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_ORDER_ID);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_COMMISSION);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_AMOUNT);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_DATE);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_DELIVERED_DATE);
+            $criteria->addSelectColumn(ProviderorderTableMap::COL_STATUS_ID);
         } else {
             $criteria->addSelectColumn($alias . '.Order_ID');
             $criteria->addSelectColumn($alias . '.Commission');
             $criteria->addSelectColumn($alias . '.Amount');
             $criteria->addSelectColumn($alias . '.Date');
-            $criteria->addSelectColumn($alias . '.Delivery_Date');
-            $criteria->addSelectColumn($alias . '.ProductList_ID');
+            $criteria->addSelectColumn($alias . '.Delivered_Date');
+            $criteria->addSelectColumn($alias . '.Status_ID');
         }
     }
 
@@ -332,7 +332,7 @@ class OrderTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(OrderTableMap::DATABASE_NAME)->getTable(OrderTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(ProviderorderTableMap::DATABASE_NAME)->getTable(ProviderorderTableMap::TABLE_NAME);
     }
 
     /**
@@ -340,16 +340,16 @@ class OrderTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(OrderTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(OrderTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new OrderTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(ProviderorderTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(ProviderorderTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new ProviderorderTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Order or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Providerorder or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Order object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Providerorder object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -360,27 +360,27 @@ class OrderTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Order) { // it's a model object
+        } elseif ($values instanceof \Providerorder) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(OrderTableMap::DATABASE_NAME);
-            $criteria->add(OrderTableMap::COL_ORDER_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(ProviderorderTableMap::DATABASE_NAME);
+            $criteria->add(ProviderorderTableMap::COL_ORDER_ID, (array) $values, Criteria::IN);
         }
 
-        $query = OrderQuery::create()->mergeWith($criteria);
+        $query = ProviderorderQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            OrderTableMap::clearInstancePool();
+            ProviderorderTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                OrderTableMap::removeInstanceFromPool($singleval);
+                ProviderorderTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -388,20 +388,20 @@ class OrderTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the order table.
+     * Deletes all rows from the providerorder table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return OrderQuery::create()->doDeleteAll($con);
+        return ProviderorderQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Order or Criteria object.
+     * Performs an INSERT on the database, given a Providerorder or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Order object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Providerorder object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -410,18 +410,18 @@ class OrderTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Order object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Providerorder object
         }
 
 
         // Set the correct dbName
-        $query = OrderQuery::create()->mergeWith($criteria);
+        $query = ProviderorderQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -430,7 +430,7 @@ class OrderTableMap extends TableMap
         });
     }
 
-} // OrderTableMap
+} // ProviderorderTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-OrderTableMap::buildTableMap();
+ProviderorderTableMap::buildTableMap();

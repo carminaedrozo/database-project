@@ -9,6 +9,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
+use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -59,7 +60,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,42 +70,37 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
-     * the column name for the User_Login field
+     * the column name for the email field
      */
-    const COL_USER_LOGIN = 'user.User_Login';
+    const COL_EMAIL = 'user.email';
 
     /**
-     * the column name for the User_Password field
+     * the column name for the password field
      */
-    const COL_USER_PASSWORD = 'user.User_Password';
+    const COL_PASSWORD = 'user.password';
 
     /**
-     * the column name for the User_Email field
+     * the column name for the full_name field
      */
-    const COL_USER_EMAIL = 'user.User_Email';
+    const COL_FULL_NAME = 'user.full_name';
 
     /**
-     * the column name for the User_FullName field
+     * the column name for the status field
      */
-    const COL_USER_FULLNAME = 'user.User_FullName';
+    const COL_STATUS = 'user.status';
 
     /**
-     * the column name for the User_Status field
+     * the column name for the last_access field
      */
-    const COL_USER_STATUS = 'user.User_Status';
+    const COL_LAST_ACCESS = 'user.last_access';
 
     /**
-     * the column name for the User_LastAccess field
+     * the column name for the last_update field
      */
-    const COL_USER_LASTACCESS = 'user.User_LastAccess';
-
-    /**
-     * the column name for the User_LastUpdate field
-     */
-    const COL_USER_LASTUPDATE = 'user.User_LastUpdate';
+    const COL_LAST_UPDATE = 'user.last_update';
 
     /**
      * The default string format for model objects of the related table
@@ -118,11 +114,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserLogin', 'UserPassword', 'UserEmail', 'UserFullname', 'UserStatus', 'UserLastaccess', 'UserLastupdate', ),
-        self::TYPE_CAMELNAME     => array('userLogin', 'userPassword', 'userEmail', 'userFullname', 'userStatus', 'userLastaccess', 'userLastupdate', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_LOGIN, UserTableMap::COL_USER_PASSWORD, UserTableMap::COL_USER_EMAIL, UserTableMap::COL_USER_FULLNAME, UserTableMap::COL_USER_STATUS, UserTableMap::COL_USER_LASTACCESS, UserTableMap::COL_USER_LASTUPDATE, ),
-        self::TYPE_FIELDNAME     => array('User_Login', 'User_Password', 'User_Email', 'User_FullName', 'User_Status', 'User_LastAccess', 'User_LastUpdate', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Email', 'Password', 'FullName', 'Status', 'LastAccess', 'LastUpdate', ),
+        self::TYPE_CAMELNAME     => array('email', 'password', 'fullName', 'status', 'lastAccess', 'lastUpdate', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_FULL_NAME, UserTableMap::COL_STATUS, UserTableMap::COL_LAST_ACCESS, UserTableMap::COL_LAST_UPDATE, ),
+        self::TYPE_FIELDNAME     => array('email', 'password', 'full_name', 'status', 'last_access', 'last_update', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -132,11 +128,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserLogin' => 0, 'UserPassword' => 1, 'UserEmail' => 2, 'UserFullname' => 3, 'UserStatus' => 4, 'UserLastaccess' => 5, 'UserLastupdate' => 6, ),
-        self::TYPE_CAMELNAME     => array('userLogin' => 0, 'userPassword' => 1, 'userEmail' => 2, 'userFullname' => 3, 'userStatus' => 4, 'userLastaccess' => 5, 'userLastupdate' => 6, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_LOGIN => 0, UserTableMap::COL_USER_PASSWORD => 1, UserTableMap::COL_USER_EMAIL => 2, UserTableMap::COL_USER_FULLNAME => 3, UserTableMap::COL_USER_STATUS => 4, UserTableMap::COL_USER_LASTACCESS => 5, UserTableMap::COL_USER_LASTUPDATE => 6, ),
-        self::TYPE_FIELDNAME     => array('User_Login' => 0, 'User_Password' => 1, 'User_Email' => 2, 'User_FullName' => 3, 'User_Status' => 4, 'User_LastAccess' => 5, 'User_LastUpdate' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Email' => 0, 'Password' => 1, 'FullName' => 2, 'Status' => 3, 'LastAccess' => 4, 'LastUpdate' => 5, ),
+        self::TYPE_CAMELNAME     => array('email' => 0, 'password' => 1, 'fullName' => 2, 'status' => 3, 'lastAccess' => 4, 'lastUpdate' => 5, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_EMAIL => 0, UserTableMap::COL_PASSWORD => 1, UserTableMap::COL_FULL_NAME => 2, UserTableMap::COL_STATUS => 3, UserTableMap::COL_LAST_ACCESS => 4, UserTableMap::COL_LAST_UPDATE => 5, ),
+        self::TYPE_FIELDNAME     => array('email' => 0, 'password' => 1, 'full_name' => 2, 'status' => 3, 'last_access' => 4, 'last_update' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -156,13 +152,12 @@ class UserTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('User_Login', 'UserLogin', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('User_Password', 'UserPassword', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('User_Email', 'UserEmail', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('User_FullName', 'UserFullname', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('User_Status', 'UserStatus', 'VARCHAR', true, 1, null);
-        $this->addColumn('User_LastAccess', 'UserLastaccess', 'TIMESTAMP', true, null, null);
-        $this->addColumn('User_LastUpdate', 'UserLastupdate', 'TIMESTAMP', true, null, null);
+        $this->addColumn('email', 'Email', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('password', 'Password', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('full_name', 'FullName', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('status', 'Status', 'VARCHAR', true, 1, null);
+        $this->addColumn('last_access', 'LastAccess', 'TIMESTAMP', true, null, null);
+        $this->addColumn('last_update', 'LastUpdate', 'TIMESTAMP', true, null, null);
     } // initialize()
 
     /**
@@ -187,12 +182,7 @@ class UserTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)] === null) {
-            return null;
-        }
-
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)];
+        return null;
     }
 
     /**
@@ -209,11 +199,7 @@ class UserTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (string) $row[
-            $indexType == TableMap::TYPE_NUM
-                ? 0 + $offset
-                : self::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)
-        ];
+        return '';
     }
 
     /**
@@ -313,21 +299,19 @@ class UserTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UserTableMap::COL_USER_LOGIN);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_PASSWORD);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_EMAIL);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_FULLNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_STATUS);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_LASTACCESS);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_LASTUPDATE);
+            $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
+            $criteria->addSelectColumn(UserTableMap::COL_PASSWORD);
+            $criteria->addSelectColumn(UserTableMap::COL_FULL_NAME);
+            $criteria->addSelectColumn(UserTableMap::COL_STATUS);
+            $criteria->addSelectColumn(UserTableMap::COL_LAST_ACCESS);
+            $criteria->addSelectColumn(UserTableMap::COL_LAST_UPDATE);
         } else {
-            $criteria->addSelectColumn($alias . '.User_Login');
-            $criteria->addSelectColumn($alias . '.User_Password');
-            $criteria->addSelectColumn($alias . '.User_Email');
-            $criteria->addSelectColumn($alias . '.User_FullName');
-            $criteria->addSelectColumn($alias . '.User_Status');
-            $criteria->addSelectColumn($alias . '.User_LastAccess');
-            $criteria->addSelectColumn($alias . '.User_LastUpdate');
+            $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.password');
+            $criteria->addSelectColumn($alias . '.full_name');
+            $criteria->addSelectColumn($alias . '.status');
+            $criteria->addSelectColumn($alias . '.last_access');
+            $criteria->addSelectColumn($alias . '.last_update');
         }
     }
 
@@ -375,11 +359,10 @@ class UserTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \User) { // it's a model object
-            // create criteria based on pk values
-            $criteria = $values->buildPkeyCriteria();
+            // create criteria based on pk value
+            $criteria = $values->buildCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UserTableMap::DATABASE_NAME);
-            $criteria->add(UserTableMap::COL_USER_LOGIN, (array) $values, Criteria::IN);
+            throw new LogicException('The User object has no primary key');
         }
 
         $query = UserQuery::create()->mergeWith($criteria);

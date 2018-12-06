@@ -1,9 +1,9 @@
 <?php
 
-use Base\RequestQuery as BaseRequestQuery;
+use Base\Providerorder as BaseProviderorder;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'request' table.
+ * Skeleton subclass for representing a row from the 'providerorder' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\RequestQuery as BaseRequestQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class RequestQuery extends BaseRequestQuery
+class Providerorder extends BaseProviderorder
 {
 
 }

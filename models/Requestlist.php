@@ -1,9 +1,9 @@
 <?php
 
-use Base\Productlist as BaseProductlist;
+use Base\Requestlist as BaseRequestlist;
 
 /**
- * Skeleton subclass for representing a row from the 'productlist' table.
+ * Skeleton subclass for representing a row from the 'requestlist' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Productlist as BaseProductlist;
  * long as it does not already exist in the output directory.
  *
  */
-class Productlist extends BaseProductlist
+class Requestlist extends BaseRequestlist
 {
 
 }

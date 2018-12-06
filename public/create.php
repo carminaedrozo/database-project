@@ -3,8 +3,8 @@ require '../vendor/autoload.php';
 require '../generated-conf/config.php';
 
 
-$p = UserQuery::create()->filterByUserLogin("Rebekah22")->findOne();
-$p->setPassword("1234");
+$p = UserQuery::create()->filterByEmail("rebekah14@gmail.com")->findOne();
+$p->setPasswordHash("1234");
 $p->save();
-echo "Username= " . $p->getUserLogin() . ". Hash is= " . $p->getUserPassword() . "</p>";
+echo "Email= " . $p->getEmail() . ". Hash is= " . $p->getPassword() . "</p>";
 ?>

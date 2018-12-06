@@ -76,7 +76,7 @@ abstract class Provider implements ActiveRecordInterface
     /**
      * The value for the provider_phone field.
      *
-     * @var        int
+     * @var        string
      */
     protected $provider_phone;
 
@@ -350,7 +350,7 @@ abstract class Provider implements ActiveRecordInterface
     /**
      * Get the [provider_phone] column value.
      *
-     * @return int
+     * @return string
      */
     public function getProviderPhone()
     {
@@ -420,13 +420,13 @@ abstract class Provider implements ActiveRecordInterface
     /**
      * Set the value of [provider_phone] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Provider The current object (for fluent API support)
      */
     public function setProviderPhone($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->provider_phone !== $v) {
@@ -520,7 +520,7 @@ abstract class Provider implements ActiveRecordInterface
             $this->provider_name = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ProviderTableMap::translateFieldName('ProviderPhone', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->provider_phone = (null !== $col) ? (int) $col : null;
+            $this->provider_phone = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProviderTableMap::translateFieldName('ProviderAddress', TableMap::TYPE_PHPNAME, $indexType)];
             $this->provider_address = (null !== $col) ? (string) $col : null;

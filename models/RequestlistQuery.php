@@ -1,9 +1,9 @@
 <?php
 
-use Base\OrderQuery as BaseOrderQuery;
+use Base\RequestlistQuery as BaseRequestlistQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'order' table.
+ * Skeleton subclass for performing query and update operations on the 'requestlist' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\OrderQuery as BaseOrderQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class OrderQuery extends BaseOrderQuery
+class RequestlistQuery extends BaseRequestlistQuery
 {
 
 }

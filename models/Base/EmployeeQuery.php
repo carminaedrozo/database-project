@@ -34,17 +34,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployeeQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildEmployeeQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildEmployeeQuery leftJoinRequest($relationAlias = null) Adds a LEFT JOIN clause to the query using the Request relation
- * @method     ChildEmployeeQuery rightJoinRequest($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Request relation
- * @method     ChildEmployeeQuery innerJoinRequest($relationAlias = null) Adds a INNER JOIN clause to the query using the Request relation
+ * @method     ChildEmployeeQuery leftJoinRequestlist($relationAlias = null) Adds a LEFT JOIN clause to the query using the Requestlist relation
+ * @method     ChildEmployeeQuery rightJoinRequestlist($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Requestlist relation
+ * @method     ChildEmployeeQuery innerJoinRequestlist($relationAlias = null) Adds a INNER JOIN clause to the query using the Requestlist relation
  *
- * @method     ChildEmployeeQuery joinWithRequest($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Request relation
+ * @method     ChildEmployeeQuery joinWithRequestlist($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Requestlist relation
  *
- * @method     ChildEmployeeQuery leftJoinWithRequest() Adds a LEFT JOIN clause and with to the query using the Request relation
- * @method     ChildEmployeeQuery rightJoinWithRequest() Adds a RIGHT JOIN clause and with to the query using the Request relation
- * @method     ChildEmployeeQuery innerJoinWithRequest() Adds a INNER JOIN clause and with to the query using the Request relation
+ * @method     ChildEmployeeQuery leftJoinWithRequestlist() Adds a LEFT JOIN clause and with to the query using the Requestlist relation
+ * @method     ChildEmployeeQuery rightJoinWithRequestlist() Adds a RIGHT JOIN clause and with to the query using the Requestlist relation
+ * @method     ChildEmployeeQuery innerJoinWithRequestlist() Adds a INNER JOIN clause and with to the query using the Requestlist relation
  *
- * @method     \RequestQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \RequestlistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEmployee findOne(ConnectionInterface $con = null) Return the first ChildEmployee matching the query
  * @method     ChildEmployee findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEmployee matching the query, or a new ChildEmployee object populated from the query conditions when no match is found
@@ -197,7 +197,7 @@ abstract class EmployeeQuery extends ModelCriteria
      * $query->filterByRequestId(array('min' => 12)); // WHERE Request_ID > 12
      * </code>
      *
-     * @see       filterByRequest()
+     * @see       filterByRequestlist()
      *
      * @param     mixed $requestId The value to use as filter.
      *              Use scalar values for equality.
@@ -231,44 +231,44 @@ abstract class EmployeeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Request object
+     * Filter the query by a related \Requestlist object
      *
-     * @param \Request|ObjectCollection $request The related object(s) to use as filter
+     * @param \Requestlist|ObjectCollection $requestlist The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
      * @return ChildEmployeeQuery The current query, for fluid interface
      */
-    public function filterByRequest($request, $comparison = null)
+    public function filterByRequestlist($requestlist, $comparison = null)
     {
-        if ($request instanceof \Request) {
+        if ($requestlist instanceof \Requestlist) {
             return $this
-                ->addUsingAlias(EmployeeTableMap::COL_REQUEST_ID, $request->getRequestId(), $comparison);
-        } elseif ($request instanceof ObjectCollection) {
+                ->addUsingAlias(EmployeeTableMap::COL_REQUEST_ID, $requestlist->getRequestId(), $comparison);
+        } elseif ($requestlist instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(EmployeeTableMap::COL_REQUEST_ID, $request->toKeyValue('PrimaryKey', 'RequestId'), $comparison);
+                ->addUsingAlias(EmployeeTableMap::COL_REQUEST_ID, $requestlist->toKeyValue('PrimaryKey', 'RequestId'), $comparison);
         } else {
-            throw new PropelException('filterByRequest() only accepts arguments of type \Request or Collection');
+            throw new PropelException('filterByRequestlist() only accepts arguments of type \Requestlist or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Request relation
+     * Adds a JOIN clause to the query using the Requestlist relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildEmployeeQuery The current query, for fluid interface
      */
-    public function joinRequest($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinRequestlist($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Request');
+        $relationMap = $tableMap->getRelation('Requestlist');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -283,14 +283,14 @@ abstract class EmployeeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Request');
+            $this->addJoinObject($join, 'Requestlist');
         }
 
         return $this;
     }
 
     /**
-     * Use the Request relation Request object
+     * Use the Requestlist relation Requestlist object
      *
      * @see useQuery()
      *
@@ -298,13 +298,13 @@ abstract class EmployeeQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \RequestQuery A secondary query class using the current class as primary query
+     * @return \RequestlistQuery A secondary query class using the current class as primary query
      */
-    public function useRequestQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useRequestlistQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinRequest($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Request', '\RequestQuery');
+            ->joinRequestlist($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Requestlist', '\RequestlistQuery');
     }
 
     /**

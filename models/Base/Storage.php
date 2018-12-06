@@ -60,18 +60,25 @@ abstract class Storage implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the user_login field.
-     *
-     * @var        string
-     */
-    protected $user_login;
-
-    /**
-     * The value for the productlist_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $productlist_id;
+    protected $id;
+
+    /**
+     * The value for the count field.
+     *
+     * @var        int
+     */
+    protected $count;
+
+    /**
+     * The value for the product_id field.
+     *
+     * @var        int
+     */
+    protected $product_id;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -307,64 +314,94 @@ abstract class Storage implements ActiveRecordInterface
     }
 
     /**
-     * Get the [user_login] column value.
-     *
-     * @return string
-     */
-    public function getUserLogin()
-    {
-        return $this->user_login;
-    }
-
-    /**
-     * Get the [productlist_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getProductlistId()
+    public function getId()
     {
-        return $this->productlist_id;
+        return $this->id;
     }
 
     /**
-     * Set the value of [user_login] column.
+     * Get the [count] column value.
      *
-     * @param string $v new value
-     * @return $this|\Storage The current object (for fluent API support)
+     * @return int
      */
-    public function setUserLogin($v)
+    public function getCount()
     {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->user_login !== $v) {
-            $this->user_login = $v;
-            $this->modifiedColumns[StorageTableMap::COL_USER_LOGIN] = true;
-        }
-
-        return $this;
-    } // setUserLogin()
+        return $this->count;
+    }
 
     /**
-     * Set the value of [productlist_id] column.
+     * Get the [product_id] column value.
+     *
+     * @return int
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Set the value of [id] column.
      *
      * @param int $v new value
      * @return $this|\Storage The current object (for fluent API support)
      */
-    public function setProductlistId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->productlist_id !== $v) {
-            $this->productlist_id = $v;
-            $this->modifiedColumns[StorageTableMap::COL_PRODUCTLIST_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[StorageTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setProductlistId()
+    } // setId()
+
+    /**
+     * Set the value of [count] column.
+     *
+     * @param int $v new value
+     * @return $this|\Storage The current object (for fluent API support)
+     */
+    public function setCount($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->count !== $v) {
+            $this->count = $v;
+            $this->modifiedColumns[StorageTableMap::COL_COUNT] = true;
+        }
+
+        return $this;
+    } // setCount()
+
+    /**
+     * Set the value of [product_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Storage The current object (for fluent API support)
+     */
+    public function setProductId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->product_id !== $v) {
+            $this->product_id = $v;
+            $this->modifiedColumns[StorageTableMap::COL_PRODUCT_ID] = true;
+        }
+
+        return $this;
+    } // setProductId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -402,11 +439,14 @@ abstract class Storage implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StorageTableMap::translateFieldName('UserLogin', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->user_login = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StorageTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StorageTableMap::translateFieldName('ProductlistId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->productlist_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StorageTableMap::translateFieldName('Count', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->count = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StorageTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->product_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -415,7 +455,7 @@ abstract class Storage implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = StorageTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = StorageTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Storage'), 0, $e);
@@ -612,11 +652,14 @@ abstract class Storage implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(StorageTableMap::COL_USER_LOGIN)) {
-            $modifiedColumns[':p' . $index++]  = 'User_Login';
+        if ($this->isColumnModified(StorageTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(StorageTableMap::COL_PRODUCTLIST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ProductList_ID';
+        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'count';
+        }
+        if ($this->isColumnModified(StorageTableMap::COL_PRODUCT_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'product_id';
         }
 
         $sql = sprintf(
@@ -629,11 +672,14 @@ abstract class Storage implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'User_Login':
-                        $stmt->bindValue($identifier, $this->user_login, PDO::PARAM_STR);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'ProductList_ID':
-                        $stmt->bindValue($identifier, $this->productlist_id, PDO::PARAM_INT);
+                    case 'count':
+                        $stmt->bindValue($identifier, $this->count, PDO::PARAM_INT);
+                        break;
+                    case 'product_id':
+                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -691,10 +737,13 @@ abstract class Storage implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getUserLogin();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getProductlistId();
+                return $this->getCount();
+                break;
+            case 2:
+                return $this->getProductId();
                 break;
             default:
                 return null;
@@ -725,8 +774,9 @@ abstract class Storage implements ActiveRecordInterface
         $alreadyDumpedObjects['Storage'][$this->hashCode()] = true;
         $keys = StorageTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getUserLogin(),
-            $keys[1] => $this->getProductlistId(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getCount(),
+            $keys[2] => $this->getProductId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -767,10 +817,13 @@ abstract class Storage implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setUserLogin($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setProductlistId($value);
+                $this->setCount($value);
+                break;
+            case 2:
+                $this->setProductId($value);
                 break;
         } // switch()
 
@@ -799,10 +852,13 @@ abstract class Storage implements ActiveRecordInterface
         $keys = StorageTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setUserLogin($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setProductlistId($arr[$keys[1]]);
+            $this->setCount($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setProductId($arr[$keys[2]]);
         }
     }
 
@@ -845,11 +901,14 @@ abstract class Storage implements ActiveRecordInterface
     {
         $criteria = new Criteria(StorageTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StorageTableMap::COL_USER_LOGIN)) {
-            $criteria->add(StorageTableMap::COL_USER_LOGIN, $this->user_login);
+        if ($this->isColumnModified(StorageTableMap::COL_ID)) {
+            $criteria->add(StorageTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(StorageTableMap::COL_PRODUCTLIST_ID)) {
-            $criteria->add(StorageTableMap::COL_PRODUCTLIST_ID, $this->productlist_id);
+        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
+            $criteria->add(StorageTableMap::COL_COUNT, $this->count);
+        }
+        if ($this->isColumnModified(StorageTableMap::COL_PRODUCT_ID)) {
+            $criteria->add(StorageTableMap::COL_PRODUCT_ID, $this->product_id);
         }
 
         return $criteria;
@@ -940,8 +999,9 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUserLogin($this->getUserLogin());
-        $copyObj->setProductlistId($this->getProductlistId());
+        $copyObj->setId($this->getId());
+        $copyObj->setCount($this->getCount());
+        $copyObj->setProductId($this->getProductId());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -976,8 +1036,9 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->user_login = null;
-        $this->productlist_id = null;
+        $this->id = null;
+        $this->count = null;
+        $this->product_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
