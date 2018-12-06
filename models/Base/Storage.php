@@ -2,6 +2,8 @@
 
 namespace Base;
 
+use \Product as ChildProduct;
+use \ProductQuery as ChildProductQuery;
 use \StorageQuery as ChildStorageQuery;
 use \Exception;
 use \PDO;
@@ -67,6 +69,13 @@ abstract class Storage implements ActiveRecordInterface
     protected $id;
 
     /**
+     * The value for the product_id field.
+     *
+     * @var        int
+     */
+    protected $product_id;
+
+    /**
      * The value for the count field.
      *
      * @var        int
@@ -74,11 +83,9 @@ abstract class Storage implements ActiveRecordInterface
     protected $count;
 
     /**
-     * The value for the product_id field.
-     *
-     * @var        int
+     * @var        ChildProduct
      */
-    protected $product_id;
+    protected $aProduct;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -324,16 +331,6 @@ abstract class Storage implements ActiveRecordInterface
     }
 
     /**
-     * Get the [count] column value.
-     *
-     * @return int
-     */
-    public function getCount()
-    {
-        return $this->count;
-    }
-
-    /**
      * Get the [product_id] column value.
      *
      * @return int
@@ -341,6 +338,16 @@ abstract class Storage implements ActiveRecordInterface
     public function getProductId()
     {
         return $this->product_id;
+    }
+
+    /**
+     * Get the [count] column value.
+     *
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->count;
     }
 
     /**
@@ -364,6 +371,30 @@ abstract class Storage implements ActiveRecordInterface
     } // setId()
 
     /**
+     * Set the value of [product_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Storage The current object (for fluent API support)
+     */
+    public function setProductId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->product_id !== $v) {
+            $this->product_id = $v;
+            $this->modifiedColumns[StorageTableMap::COL_PRODUCT_ID] = true;
+        }
+
+        if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
+            $this->aProduct = null;
+        }
+
+        return $this;
+    } // setProductId()
+
+    /**
      * Set the value of [count] column.
      *
      * @param int $v new value
@@ -382,26 +413,6 @@ abstract class Storage implements ActiveRecordInterface
 
         return $this;
     } // setCount()
-
-    /**
-     * Set the value of [product_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Storage The current object (for fluent API support)
-     */
-    public function setProductId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[StorageTableMap::COL_PRODUCT_ID] = true;
-        }
-
-        return $this;
-    } // setProductId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -442,11 +453,11 @@ abstract class Storage implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StorageTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StorageTableMap::translateFieldName('Count', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->count = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StorageTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StorageTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StorageTableMap::translateFieldName('Count', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->count = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -477,6 +488,9 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aProduct !== null && $this->product_id !== $this->aProduct->getId()) {
+            $this->aProduct = null;
+        }
     } // ensureConsistency
 
     /**
@@ -516,6 +530,7 @@ abstract class Storage implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aProduct = null;
         } // if (deep)
     }
 
@@ -619,6 +634,18 @@ abstract class Storage implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aProduct !== null) {
+                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
+                    $affectedRows += $this->aProduct->save($con);
+                }
+                $this->setProduct($this->aProduct);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -650,16 +677,20 @@ abstract class Storage implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[StorageTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StorageTableMap::COL_ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(StorageTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'count';
-        }
         if ($this->isColumnModified(StorageTableMap::COL_PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'product_id';
+        }
+        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'count';
         }
 
         $sql = sprintf(
@@ -675,11 +706,11 @@ abstract class Storage implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'count':
-                        $stmt->bindValue($identifier, $this->count, PDO::PARAM_INT);
-                        break;
                     case 'product_id':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                        break;
+                    case 'count':
+                        $stmt->bindValue($identifier, $this->count, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -688,6 +719,13 @@ abstract class Storage implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -740,10 +778,10 @@ abstract class Storage implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getCount();
+                return $this->getProductId();
                 break;
             case 2:
-                return $this->getProductId();
+                return $this->getCount();
                 break;
             default:
                 return null;
@@ -762,10 +800,11 @@ abstract class Storage implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Storage'][$this->hashCode()])) {
@@ -775,14 +814,31 @@ abstract class Storage implements ActiveRecordInterface
         $keys = StorageTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getCount(),
-            $keys[2] => $this->getProductId(),
+            $keys[1] => $this->getProductId(),
+            $keys[2] => $this->getCount(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aProduct) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'product';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'product';
+                        break;
+                    default:
+                        $key = 'Product';
+                }
+
+                $result[$key] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -820,10 +876,10 @@ abstract class Storage implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setCount($value);
+                $this->setProductId($value);
                 break;
             case 2:
-                $this->setProductId($value);
+                $this->setCount($value);
                 break;
         } // switch()
 
@@ -855,10 +911,10 @@ abstract class Storage implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setCount($arr[$keys[1]]);
+            $this->setProductId($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setProductId($arr[$keys[2]]);
+            $this->setCount($arr[$keys[2]]);
         }
     }
 
@@ -904,11 +960,11 @@ abstract class Storage implements ActiveRecordInterface
         if ($this->isColumnModified(StorageTableMap::COL_ID)) {
             $criteria->add(StorageTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
-            $criteria->add(StorageTableMap::COL_COUNT, $this->count);
-        }
         if ($this->isColumnModified(StorageTableMap::COL_PRODUCT_ID)) {
             $criteria->add(StorageTableMap::COL_PRODUCT_ID, $this->product_id);
+        }
+        if ($this->isColumnModified(StorageTableMap::COL_COUNT)) {
+            $criteria->add(StorageTableMap::COL_COUNT, $this->count);
         }
 
         return $criteria;
@@ -926,7 +982,8 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        throw new LogicException('The Storage object has no primary key');
+        $criteria = ChildStorageQuery::create();
+        $criteria->add(StorageTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -939,7 +996,7 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = false;
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -954,27 +1011,23 @@ abstract class Storage implements ActiveRecordInterface
     }
 
     /**
-     * Returns NULL since this table doesn't have a primary key.
-     * This method exists only for BC and is deprecated!
-     * @return null
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        return null;
+        return $this->getId();
     }
 
     /**
-     * Dummy primary key setter.
+     * Generic method to set the primary key (id column).
      *
-     * This function only exists to preserve backwards compatibility.  It is no longer
-     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
-     * release of Propel.
-     *
-     * @deprecated
+     * @param       int $key Primary key.
+     * @return void
      */
-    public function setPrimaryKey($pk)
+    public function setPrimaryKey($key)
     {
-        // do nothing, because this object doesn't have any primary keys
+        $this->setId($key);
     }
 
     /**
@@ -983,7 +1036,7 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return ;
+        return null === $this->getId();
     }
 
     /**
@@ -999,11 +1052,11 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setId($this->getId());
-        $copyObj->setCount($this->getCount());
         $copyObj->setProductId($this->getProductId());
+        $copyObj->setCount($this->getCount());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1030,15 +1083,69 @@ abstract class Storage implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildProduct object.
+     *
+     * @param  ChildProduct $v
+     * @return $this|\Storage The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProduct(ChildProduct $v = null)
+    {
+        if ($v === null) {
+            $this->setProductId(NULL);
+        } else {
+            $this->setProductId($v->getId());
+        }
+
+        $this->aProduct = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildProduct object, it will not be re-added.
+        if ($v !== null) {
+            $v->addStorage($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildProduct object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildProduct The associated ChildProduct object.
+     * @throws PropelException
+     */
+    public function getProduct(ConnectionInterface $con = null)
+    {
+        if ($this->aProduct === null && ($this->product_id != 0)) {
+            $this->aProduct = ChildProductQuery::create()->findPk($this->product_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProduct->addStorages($this);
+             */
+        }
+
+        return $this->aProduct;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aProduct) {
+            $this->aProduct->removeStorage($this);
+        }
         $this->id = null;
-        $this->count = null;
         $this->product_id = null;
+        $this->count = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1059,6 +1166,7 @@ abstract class Storage implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aProduct = null;
     }
 
     /**

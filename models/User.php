@@ -19,7 +19,6 @@ class User extends BaseUser
         $this->setPassword(password_hash($password, PASSWORD_DEFAULT));
     }
 
-    //method that takes a string password and verifies if it is valid or not
     function login($typedpword)
     {
         if (password_verify($typedpword, $this->getPassword())) {

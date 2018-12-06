@@ -57,11 +57,14 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `Title` TEXT NOT NULL,
-    `Author` TEXT NOT NULL,
-    `Edition` INTEGER NOT NULL,
-    `ISBN` TEXT NOT NULL,
-    `Price` DOUBLE NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `author` VARCHAR(255) NOT NULL,
+    `edition` VARCHAR(255) NOT NULL,
+    `isbn10` VARCHAR(255) NOT NULL,
+    `isbn13` VARCHAR(255) NOT NULL,
+    `publisher` VARCHAR(255) NOT NULL,
+    `price` DECIMAL(19,4) NOT NULL,
+    `image_url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -169,9 +172,14 @@ DROP TABLE IF EXISTS `storage`;
 
 CREATE TABLE `storage`
 (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `product_id` INTEGER NOT NULL,
     `count` INTEGER NOT NULL,
-    `product_id` INTEGER NOT NULL
+    PRIMARY KEY (`id`),
+    INDEX `product_id` (`product_id`),
+    CONSTRAINT `storage_ibfk_1`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -182,12 +190,12 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
 (
-    `email` TEXT NOT NULL,
-    `password` TEXT NOT NULL,
-    `full_name` TEXT NOT NULL,
-    `status` bit(1) NOT NULL,
-    `last_access` DATETIME NOT NULL,
-    `last_update` DATETIME NOT NULL
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `full_name` VARCHAR(255) NOT NULL,
+    `status` INTEGER(1) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

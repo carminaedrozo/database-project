@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -60,7 +59,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -70,7 +69,12 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 5;
+
+    /**
+     * the column name for the id field
+     */
+    const COL_ID = 'user.id';
 
     /**
      * the column name for the email field
@@ -93,16 +97,6 @@ class UserTableMap extends TableMap
     const COL_STATUS = 'user.status';
 
     /**
-     * the column name for the last_access field
-     */
-    const COL_LAST_ACCESS = 'user.last_access';
-
-    /**
-     * the column name for the last_update field
-     */
-    const COL_LAST_UPDATE = 'user.last_update';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -114,11 +108,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Email', 'Password', 'FullName', 'Status', 'LastAccess', 'LastUpdate', ),
-        self::TYPE_CAMELNAME     => array('email', 'password', 'fullName', 'status', 'lastAccess', 'lastUpdate', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_FULL_NAME, UserTableMap::COL_STATUS, UserTableMap::COL_LAST_ACCESS, UserTableMap::COL_LAST_UPDATE, ),
-        self::TYPE_FIELDNAME     => array('email', 'password', 'full_name', 'status', 'last_access', 'last_update', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Email', 'Password', 'FullName', 'Status', ),
+        self::TYPE_CAMELNAME     => array('id', 'email', 'password', 'fullName', 'status', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_FULL_NAME, UserTableMap::COL_STATUS, ),
+        self::TYPE_FIELDNAME     => array('id', 'email', 'password', 'full_name', 'status', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -128,11 +122,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Email' => 0, 'Password' => 1, 'FullName' => 2, 'Status' => 3, 'LastAccess' => 4, 'LastUpdate' => 5, ),
-        self::TYPE_CAMELNAME     => array('email' => 0, 'password' => 1, 'fullName' => 2, 'status' => 3, 'lastAccess' => 4, 'lastUpdate' => 5, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_EMAIL => 0, UserTableMap::COL_PASSWORD => 1, UserTableMap::COL_FULL_NAME => 2, UserTableMap::COL_STATUS => 3, UserTableMap::COL_LAST_ACCESS => 4, UserTableMap::COL_LAST_UPDATE => 5, ),
-        self::TYPE_FIELDNAME     => array('email' => 0, 'password' => 1, 'full_name' => 2, 'status' => 3, 'last_access' => 4, 'last_update' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Email' => 1, 'Password' => 2, 'FullName' => 3, 'Status' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'fullName' => 3, 'status' => 4, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_EMAIL => 1, UserTableMap::COL_PASSWORD => 2, UserTableMap::COL_FULL_NAME => 3, UserTableMap::COL_STATUS => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'full_name' => 3, 'status' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -150,14 +144,13 @@ class UserTableMap extends TableMap
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\User');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('email', 'Email', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('password', 'Password', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('full_name', 'FullName', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('status', 'Status', 'VARCHAR', true, 1, null);
-        $this->addColumn('last_access', 'LastAccess', 'TIMESTAMP', true, null, null);
-        $this->addColumn('last_update', 'LastUpdate', 'TIMESTAMP', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
+        $this->addColumn('full_name', 'FullName', 'VARCHAR', true, 255, null);
+        $this->addColumn('status', 'Status', 'INTEGER', true, 1, null);
     } // initialize()
 
     /**
@@ -182,7 +175,12 @@ class UserTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -199,7 +197,11 @@ class UserTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -299,19 +301,17 @@ class UserTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
+            $criteria->addSelectColumn(UserTableMap::COL_ID);
             $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
             $criteria->addSelectColumn(UserTableMap::COL_PASSWORD);
             $criteria->addSelectColumn(UserTableMap::COL_FULL_NAME);
             $criteria->addSelectColumn(UserTableMap::COL_STATUS);
-            $criteria->addSelectColumn(UserTableMap::COL_LAST_ACCESS);
-            $criteria->addSelectColumn(UserTableMap::COL_LAST_UPDATE);
         } else {
+            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.password');
             $criteria->addSelectColumn($alias . '.full_name');
             $criteria->addSelectColumn($alias . '.status');
-            $criteria->addSelectColumn($alias . '.last_access');
-            $criteria->addSelectColumn($alias . '.last_update');
         }
     }
 
@@ -359,10 +359,11 @@ class UserTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \User) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The User object has no primary key');
+            $criteria = new Criteria(UserTableMap::DATABASE_NAME);
+            $criteria->add(UserTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = UserQuery::create()->mergeWith($criteria);
@@ -408,6 +409,10 @@ class UserTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from User object
+        }
+
+        if ($criteria->containsKey(UserTableMap::COL_ID) && $criteria->keyContainsValue(UserTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserTableMap::COL_ID.')');
         }
 
 

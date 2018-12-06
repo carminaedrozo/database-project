@@ -59,7 +59,7 @@ class ProductTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class ProductTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
@@ -77,29 +77,44 @@ class ProductTableMap extends TableMap
     const COL_ID = 'product.id';
 
     /**
-     * the column name for the Title field
+     * the column name for the title field
      */
-    const COL_TITLE = 'product.Title';
+    const COL_TITLE = 'product.title';
 
     /**
-     * the column name for the Author field
+     * the column name for the author field
      */
-    const COL_AUTHOR = 'product.Author';
+    const COL_AUTHOR = 'product.author';
 
     /**
-     * the column name for the Edition field
+     * the column name for the edition field
      */
-    const COL_EDITION = 'product.Edition';
+    const COL_EDITION = 'product.edition';
 
     /**
-     * the column name for the ISBN field
+     * the column name for the isbn10 field
      */
-    const COL_ISBN = 'product.ISBN';
+    const COL_ISBN10 = 'product.isbn10';
 
     /**
-     * the column name for the Price field
+     * the column name for the isbn13 field
      */
-    const COL_PRICE = 'product.Price';
+    const COL_ISBN13 = 'product.isbn13';
+
+    /**
+     * the column name for the publisher field
+     */
+    const COL_PUBLISHER = 'product.publisher';
+
+    /**
+     * the column name for the price field
+     */
+    const COL_PRICE = 'product.price';
+
+    /**
+     * the column name for the image_url field
+     */
+    const COL_IMAGE_URL = 'product.image_url';
 
     /**
      * The default string format for model objects of the related table
@@ -113,11 +128,11 @@ class ProductTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Author', 'Edition', 'Isbn', 'Price', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'author', 'edition', 'isbn', 'price', ),
-        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID, ProductTableMap::COL_TITLE, ProductTableMap::COL_AUTHOR, ProductTableMap::COL_EDITION, ProductTableMap::COL_ISBN, ProductTableMap::COL_PRICE, ),
-        self::TYPE_FIELDNAME     => array('id', 'Title', 'Author', 'Edition', 'ISBN', 'Price', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Author', 'Edition', 'Isbn10', 'Isbn13', 'Publisher', 'Price', 'ImageUrl', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'author', 'edition', 'isbn10', 'isbn13', 'publisher', 'price', 'imageUrl', ),
+        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID, ProductTableMap::COL_TITLE, ProductTableMap::COL_AUTHOR, ProductTableMap::COL_EDITION, ProductTableMap::COL_ISBN10, ProductTableMap::COL_ISBN13, ProductTableMap::COL_PUBLISHER, ProductTableMap::COL_PRICE, ProductTableMap::COL_IMAGE_URL, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'author', 'edition', 'isbn10', 'isbn13', 'publisher', 'price', 'image_url', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -127,11 +142,11 @@ class ProductTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'Isbn' => 4, 'Price' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'author' => 2, 'edition' => 3, 'isbn' => 4, 'price' => 5, ),
-        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID => 0, ProductTableMap::COL_TITLE => 1, ProductTableMap::COL_AUTHOR => 2, ProductTableMap::COL_EDITION => 3, ProductTableMap::COL_ISBN => 4, ProductTableMap::COL_PRICE => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'ISBN' => 4, 'Price' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Author' => 2, 'Edition' => 3, 'Isbn10' => 4, 'Isbn13' => 5, 'Publisher' => 6, 'Price' => 7, 'ImageUrl' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'author' => 2, 'edition' => 3, 'isbn10' => 4, 'isbn13' => 5, 'publisher' => 6, 'price' => 7, 'imageUrl' => 8, ),
+        self::TYPE_COLNAME       => array(ProductTableMap::COL_ID => 0, ProductTableMap::COL_TITLE => 1, ProductTableMap::COL_AUTHOR => 2, ProductTableMap::COL_EDITION => 3, ProductTableMap::COL_ISBN10 => 4, ProductTableMap::COL_ISBN13 => 5, ProductTableMap::COL_PUBLISHER => 6, ProductTableMap::COL_PRICE => 7, ProductTableMap::COL_IMAGE_URL => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'author' => 2, 'edition' => 3, 'isbn10' => 4, 'isbn13' => 5, 'publisher' => 6, 'price' => 7, 'image_url' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -152,11 +167,14 @@ class ProductTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Title', 'Title', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('Author', 'Author', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('Edition', 'Edition', 'INTEGER', true, null, null);
-        $this->addColumn('ISBN', 'Isbn', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('Price', 'Price', 'DOUBLE', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
+        $this->addColumn('author', 'Author', 'VARCHAR', true, 255, null);
+        $this->addColumn('edition', 'Edition', 'VARCHAR', true, 255, null);
+        $this->addColumn('isbn10', 'Isbn10', 'VARCHAR', true, 255, null);
+        $this->addColumn('isbn13', 'Isbn13', 'VARCHAR', true, 255, null);
+        $this->addColumn('publisher', 'Publisher', 'VARCHAR', true, 255, null);
+        $this->addColumn('price', 'Price', 'DECIMAL', true, 19, null);
+        $this->addColumn('image_url', 'ImageUrl', 'VARCHAR', true, 255, null);
     } // initialize()
 
     /**
@@ -164,6 +182,13 @@ class ProductTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Storage', '\\Storage', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':product_id',
+    1 => ':id',
+  ),
+), null, null, 'Storages', false);
     } // buildRelations()
 
     /**
@@ -311,15 +336,21 @@ class ProductTableMap extends TableMap
             $criteria->addSelectColumn(ProductTableMap::COL_TITLE);
             $criteria->addSelectColumn(ProductTableMap::COL_AUTHOR);
             $criteria->addSelectColumn(ProductTableMap::COL_EDITION);
-            $criteria->addSelectColumn(ProductTableMap::COL_ISBN);
+            $criteria->addSelectColumn(ProductTableMap::COL_ISBN10);
+            $criteria->addSelectColumn(ProductTableMap::COL_ISBN13);
+            $criteria->addSelectColumn(ProductTableMap::COL_PUBLISHER);
             $criteria->addSelectColumn(ProductTableMap::COL_PRICE);
+            $criteria->addSelectColumn(ProductTableMap::COL_IMAGE_URL);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.Title');
-            $criteria->addSelectColumn($alias . '.Author');
-            $criteria->addSelectColumn($alias . '.Edition');
-            $criteria->addSelectColumn($alias . '.ISBN');
-            $criteria->addSelectColumn($alias . '.Price');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.author');
+            $criteria->addSelectColumn($alias . '.edition');
+            $criteria->addSelectColumn($alias . '.isbn10');
+            $criteria->addSelectColumn($alias . '.isbn13');
+            $criteria->addSelectColumn($alias . '.publisher');
+            $criteria->addSelectColumn($alias . '.price');
+            $criteria->addSelectColumn($alias . '.image_url');
         }
     }
 
