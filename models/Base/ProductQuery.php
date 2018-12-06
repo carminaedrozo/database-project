@@ -10,6 +10,7 @@ use Map\ProductTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,18 +21,24 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildProductQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildProductQuery orderByTitle($order = Criteria::ASC) Order by the Title column
- * @method     ChildProductQuery orderByAuthor($order = Criteria::ASC) Order by the Author column
- * @method     ChildProductQuery orderByEdition($order = Criteria::ASC) Order by the Edition column
- * @method     ChildProductQuery orderByIsbn($order = Criteria::ASC) Order by the ISBN column
- * @method     ChildProductQuery orderByPrice($order = Criteria::ASC) Order by the Price column
+ * @method     ChildProductQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     ChildProductQuery orderByAuthor($order = Criteria::ASC) Order by the author column
+ * @method     ChildProductQuery orderByEdition($order = Criteria::ASC) Order by the edition column
+ * @method     ChildProductQuery orderByIsbn10($order = Criteria::ASC) Order by the isbn10 column
+ * @method     ChildProductQuery orderByIsbn13($order = Criteria::ASC) Order by the isbn13 column
+ * @method     ChildProductQuery orderByPublisher($order = Criteria::ASC) Order by the publisher column
+ * @method     ChildProductQuery orderByPrice($order = Criteria::ASC) Order by the price column
+ * @method     ChildProductQuery orderByImageUrl($order = Criteria::ASC) Order by the image_url column
  *
  * @method     ChildProductQuery groupById() Group by the id column
- * @method     ChildProductQuery groupByTitle() Group by the Title column
- * @method     ChildProductQuery groupByAuthor() Group by the Author column
- * @method     ChildProductQuery groupByEdition() Group by the Edition column
- * @method     ChildProductQuery groupByIsbn() Group by the ISBN column
- * @method     ChildProductQuery groupByPrice() Group by the Price column
+ * @method     ChildProductQuery groupByTitle() Group by the title column
+ * @method     ChildProductQuery groupByAuthor() Group by the author column
+ * @method     ChildProductQuery groupByEdition() Group by the edition column
+ * @method     ChildProductQuery groupByIsbn10() Group by the isbn10 column
+ * @method     ChildProductQuery groupByIsbn13() Group by the isbn13 column
+ * @method     ChildProductQuery groupByPublisher() Group by the publisher column
+ * @method     ChildProductQuery groupByPrice() Group by the price column
+ * @method     ChildProductQuery groupByImageUrl() Group by the image_url column
  *
  * @method     ChildProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildProductQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -41,33 +48,54 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildProductQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildProductQuery leftJoinStorage($relationAlias = null) Adds a LEFT JOIN clause to the query using the Storage relation
+ * @method     ChildProductQuery rightJoinStorage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Storage relation
+ * @method     ChildProductQuery innerJoinStorage($relationAlias = null) Adds a INNER JOIN clause to the query using the Storage relation
+ *
+ * @method     ChildProductQuery joinWithStorage($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Storage relation
+ *
+ * @method     ChildProductQuery leftJoinWithStorage() Adds a LEFT JOIN clause and with to the query using the Storage relation
+ * @method     ChildProductQuery rightJoinWithStorage() Adds a RIGHT JOIN clause and with to the query using the Storage relation
+ * @method     ChildProductQuery innerJoinWithStorage() Adds a INNER JOIN clause and with to the query using the Storage relation
+ *
+ * @method     \StorageQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ *
  * @method     ChildProduct findOne(ConnectionInterface $con = null) Return the first ChildProduct matching the query
  * @method     ChildProduct findOneOrCreate(ConnectionInterface $con = null) Return the first ChildProduct matching the query, or a new ChildProduct object populated from the query conditions when no match is found
  *
  * @method     ChildProduct findOneById(int $id) Return the first ChildProduct filtered by the id column
- * @method     ChildProduct findOneByTitle(string $Title) Return the first ChildProduct filtered by the Title column
- * @method     ChildProduct findOneByAuthor(string $Author) Return the first ChildProduct filtered by the Author column
- * @method     ChildProduct findOneByEdition(int $Edition) Return the first ChildProduct filtered by the Edition column
- * @method     ChildProduct findOneByIsbn(string $ISBN) Return the first ChildProduct filtered by the ISBN column
- * @method     ChildProduct findOneByPrice(double $Price) Return the first ChildProduct filtered by the Price column *
+ * @method     ChildProduct findOneByTitle(string $title) Return the first ChildProduct filtered by the title column
+ * @method     ChildProduct findOneByAuthor(string $author) Return the first ChildProduct filtered by the author column
+ * @method     ChildProduct findOneByEdition(string $edition) Return the first ChildProduct filtered by the edition column
+ * @method     ChildProduct findOneByIsbn10(string $isbn10) Return the first ChildProduct filtered by the isbn10 column
+ * @method     ChildProduct findOneByIsbn13(string $isbn13) Return the first ChildProduct filtered by the isbn13 column
+ * @method     ChildProduct findOneByPublisher(string $publisher) Return the first ChildProduct filtered by the publisher column
+ * @method     ChildProduct findOneByPrice(string $price) Return the first ChildProduct filtered by the price column
+ * @method     ChildProduct findOneByImageUrl(string $image_url) Return the first ChildProduct filtered by the image_url column *
 
  * @method     ChildProduct requirePk($key, ConnectionInterface $con = null) Return the ChildProduct by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProduct requireOne(ConnectionInterface $con = null) Return the first ChildProduct matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProduct requireOneById(int $id) Return the first ChildProduct filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProduct requireOneByTitle(string $Title) Return the first ChildProduct filtered by the Title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProduct requireOneByAuthor(string $Author) Return the first ChildProduct filtered by the Author column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProduct requireOneByEdition(int $Edition) Return the first ChildProduct filtered by the Edition column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProduct requireOneByIsbn(string $ISBN) Return the first ChildProduct filtered by the ISBN column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProduct requireOneByPrice(double $Price) Return the first ChildProduct filtered by the Price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByTitle(string $title) Return the first ChildProduct filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByAuthor(string $author) Return the first ChildProduct filtered by the author column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByEdition(string $edition) Return the first ChildProduct filtered by the edition column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByIsbn10(string $isbn10) Return the first ChildProduct filtered by the isbn10 column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByIsbn13(string $isbn13) Return the first ChildProduct filtered by the isbn13 column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByPublisher(string $publisher) Return the first ChildProduct filtered by the publisher column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByPrice(string $price) Return the first ChildProduct filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProduct requireOneByImageUrl(string $image_url) Return the first ChildProduct filtered by the image_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProduct[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildProduct objects based on current ModelCriteria
  * @method     ChildProduct[]|ObjectCollection findById(int $id) Return ChildProduct objects filtered by the id column
- * @method     ChildProduct[]|ObjectCollection findByTitle(string $Title) Return ChildProduct objects filtered by the Title column
- * @method     ChildProduct[]|ObjectCollection findByAuthor(string $Author) Return ChildProduct objects filtered by the Author column
- * @method     ChildProduct[]|ObjectCollection findByEdition(int $Edition) Return ChildProduct objects filtered by the Edition column
- * @method     ChildProduct[]|ObjectCollection findByIsbn(string $ISBN) Return ChildProduct objects filtered by the ISBN column
- * @method     ChildProduct[]|ObjectCollection findByPrice(double $Price) Return ChildProduct objects filtered by the Price column
+ * @method     ChildProduct[]|ObjectCollection findByTitle(string $title) Return ChildProduct objects filtered by the title column
+ * @method     ChildProduct[]|ObjectCollection findByAuthor(string $author) Return ChildProduct objects filtered by the author column
+ * @method     ChildProduct[]|ObjectCollection findByEdition(string $edition) Return ChildProduct objects filtered by the edition column
+ * @method     ChildProduct[]|ObjectCollection findByIsbn10(string $isbn10) Return ChildProduct objects filtered by the isbn10 column
+ * @method     ChildProduct[]|ObjectCollection findByIsbn13(string $isbn13) Return ChildProduct objects filtered by the isbn13 column
+ * @method     ChildProduct[]|ObjectCollection findByPublisher(string $publisher) Return ChildProduct objects filtered by the publisher column
+ * @method     ChildProduct[]|ObjectCollection findByPrice(string $price) Return ChildProduct objects filtered by the price column
+ * @method     ChildProduct[]|ObjectCollection findByImageUrl(string $image_url) Return ChildProduct objects filtered by the image_url column
  * @method     ChildProduct[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -166,7 +194,7 @@ abstract class ProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, Title, Author, Edition, ISBN, Price FROM product WHERE id = :p0';
+        $sql = 'SELECT id, title, author, edition, isbn10, isbn13, publisher, price, image_url FROM product WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -298,12 +326,12 @@ abstract class ProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Title column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByTitle('fooValue');   // WHERE Title = 'fooValue'
-     * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE Title LIKE '%fooValue%'
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
      * </code>
      *
      * @param     string $title The value to use as filter.
@@ -323,12 +351,12 @@ abstract class ProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Author column
+     * Filter the query on the author column
      *
      * Example usage:
      * <code>
-     * $query->filterByAuthor('fooValue');   // WHERE Author = 'fooValue'
-     * $query->filterByAuthor('%fooValue%', Criteria::LIKE); // WHERE Author LIKE '%fooValue%'
+     * $query->filterByAuthor('fooValue');   // WHERE author = 'fooValue'
+     * $query->filterByAuthor('%fooValue%', Criteria::LIKE); // WHERE author LIKE '%fooValue%'
      * </code>
      *
      * @param     string $author The value to use as filter.
@@ -348,39 +376,23 @@ abstract class ProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Edition column
+     * Filter the query on the edition column
      *
      * Example usage:
      * <code>
-     * $query->filterByEdition(1234); // WHERE Edition = 1234
-     * $query->filterByEdition(array(12, 34)); // WHERE Edition IN (12, 34)
-     * $query->filterByEdition(array('min' => 12)); // WHERE Edition > 12
+     * $query->filterByEdition('fooValue');   // WHERE edition = 'fooValue'
+     * $query->filterByEdition('%fooValue%', Criteria::LIKE); // WHERE edition LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $edition The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $edition The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildProductQuery The current query, for fluid interface
      */
     public function filterByEdition($edition = null, $comparison = null)
     {
-        if (is_array($edition)) {
-            $useMinMax = false;
-            if (isset($edition['min'])) {
-                $this->addUsingAlias(ProductTableMap::COL_EDITION, $edition['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($edition['max'])) {
-                $this->addUsingAlias(ProductTableMap::COL_EDITION, $edition['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($edition)) {
                 $comparison = Criteria::IN;
             }
         }
@@ -389,38 +401,88 @@ abstract class ProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the ISBN column
+     * Filter the query on the isbn10 column
      *
      * Example usage:
      * <code>
-     * $query->filterByIsbn('fooValue');   // WHERE ISBN = 'fooValue'
-     * $query->filterByIsbn('%fooValue%', Criteria::LIKE); // WHERE ISBN LIKE '%fooValue%'
+     * $query->filterByIsbn10('fooValue');   // WHERE isbn10 = 'fooValue'
+     * $query->filterByIsbn10('%fooValue%', Criteria::LIKE); // WHERE isbn10 LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $isbn The value to use as filter.
+     * @param     string $isbn10 The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildProductQuery The current query, for fluid interface
      */
-    public function filterByIsbn($isbn = null, $comparison = null)
+    public function filterByIsbn10($isbn10 = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($isbn)) {
+            if (is_array($isbn10)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(ProductTableMap::COL_ISBN, $isbn, $comparison);
+        return $this->addUsingAlias(ProductTableMap::COL_ISBN10, $isbn10, $comparison);
     }
 
     /**
-     * Filter the query on the Price column
+     * Filter the query on the isbn13 column
      *
      * Example usage:
      * <code>
-     * $query->filterByPrice(1234); // WHERE Price = 1234
-     * $query->filterByPrice(array(12, 34)); // WHERE Price IN (12, 34)
-     * $query->filterByPrice(array('min' => 12)); // WHERE Price > 12
+     * $query->filterByIsbn13('fooValue');   // WHERE isbn13 = 'fooValue'
+     * $query->filterByIsbn13('%fooValue%', Criteria::LIKE); // WHERE isbn13 LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $isbn13 The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByIsbn13($isbn13 = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($isbn13)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductTableMap::COL_ISBN13, $isbn13, $comparison);
+    }
+
+    /**
+     * Filter the query on the publisher column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublisher('fooValue');   // WHERE publisher = 'fooValue'
+     * $query->filterByPublisher('%fooValue%', Criteria::LIKE); // WHERE publisher LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $publisher The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByPublisher($publisher = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($publisher)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductTableMap::COL_PUBLISHER, $publisher, $comparison);
+    }
+
+    /**
+     * Filter the query on the price column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPrice(1234); // WHERE price = 1234
+     * $query->filterByPrice(array(12, 34)); // WHERE price IN (12, 34)
+     * $query->filterByPrice(array('min' => 12)); // WHERE price > 12
      * </code>
      *
      * @param     mixed $price The value to use as filter.
@@ -452,6 +514,104 @@ abstract class ProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductTableMap::COL_PRICE, $price, $comparison);
+    }
+
+    /**
+     * Filter the query on the image_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByImageUrl('fooValue');   // WHERE image_url = 'fooValue'
+     * $query->filterByImageUrl('%fooValue%', Criteria::LIKE); // WHERE image_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $imageUrl The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByImageUrl($imageUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($imageUrl)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductTableMap::COL_IMAGE_URL, $imageUrl, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Storage object
+     *
+     * @param \Storage|ObjectCollection $storage the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByStorage($storage, $comparison = null)
+    {
+        if ($storage instanceof \Storage) {
+            return $this
+                ->addUsingAlias(ProductTableMap::COL_ID, $storage->getProductId(), $comparison);
+        } elseif ($storage instanceof ObjectCollection) {
+            return $this
+                ->useStorageQuery()
+                ->filterByPrimaryKeys($storage->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByStorage() only accepts arguments of type \Storage or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Storage relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildProductQuery The current query, for fluid interface
+     */
+    public function joinStorage($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Storage');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Storage');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Storage relation Storage object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \StorageQuery A secondary query class using the current class as primary query
+     */
+    public function useStorageQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinStorage($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Storage', '\StorageQuery');
     }
 
     /**

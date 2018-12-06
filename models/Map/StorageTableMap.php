@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -78,14 +77,14 @@ class StorageTableMap extends TableMap
     const COL_ID = 'storage.id';
 
     /**
-     * the column name for the count field
-     */
-    const COL_COUNT = 'storage.count';
-
-    /**
      * the column name for the product_id field
      */
     const COL_PRODUCT_ID = 'storage.product_id';
+
+    /**
+     * the column name for the count field
+     */
+    const COL_COUNT = 'storage.count';
 
     /**
      * The default string format for model objects of the related table
@@ -99,10 +98,10 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Count', 'ProductId', ),
-        self::TYPE_CAMELNAME     => array('id', 'count', 'productId', ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID, StorageTableMap::COL_COUNT, StorageTableMap::COL_PRODUCT_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'count', 'product_id', ),
+        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Count', ),
+        self::TYPE_CAMELNAME     => array('id', 'productId', 'count', ),
+        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID, StorageTableMap::COL_PRODUCT_ID, StorageTableMap::COL_COUNT, ),
+        self::TYPE_FIELDNAME     => array('id', 'product_id', 'count', ),
         self::TYPE_NUM           => array(0, 1, 2, )
     );
 
@@ -113,10 +112,10 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Count' => 1, 'ProductId' => 2, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'count' => 1, 'productId' => 2, ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID => 0, StorageTableMap::COL_COUNT => 1, StorageTableMap::COL_PRODUCT_ID => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'count' => 1, 'product_id' => 2, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Count' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'productId' => 1, 'count' => 2, ),
+        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID => 0, StorageTableMap::COL_PRODUCT_ID => 1, StorageTableMap::COL_COUNT => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'count' => 2, ),
         self::TYPE_NUM           => array(0, 1, 2, )
     );
 
@@ -135,11 +134,11 @@ class StorageTableMap extends TableMap
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\Storage');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('id', 'Id', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('product_id', 'ProductId', 'INTEGER', 'product', 'id', true, null, null);
         $this->addColumn('count', 'Count', 'INTEGER', true, null, null);
-        $this->addColumn('product_id', 'ProductId', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -147,6 +146,13 @@ class StorageTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Product', '\\Product', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':product_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -164,7 +170,12 @@ class StorageTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -181,7 +192,11 @@ class StorageTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -282,12 +297,12 @@ class StorageTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(StorageTableMap::COL_ID);
-            $criteria->addSelectColumn(StorageTableMap::COL_COUNT);
             $criteria->addSelectColumn(StorageTableMap::COL_PRODUCT_ID);
+            $criteria->addSelectColumn(StorageTableMap::COL_COUNT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.count');
             $criteria->addSelectColumn($alias . '.product_id');
+            $criteria->addSelectColumn($alias . '.count');
         }
     }
 
@@ -335,10 +350,11 @@ class StorageTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Storage) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Storage object has no primary key');
+            $criteria = new Criteria(StorageTableMap::DATABASE_NAME);
+            $criteria->add(StorageTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = StorageQuery::create()->mergeWith($criteria);
@@ -384,6 +400,10 @@ class StorageTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Storage object
+        }
+
+        if ($criteria->containsKey(StorageTableMap::COL_ID) && $criteria->keyContainsValue(StorageTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StorageTableMap::COL_ID.')');
         }
 
 

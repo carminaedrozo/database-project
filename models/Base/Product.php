@@ -2,15 +2,20 @@
 
 namespace Base;
 
+use \Product as ChildProduct;
 use \ProductQuery as ChildProductQuery;
+use \Storage as ChildStorage;
+use \StorageQuery as ChildStorageQuery;
 use \Exception;
 use \PDO;
 use Map\ProductTableMap;
+use Map\StorageTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -83,23 +88,50 @@ abstract class Product implements ActiveRecordInterface
     /**
      * The value for the edition field.
      *
-     * @var        int
+     * @var        string
      */
     protected $edition;
 
     /**
-     * The value for the isbn field.
+     * The value for the isbn10 field.
      *
      * @var        string
      */
-    protected $isbn;
+    protected $isbn10;
+
+    /**
+     * The value for the isbn13 field.
+     *
+     * @var        string
+     */
+    protected $isbn13;
+
+    /**
+     * The value for the publisher field.
+     *
+     * @var        string
+     */
+    protected $publisher;
 
     /**
      * The value for the price field.
      *
-     * @var        double
+     * @var        string
      */
     protected $price;
+
+    /**
+     * The value for the image_url field.
+     *
+     * @var        string
+     */
+    protected $image_url;
+
+    /**
+     * @var        ObjectCollection|ChildStorage[] Collection to store aggregation of ChildStorage objects.
+     */
+    protected $collStorages;
+    protected $collStoragesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -108,6 +140,12 @@ abstract class Product implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildStorage[]
+     */
+    protected $storagesScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Product object.
@@ -367,7 +405,7 @@ abstract class Product implements ActiveRecordInterface
     /**
      * Get the [edition] column value.
      *
-     * @return int
+     * @return string
      */
     public function getEdition()
     {
@@ -375,23 +413,53 @@ abstract class Product implements ActiveRecordInterface
     }
 
     /**
-     * Get the [isbn] column value.
+     * Get the [isbn10] column value.
      *
      * @return string
      */
-    public function getIsbn()
+    public function getIsbn10()
     {
-        return $this->isbn;
+        return $this->isbn10;
+    }
+
+    /**
+     * Get the [isbn13] column value.
+     *
+     * @return string
+     */
+    public function getIsbn13()
+    {
+        return $this->isbn13;
+    }
+
+    /**
+     * Get the [publisher] column value.
+     *
+     * @return string
+     */
+    public function getPublisher()
+    {
+        return $this->publisher;
     }
 
     /**
      * Get the [price] column value.
      *
-     * @return double
+     * @return string
      */
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Get the [image_url] column value.
+     *
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        return $this->image_url;
     }
 
     /**
@@ -457,13 +525,13 @@ abstract class Product implements ActiveRecordInterface
     /**
      * Set the value of [edition] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Product The current object (for fluent API support)
      */
     public function setEdition($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->edition !== $v) {
@@ -475,35 +543,75 @@ abstract class Product implements ActiveRecordInterface
     } // setEdition()
 
     /**
-     * Set the value of [isbn] column.
+     * Set the value of [isbn10] column.
      *
      * @param string $v new value
      * @return $this|\Product The current object (for fluent API support)
      */
-    public function setIsbn($v)
+    public function setIsbn10($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->isbn !== $v) {
-            $this->isbn = $v;
-            $this->modifiedColumns[ProductTableMap::COL_ISBN] = true;
+        if ($this->isbn10 !== $v) {
+            $this->isbn10 = $v;
+            $this->modifiedColumns[ProductTableMap::COL_ISBN10] = true;
         }
 
         return $this;
-    } // setIsbn()
+    } // setIsbn10()
+
+    /**
+     * Set the value of [isbn13] column.
+     *
+     * @param string $v new value
+     * @return $this|\Product The current object (for fluent API support)
+     */
+    public function setIsbn13($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->isbn13 !== $v) {
+            $this->isbn13 = $v;
+            $this->modifiedColumns[ProductTableMap::COL_ISBN13] = true;
+        }
+
+        return $this;
+    } // setIsbn13()
+
+    /**
+     * Set the value of [publisher] column.
+     *
+     * @param string $v new value
+     * @return $this|\Product The current object (for fluent API support)
+     */
+    public function setPublisher($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->publisher !== $v) {
+            $this->publisher = $v;
+            $this->modifiedColumns[ProductTableMap::COL_PUBLISHER] = true;
+        }
+
+        return $this;
+    } // setPublisher()
 
     /**
      * Set the value of [price] column.
      *
-     * @param double $v new value
+     * @param string $v new value
      * @return $this|\Product The current object (for fluent API support)
      */
     public function setPrice($v)
     {
         if ($v !== null) {
-            $v = (double) $v;
+            $v = (string) $v;
         }
 
         if ($this->price !== $v) {
@@ -513,6 +621,26 @@ abstract class Product implements ActiveRecordInterface
 
         return $this;
     } // setPrice()
+
+    /**
+     * Set the value of [image_url] column.
+     *
+     * @param string $v new value
+     * @return $this|\Product The current object (for fluent API support)
+     */
+    public function setImageUrl($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->image_url !== $v) {
+            $this->image_url = $v;
+            $this->modifiedColumns[ProductTableMap::COL_IMAGE_URL] = true;
+        }
+
+        return $this;
+    } // setImageUrl()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -560,13 +688,22 @@ abstract class Product implements ActiveRecordInterface
             $this->author = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProductTableMap::translateFieldName('Edition', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->edition = (null !== $col) ? (int) $col : null;
+            $this->edition = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductTableMap::translateFieldName('Isbn', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->isbn = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductTableMap::translateFieldName('Isbn10', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->isbn10 = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->price = (null !== $col) ? (double) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductTableMap::translateFieldName('Isbn13', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->isbn13 = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductTableMap::translateFieldName('Publisher', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->publisher = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ProductTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->price = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : ProductTableMap::translateFieldName('ImageUrl', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->image_url = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -575,7 +712,7 @@ abstract class Product implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = ProductTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = ProductTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Product'), 0, $e);
@@ -635,6 +772,8 @@ abstract class Product implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collStorages = null;
 
         } // if (deep)
     }
@@ -750,6 +889,23 @@ abstract class Product implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->storagesScheduledForDeletion !== null) {
+                if (!$this->storagesScheduledForDeletion->isEmpty()) {
+                    \StorageQuery::create()
+                        ->filterByPrimaryKeys($this->storagesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->storagesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collStorages !== null) {
+                foreach ($this->collStorages as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -780,19 +936,28 @@ abstract class Product implements ActiveRecordInterface
             $modifiedColumns[':p' . $index++]  = 'id';
         }
         if ($this->isColumnModified(ProductTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'Title';
+            $modifiedColumns[':p' . $index++]  = 'title';
         }
         if ($this->isColumnModified(ProductTableMap::COL_AUTHOR)) {
-            $modifiedColumns[':p' . $index++]  = 'Author';
+            $modifiedColumns[':p' . $index++]  = 'author';
         }
         if ($this->isColumnModified(ProductTableMap::COL_EDITION)) {
-            $modifiedColumns[':p' . $index++]  = 'Edition';
+            $modifiedColumns[':p' . $index++]  = 'edition';
         }
-        if ($this->isColumnModified(ProductTableMap::COL_ISBN)) {
-            $modifiedColumns[':p' . $index++]  = 'ISBN';
+        if ($this->isColumnModified(ProductTableMap::COL_ISBN10)) {
+            $modifiedColumns[':p' . $index++]  = 'isbn10';
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_ISBN13)) {
+            $modifiedColumns[':p' . $index++]  = 'isbn13';
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_PUBLISHER)) {
+            $modifiedColumns[':p' . $index++]  = 'publisher';
         }
         if ($this->isColumnModified(ProductTableMap::COL_PRICE)) {
-            $modifiedColumns[':p' . $index++]  = 'Price';
+            $modifiedColumns[':p' . $index++]  = 'price';
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_IMAGE_URL)) {
+            $modifiedColumns[':p' . $index++]  = 'image_url';
         }
 
         $sql = sprintf(
@@ -808,20 +973,29 @@ abstract class Product implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Title':
+                    case 'title':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'Author':
+                    case 'author':
                         $stmt->bindValue($identifier, $this->author, PDO::PARAM_STR);
                         break;
-                    case 'Edition':
-                        $stmt->bindValue($identifier, $this->edition, PDO::PARAM_INT);
+                    case 'edition':
+                        $stmt->bindValue($identifier, $this->edition, PDO::PARAM_STR);
                         break;
-                    case 'ISBN':
-                        $stmt->bindValue($identifier, $this->isbn, PDO::PARAM_STR);
+                    case 'isbn10':
+                        $stmt->bindValue($identifier, $this->isbn10, PDO::PARAM_STR);
                         break;
-                    case 'Price':
+                    case 'isbn13':
+                        $stmt->bindValue($identifier, $this->isbn13, PDO::PARAM_STR);
+                        break;
+                    case 'publisher':
+                        $stmt->bindValue($identifier, $this->publisher, PDO::PARAM_STR);
+                        break;
+                    case 'price':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                        break;
+                    case 'image_url':
+                        $stmt->bindValue($identifier, $this->image_url, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -898,10 +1072,19 @@ abstract class Product implements ActiveRecordInterface
                 return $this->getEdition();
                 break;
             case 4:
-                return $this->getIsbn();
+                return $this->getIsbn10();
                 break;
             case 5:
+                return $this->getIsbn13();
+                break;
+            case 6:
+                return $this->getPublisher();
+                break;
+            case 7:
                 return $this->getPrice();
+                break;
+            case 8:
+                return $this->getImageUrl();
                 break;
             default:
                 return null;
@@ -920,10 +1103,11 @@ abstract class Product implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Product'][$this->hashCode()])) {
@@ -936,14 +1120,34 @@ abstract class Product implements ActiveRecordInterface
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getAuthor(),
             $keys[3] => $this->getEdition(),
-            $keys[4] => $this->getIsbn(),
-            $keys[5] => $this->getPrice(),
+            $keys[4] => $this->getIsbn10(),
+            $keys[5] => $this->getIsbn13(),
+            $keys[6] => $this->getPublisher(),
+            $keys[7] => $this->getPrice(),
+            $keys[8] => $this->getImageUrl(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collStorages) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'storages';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'storages';
+                        break;
+                    default:
+                        $key = 'Storages';
+                }
+
+                $result[$key] = $this->collStorages->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -990,10 +1194,19 @@ abstract class Product implements ActiveRecordInterface
                 $this->setEdition($value);
                 break;
             case 4:
-                $this->setIsbn($value);
+                $this->setIsbn10($value);
                 break;
             case 5:
+                $this->setIsbn13($value);
+                break;
+            case 6:
+                $this->setPublisher($value);
+                break;
+            case 7:
                 $this->setPrice($value);
+                break;
+            case 8:
+                $this->setImageUrl($value);
                 break;
         } // switch()
 
@@ -1034,10 +1247,19 @@ abstract class Product implements ActiveRecordInterface
             $this->setEdition($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setIsbn($arr[$keys[4]]);
+            $this->setIsbn10($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPrice($arr[$keys[5]]);
+            $this->setIsbn13($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setPublisher($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setPrice($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setImageUrl($arr[$keys[8]]);
         }
     }
 
@@ -1092,11 +1314,20 @@ abstract class Product implements ActiveRecordInterface
         if ($this->isColumnModified(ProductTableMap::COL_EDITION)) {
             $criteria->add(ProductTableMap::COL_EDITION, $this->edition);
         }
-        if ($this->isColumnModified(ProductTableMap::COL_ISBN)) {
-            $criteria->add(ProductTableMap::COL_ISBN, $this->isbn);
+        if ($this->isColumnModified(ProductTableMap::COL_ISBN10)) {
+            $criteria->add(ProductTableMap::COL_ISBN10, $this->isbn10);
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_ISBN13)) {
+            $criteria->add(ProductTableMap::COL_ISBN13, $this->isbn13);
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_PUBLISHER)) {
+            $criteria->add(ProductTableMap::COL_PUBLISHER, $this->publisher);
         }
         if ($this->isColumnModified(ProductTableMap::COL_PRICE)) {
             $criteria->add(ProductTableMap::COL_PRICE, $this->price);
+        }
+        if ($this->isColumnModified(ProductTableMap::COL_IMAGE_URL)) {
+            $criteria->add(ProductTableMap::COL_IMAGE_URL, $this->image_url);
         }
 
         return $criteria;
@@ -1187,8 +1418,25 @@ abstract class Product implements ActiveRecordInterface
         $copyObj->setTitle($this->getTitle());
         $copyObj->setAuthor($this->getAuthor());
         $copyObj->setEdition($this->getEdition());
-        $copyObj->setIsbn($this->getIsbn());
+        $copyObj->setIsbn10($this->getIsbn10());
+        $copyObj->setIsbn13($this->getIsbn13());
+        $copyObj->setPublisher($this->getPublisher());
         $copyObj->setPrice($this->getPrice());
+        $copyObj->setImageUrl($this->getImageUrl());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getStorages() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addStorage($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1217,6 +1465,248 @@ abstract class Product implements ActiveRecordInterface
         return $copyObj;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Storage' == $relationName) {
+            $this->initStorages();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collStorages collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addStorages()
+     */
+    public function clearStorages()
+    {
+        $this->collStorages = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collStorages collection loaded partially.
+     */
+    public function resetPartialStorages($v = true)
+    {
+        $this->collStoragesPartial = $v;
+    }
+
+    /**
+     * Initializes the collStorages collection.
+     *
+     * By default this just sets the collStorages collection to an empty array (like clearcollStorages());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initStorages($overrideExisting = true)
+    {
+        if (null !== $this->collStorages && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = StorageTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collStorages = new $collectionClassName;
+        $this->collStorages->setModel('\Storage');
+    }
+
+    /**
+     * Gets an array of ChildStorage objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildProduct is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildStorage[] List of ChildStorage objects
+     * @throws PropelException
+     */
+    public function getStorages(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collStoragesPartial && !$this->isNew();
+        if (null === $this->collStorages || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collStorages) {
+                // return empty collection
+                $this->initStorages();
+            } else {
+                $collStorages = ChildStorageQuery::create(null, $criteria)
+                    ->filterByProduct($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collStoragesPartial && count($collStorages)) {
+                        $this->initStorages(false);
+
+                        foreach ($collStorages as $obj) {
+                            if (false == $this->collStorages->contains($obj)) {
+                                $this->collStorages->append($obj);
+                            }
+                        }
+
+                        $this->collStoragesPartial = true;
+                    }
+
+                    return $collStorages;
+                }
+
+                if ($partial && $this->collStorages) {
+                    foreach ($this->collStorages as $obj) {
+                        if ($obj->isNew()) {
+                            $collStorages[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collStorages = $collStorages;
+                $this->collStoragesPartial = false;
+            }
+        }
+
+        return $this->collStorages;
+    }
+
+    /**
+     * Sets a collection of ChildStorage objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $storages A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildProduct The current object (for fluent API support)
+     */
+    public function setStorages(Collection $storages, ConnectionInterface $con = null)
+    {
+        /** @var ChildStorage[] $storagesToDelete */
+        $storagesToDelete = $this->getStorages(new Criteria(), $con)->diff($storages);
+
+
+        $this->storagesScheduledForDeletion = $storagesToDelete;
+
+        foreach ($storagesToDelete as $storageRemoved) {
+            $storageRemoved->setProduct(null);
+        }
+
+        $this->collStorages = null;
+        foreach ($storages as $storage) {
+            $this->addStorage($storage);
+        }
+
+        $this->collStorages = $storages;
+        $this->collStoragesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Storage objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Storage objects.
+     * @throws PropelException
+     */
+    public function countStorages(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collStoragesPartial && !$this->isNew();
+        if (null === $this->collStorages || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collStorages) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getStorages());
+            }
+
+            $query = ChildStorageQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProduct($this)
+                ->count($con);
+        }
+
+        return count($this->collStorages);
+    }
+
+    /**
+     * Method called to associate a ChildStorage object to this object
+     * through the ChildStorage foreign key attribute.
+     *
+     * @param  ChildStorage $l ChildStorage
+     * @return $this|\Product The current object (for fluent API support)
+     */
+    public function addStorage(ChildStorage $l)
+    {
+        if ($this->collStorages === null) {
+            $this->initStorages();
+            $this->collStoragesPartial = true;
+        }
+
+        if (!$this->collStorages->contains($l)) {
+            $this->doAddStorage($l);
+
+            if ($this->storagesScheduledForDeletion and $this->storagesScheduledForDeletion->contains($l)) {
+                $this->storagesScheduledForDeletion->remove($this->storagesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildStorage $storage The ChildStorage object to add.
+     */
+    protected function doAddStorage(ChildStorage $storage)
+    {
+        $this->collStorages[]= $storage;
+        $storage->setProduct($this);
+    }
+
+    /**
+     * @param  ChildStorage $storage The ChildStorage object to remove.
+     * @return $this|ChildProduct The current object (for fluent API support)
+     */
+    public function removeStorage(ChildStorage $storage)
+    {
+        if ($this->getStorages()->contains($storage)) {
+            $pos = $this->collStorages->search($storage);
+            $this->collStorages->remove($pos);
+            if (null === $this->storagesScheduledForDeletion) {
+                $this->storagesScheduledForDeletion = clone $this->collStorages;
+                $this->storagesScheduledForDeletion->clear();
+            }
+            $this->storagesScheduledForDeletion[]= clone $storage;
+            $storage->setProduct(null);
+        }
+
+        return $this;
+    }
+
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1228,8 +1718,11 @@ abstract class Product implements ActiveRecordInterface
         $this->title = null;
         $this->author = null;
         $this->edition = null;
-        $this->isbn = null;
+        $this->isbn10 = null;
+        $this->isbn13 = null;
+        $this->publisher = null;
         $this->price = null;
+        $this->image_url = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1248,8 +1741,14 @@ abstract class Product implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collStorages) {
+                foreach ($this->collStorages as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collStorages = null;
     }
 
     /**
