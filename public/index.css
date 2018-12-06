@@ -1,7 +1,6 @@
 
 
 #submitBtn {
-<<<<<<< HEAD
     font-family: 'Montserrat', sans-serif;
 
 }
@@ -18,9 +17,6 @@ a {
 }
 #password{
     font-family: 'Montserrat', sans-serif;
-=======
-  font-family: 'Montserrat', sans-serif;
-
 }
 a {
   color:#ffc4e8;
@@ -35,39 +31,28 @@ a {
 }
 #password{
   font-family: 'Montserrat', sans-serif;
->>>>>>> 7c90aac738b8d796ef4fba00045a00ef6b9fd3f3
 }
 #footerfooter {
     height: 5rem;
-
 }
 
 #bordersignin {
-<<<<<<< HEAD
     border-width:12px !important;
     border-color: #3a4547;
-    border-radius: 5px;
-    /* border-style: inset; */
+    border-radius: 10px;
+}
+.navbar-default a{
+    color: #000000;
 }
 
-#signinboxcolor {
-    background-color: #64c4d1;
-=======
+/* #signinboxcolor {
+  background-color: #64c4d1;
   border-width:12px !important;
-  border-color: #3a4547;
-  border-radius: 5px;
-  /* border-style: inset; */
-}
+  border-radius: 10px;
+} */
 
 #signinboxcolor {
   background-color: #64c4d1;
->>>>>>> 7c90aac738b8d796ef4fba00045a00ef6b9fd3f3
 }
 
 body { background: #e8d5e3 !important;}
-/* h1 {
-    color: blue;
-}
-p {
-    color: red;
-} */

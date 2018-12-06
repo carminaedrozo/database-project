@@ -36,7 +36,7 @@ $container['view'] = function ($container) {
 
 // home page route
 $app->get('/', function ($request, $response, $args) {
-    $this->view->render($response, 'index.html');
+    $this->view->render($response, 'homepage.html');
     return $response;
 });
 
