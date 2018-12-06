@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../index.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400|Text+Me+One" rel="stylesheet">
     <!--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">-->
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -21,19 +25,54 @@
 
 <nav class="navbar-dark bg-dark site-header sticky-top py-1">
     <div class="container d-flex flex-column flex-md-row justify-content-between">
-        <a class="py-2" href="#">
+        <a class=".navbar-brand py-2" href="#">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIbSURBVGhD7Zm7L0NxFMcbtPwBuotRkFS8elUlWBFvg5hqEYtVaqv3oyLEI0wNQSJpomJo4lYsDMJAUq9gxGQx3uN3uJoqqXNvWvTmfJNP0rTnm/w+Sc/N7a2Jw+FwjJFCt81bOFAUJOJRa5pjdcmebFcoSMHaHfKqNXoKBmwH4oBAocBtC6g1zbG6QgFxQKAgZA7UGj0sojEsQo0eEZAzc2A/c4SEmMVO0kUaZsvDzfMSUKibKTvGDshZDnFIICFmsVMydH4sjV0AhdLhcBg7mtK74Xx2b1cDhZ415wN29Ig0+R4fXDsvQKFl9ekZO5rStijddq44gELrgv0MO3pEKicvz2rn7oGCc+r6FjuaomdHFL+lHrYygALOYudfLrviy+gBrwko4Cx2fl1EGiyGmomyNyRP8fci6+YuWE4DCjiLnViRnL5DyOs/eSO37yjxIp3LjshydyxVfCuiZ0diRaqmryPLXTt7xyKRJExk1/JO7PspJbIn+FhwfB39GYtoDItEH5ZFWORrWCT6sCzCIl9jWBHKbXwiRJJ+Gx+PRIrE4+9EZMHHz1t8/emzXxIxzMMHwzwOap6XrtoXJaDQNGc/xY7itzTCpvgaEcBZ7NhHL0+rpm/E1epnpPGLK+xoip4dSYmnKPGIiGyaO8CXDhRwFjupcdWKh7ojLEKNYUT0/BmqyOZ8Zd8SJCFmsZP0P0M5HA7nH8ZkegXY25l68s/8owAAAABJRU5ErkJggg==">
-            Dashboard
+            PUNTO FIJO
         </a></div>
+    <div class="container">
+        <ul class="nav justify-content-center justify-content-between">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ0SURBVFhH7ZhNSFRhFIZHDXMISgpB8I8KaRFRYehCN4KGC9E2EgQtDFq4cRduok2Uq1AXbaKglQtBF/6saiOBBhJBQZsoMIJQJP8oI2qm51zeKe3OdUbnc+4s7gsP57vnnO98r8Pc69WYSyWTyWNwSJeFJYz1JBKJTXgD9UqHL/vEMPQATB/gO7k1YrdawhNGKjEyS0wSx+EoywtEM2q6x3WJ2vMrDm+Gz/ALbmGkSCUzXk5ummjGn0GF5Yk1sGl5E+vf0OttcimG9sNPWIZWpXeI84up3QEzsQiN5FpkbBKGtB7UltzFsCMwqsHzUKVSoOjpgBX4AY+19xrB7nh3BhlUD2819CGhVKWMov8kvLK9JtZuDTLnCoPW4RtcV3pPYkYZe5/IVDshd4PsL2HAfTC9h/Mq7VvMOGMxZ4NsrIDnGjJFKFfJiZjnGURjUKx0dsJQE3wCe4TcZsDfR4hLMTv1KJqB40rvLhr7wO44u/MuK30gwpt9he6C6SNcVMkvinE2PNVPtAB1Kh24OKsTVmEL/A9uPJ2i8Frm3hHKVMqbOPesnW9i/QgOpwon4CuY+w144RXyLHyl7uoVxQmvwCIOw3AJ7FUpbIODcAP6VPqnQjGolF+RwV3k3CCz7NWpJxuYeVrbAkWfW4P0eb8FshG9/i/8f6LNvUH4wsyGIKhfJYZqcFGXaUX9XGQwSPRFBn2imLNBziiCWltTLzyD5Fp1UDUU5CdYSt77W5kYfQcDRV9k0CeKkcEg7cWg/f+lLRP0vYSldLUU1G8S7dCR7fl00NNNzGhwzprCFB4GZMcvijX0pH3pzAec3wVx2YnkQLHYH/h1bfSBDb7QAAAAAElFTkSuQmCC">
+                    Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAO9SURBVFhH5ZhdaI5hHMY3NplIvkaccIA0Q8mWA0LDSpysiNJ8NR8lJe10mGK1wmI42CxxIs5wIA6IE4pJPmc+yoHJEFETm9+195qXfbzb87zPO8Wvrp7nvu77/7//PZ/386T987S1tY1rbW1diFaxX8J2IypifzbbYR7WfzDxAFTA5LXoFfs9Qv93dAvtQVOcIjUwXwaT6Og88+Tf0DVUjlaj+dizJfaXoM2oGj3WeMH+JZTvlNFB0jxU70meo+1opLt7hbG5qAp9Qa2kqWMzyt3JQaJdSEfrA9pG8gx3BYb4bFSDxCsU/mhSyEASHPVRu44muCtpyKVL4C36ipbbDgaB1S7uFJtM25FBzonkfoJa0GLbfYOAnS7uNJt025FDbj2iGpCuzWm2E8PAfNR+h5JgkO2UwTxT0Sf0gPkG2+4eBuhRUo90Q4y3nXKYay1z64yV2eoeBmzywK22+g3mvIq+Mv04W39CxwAG6HpoZD/0oyQszDvHB6fC1p/QV+ABO2wFhtgilONmYIjVm6mJMro+NejQA7SFztG2AkN8M/F1bgaG+PU+SIW24mDqyX7NzVCQ+yM5zrgZGGL1phGVtmJgjHfl+2yFItkCBfEP0Q03Y5B4gQtcYysUERV4HjW7GUOFucB5tkIRUYGHVAvEXxI0SmJe2yxbCSGJ1n/N6H0nCb1bO/u6vrMdnhDG7VUhbOPLORodd88cWwlh3Ex0hpCzvwtPr0itsjv7R9gOcXhCGLufsWK4rXZzpRy2i2yFghRRnOJj6Ae54osUGlqqq8AttkIRUYGX0Us3Y2AMQ/rAqbYVimQLJD6d+Dfogq04mLfRIzdDkWyBxOaQQ2ey1FYczI67Z4atwBD7GlW5GRim3+0acm3FwZyMxGFbgSG3VshZbgaCWK1F9Ti6a6srdF5EWn736ZkVJRS4zkdvg62u0DkXiRpb/QJ1DWVOXR76KZD4A40B+qgWS22lHOY67qO3zFbPMGgk0rXQhCbZThnM0fE9UmurdxisXx26FhuI7f4bIQLIX4j07tZvlT69Cn9B0AoHN6LI/0yRs9j5n6IxtoNBoH5RfEb6bi22nRQcKd0QJ3xa7yR9hkgyDd13wisoz12BIFzPOR211851kk2w09oTJMtCZUjfrUqur6/1qNfnJWOmI/3AfOFYfdr2freGgcRjUQXSp6EmE/qGOIcOonLsA2y1ZNKq5I3GCfbvIa07I/8R1QVNwmS6AyvRTfSuvQpD+wd6gS6gUjTdoX8P6spEIyRb/wNpaT8BUxj5gnC16T4AAAAASUVORK5CYII=">
+                    Create</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALWSURBVFhH7ZhPiIxhHMexB1byZ5XYlJQ/B3+yaWoVFyfJaS+E3GxyICUuLopQjpMJl41cltptcfAnKRFKe+NAZJSUkoiyeF+f37tfU9PMmGee2d/rsp/69szzfX7P7/fbd/ad95mZMskkASRJUkBH0dU0Te8zPkDdWv5/0MRm9JimMng9hsrIKGFNVWj+0MAR9Bt9QidRgYamaW046zhNP/P6AuPCbFNeUHSfVWe8g+bLroDXhfagIvqGPqBlWvaFQovQd/SUHmfKbghxPciafCTLFwqdQUaPrKYQe0xXfJMsPyjyHD3TNAjiF6vBE7J8oEYHRYyirGDYazfMFU19oMjc2CvBnhfonqZ+UOQrPQ5oGoxdQTSoqR80eBOVKZZ95oVA/Fri7cofluUHRS6q2FJZTSH2lPZsk+UDBTrRTzQkKwji7S62m2RElg8UmUWRX6gkKxj2vEa3NPWDInZS+YhWyWoKsbv1Fh+X5QdFNujtKsv6J8T1qrlRtEC2LxQ6pKIrZTWEGDvpJITnd6Kh3gorCudk1YV1u6neo4ey8oOi15CxRVYGcztqnUXn0W1d6Seat6IS6lXa1qHuHBLYsavq+cp8hzU1EZBrWGnjIEfNAYD5zvH06UZZUZDnLbqhaRw0Edwg83Wov57Y06ewCm03yObpyE7KQQ3i35VfA2v2dOpSaAbz+AbZ2EnegfH0ab/sDNYaXUE7qq2vJ/YsUViFqAbZMBvtRy9JbH/5ZYaqUw1e/v+DBK5GdtvbWdAae4O2a7kK/PwaJGANGkKGfQe2r5l9FO9QSA2s59MgiwfQD8k+OIO+1xLn3yALB60Coz3gl8sOgnjfBq0hZL+xjFJkhuxg2OfeYNGyMxZktUQeDb5C7ygwL0bs3ctouDU4pgLt4tbgLpKfjhX7RxgNnwbbhaT5fA7G8rdBxi/IftyMlT0YrivtxEHSbnSJHgfbVZIkW/8AVeyU5tcppa4AAAAASUVORK5CYII=">
+                    Supplier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALmSURBVFhH7Zg7aBRRFIbXiKCREF+FLyQoVqk0MSjEQoliI4gook0ajShiYREkxCaFCgYkEDWdlU0QVJAUPiBFLKy0EGNQCaJCCFpE7ZRdv3P9d8nu3OhOmHujmB8+7txz7rnnZ2Z3dnZyWalQKCzI5/ObYKVCf48wtQXGMFnUIPM6pedWGFkC4zAJndAPphtaMrfCyE47ZYztMABH4B5MaklY0buWZjsY23yQu8hoaoXLzPfD9V8hf43BmkbGGrWZndhkK0ywUTVqVZnVFQ3+ScOwWGXpRaMh+ALH2eiwD3J9jCafQW+NwZpeRvtonFBZelFsH/4hTb0if1SNPsJbMWUxLfGK9DLVXVIovSh+B/c19Yr8ergDDyu4qiVe4a0+isHZat7gdLFmO9yGUXgCh+i9UGmvohkkvwe+w2d4BKNq/IJhlZYlRC6OQXoMs+YTrNB8Ecen1LzbLfKIdLQzaLeXB5qWROwb3NI0oZgGn8OIpk70rVXzXoUSIh3N4FMY19SJ+TY171QooZgGx+AVLFVousErCiUU0+BZNWpXyGJ3YQoaFUoomkF62Ld2At5o3sSx3XZuugUzKJpBE2sGrJkdMxywY9TmkjOIfHiD5OrgNNhN+oNizWCyL88+PHgfSoMatKbEu8A9VjG+hhalre4MfFXOflkSZ5NYOIPE+rX5CINd0sTvLrF68ufAzu4P5mUmLQ/ZG2S+BkyWO0mPjt/Bmm63mocIbeFELphBd49LK+reawsnQkEv8Wb2bkpJ2ZMN83AGs1BQg8TWsrf3M+eD9ccYy243zMMZZN/ztnm1Yg/7Fm9QuRPzoAZroAE2VslqlZZELOglthdGu9nf+1qjEtY2q7Qk4kENXrDNU6pB5U7Mg17i5cQPMnpfa1TC2r0qLYl4OINZ6L8xaH/Ey/4QZSX2XSeDPQqlF8XXwPSYvQazhD1fMprBXWqXXhTbA6m91rU/RsVXa1nxDH8davWvKpf7CVTUT70/UdXLAAAAAElFTkSuQmCC">
+                    Employees</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI7SURBVFhH7Zg9SBxRFIWXoBBSCEbBIvjT2SRYpJNgITap1UZrAym0UVRIFUQSU9kKgoix0dJCwTIEG8WwZLEQrbUJpIgaQnb9zuw1Ghnw7bz3lhU88HHfu7x75sDMsszk7pVKpVJHsVgcor4JAV4DZu0vzEbgAuNgwi9v9n7CqB1+w1fowfulL/jsQ7CAw5hKr6ylXgv00utzgbNdNpqI/RcIFvAtF9EteWH75/BLvUrEzExiiFhHDThue/UHXeDsAXxLDBHrqAGnrvaURhc4uwP/ArGOGvC19pWKufXEELGOF1Bi3Q8faH90gbOT1EYbjx/QVzUXkPE6uP1MFm72KuSRWfsFZKYBluFcHgHVZpfwDvgZ/lqdCsBmEi9EQEYeM/MHlqzlLTynlQUFCdimOTRtLXl9glP44cgJvLfxuAGpHdrgs0dZc4GzearUbB7xAmpeG/klBxykWc2gJBA1asBnIOl/eduRQ5Cemmf0Z3ASCnDkyHcYs/H4AX0lr7JlesBRmIMFR1YTq2oF9FDVAupn32TtO8X5qt3iEXWo3dZykkw0h6IH7FaHOmstJ8lEcyhuQIlwG+pSjym7LnD26l8gfkAa9VxwArZYpwa6TVUDZpFMyl4PAbNJJmWvexCQ57GTmvpZpBLwWaRK4QJi+lM1sIIGPIN3LFM/i2TkiV0muwjVipECzlurtkS24C9NwUW4FdBr5yqkvUZmpcEu4ScZwRKc6XYHlP+P5KYw/O/TRwCuP33UrnK5S/0oOQ5maWbLAAAAAElFTkSuQmCC">
+                    Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEwSURBVFhH7Zc9CsJAEIVTiJWFioWFWEgOELBNaWFpoY2VlbWdgucRxVrwGN5EPEHi23GELUSy7GzWmP3gscxDJh/+YBJVjjzP+8jaQ1as8B28MEV88GCF7+CFJJhl2R7HuIzgWlecxoJLrpyDax2CoA31EESVIBOh9HktISKI+aJ6CT7sFnkHVb8QypDXEiKCLgmCtgRBW4KgLfUQRKXutEecNncNrTNJi5YyIoKY9b+6nepwDl+jGR92iwhOUb+fHxLV4WxpXeFgV0xLGRFBl9RDEPNvf8SYf/5HEqN+PyrSHTHOptYVDnZ1aSkjIuiSegii2iFnzoy7ntaZJKWljIgg5hNy52y4G2idSea0lMEcvoNWBEFb/lbwiGxLys1Y0AOFBdVtfMdD6DGiYkTREz97tu2qt0sbAAAAAElFTkSuQmCC">
+                    Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKXSURBVFhH7ZfPS1RRHMVHECUKWuSmUrDWbloUgu7KZZtW9RcE0soWuatdVtRK0lrUP1DRItEIq12uC4QoalEkLfoBCQbC1Od85/Qaa968Me9zEe8Dh3vvOd/LPTDKMLWKiop/4Mcmqdfrs76agXfTccf4ajGe7xjKfGYZ9HWVO8D5a4SbwNeL8bwefsYylSfyaVRnr9kv6IbEMcopg2m2Le9bT1Hg54vxvB64aCsXxibVonHjN/YmPZaLZuIC2CrG8x0VFMyNoQX0yZrn+jHHbWGu/IJbgWeqgvqI96FTaMI6Kc9xW3imvILkw+gxavlPAoto2OMtYTR9QaIudEENYrANmoHzbLt8fQP46QviX/KIZr6hy+gw2mkdsbfqMTHl6xvAT1sQ74Rj5cssB+0PoUfWkDxlngnYH5ffDHa6gljdeK+craB+R8pG5ZtR2yrejz7KZH3J0u0o4JyuIOcxR8pO2w6wWhYUzI7b172jtgOspAWv2v/Osst2wDm3IOfdvqO7V2wHWEkL3rX/3FYGdm5BwZ0XCljv2AqwkhZ8aH/JVgZ2UcElBawLtgKspAVv2/9gK+Dcq4fjUoNWBVcUsN6yFWAlLXjGkbJD8tj2sJ9ruOHPox1xwWjWsfJx2wFW0oIDaN3ZPXv6Hn5rbw71xnATePedr6P9tgPsdAUFXvZbg/2EPLaD7GdZe2KoCfyzMQzsZ2xnYKctiN2H/6YxETMq3Oc4Q56zgP1rtMdxBlHaggJfX2vvPaa5NfQAXbP0Ua85Vv4OxdffnxCnLyjI9LeX/XPkwYyK7/W1v2CknIK/YGYEzaBltGppfx2NeCwXnim34Fbhmf+74BN0rmTpJ2rg54vx/Lbj54vx/Lbj5ysqKjqnVvsJ3xL4MGv9UmAAAAAASUVORK5CYII=">
+                    Requests</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 {% block content%}
 {% endblock %}
-<footer class="footer">
-    <div class="container">
-        <span class="text-muted"><a href="https://icons8.com">Icon pack by Icons8</a></span>
-    </div>
-</footer>
+<!-- <footer class="fixed-bottom"> -->
 {% block script %}{% endblock %}
 </body>
 </html>
