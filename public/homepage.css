@@ -6,6 +6,7 @@ body {
 
 body {
   font-family: 'Muli', 'Helvetica', 'Arial', 'sans-serif';
+
 }
 
 a {
@@ -144,6 +145,16 @@ section h2 {
   #mainNav.navbar-shrink .navbar-nav > li > a:focus:hover {
     color: #fdcc52;
   }
+}
+header.masthead {
+    position: relative;
+    width: 100%;
+    padding-top: 150px;
+    padding-bottom: 100px;
+    color: white;
+    background: #7b4397;
+    background: -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
+    background: linear-gradient(to left, #7b4397, #dc2430);
 }
 
 header.masthead .header-content {
