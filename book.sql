@@ -2,8 +2,8 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 04, 2018 at 02:11 AM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 08, 2018 at 09:56 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -33,13 +33,19 @@ CREATE TABLE `employee` (
   `Request_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONSHIPS FOR TABLE `employee`:
+--   `Request_ID`
+--       `requestlist` -> `Request_ID`
+--
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `EmployeeOrderStatus`
+-- Table structure for table `employeeorderstatus`
 --
 
-CREATE TABLE `EmployeeOrderStatus` (
+CREATE TABLE `employeeorderstatus` (
   `ID` int(11) NOT NULL,
   `Product_ID` int(11) NOT NULL,
   `ReceivedCount` int(11) NOT NULL,
@@ -48,10 +54,14 @@ CREATE TABLE `EmployeeOrderStatus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `EmployeeOrderStatus`
+-- RELATIONSHIPS FOR TABLE `employeeorderstatus`:
 --
 
-INSERT INTO `EmployeeOrderStatus` (`ID`, `Product_ID`, `ReceivedCount`, `FufilledStatus`, `Count`) VALUES
+--
+-- Dumping data for table `employeeorderstatus`
+--
+
+INSERT INTO `employeeorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `FufilledStatus`, `Count`) VALUES
 (1, 0, 7, b'00000000000', 44),
 (2, 2, 9, b'00000000001', 22),
 (3, 3, 34, b'00000000000', 9),
@@ -70,6 +80,10 @@ CREATE TABLE `orderlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- RELATIONSHIPS FOR TABLE `orderlist`:
+--
+
+--
 -- Dumping data for table `orderlist`
 --
 
@@ -84,24 +98,43 @@ INSERT INTO `orderlist` (`OrderList_ID`, `Order_ID`) VALUES
 --
 
 CREATE TABLE `product` (
-  `Product_ID` int(11) NOT NULL,
-  `Title` text NOT NULL,
-  `Author` text NOT NULL,
-  `Edition` int(11) NOT NULL,
-  `ISBN` text NOT NULL,
-  `Price` double NOT NULL
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `edition` varchar(255) NOT NULL,
+  `isbn10` varchar(255) NOT NULL,
+  `isbn13` varchar(255) NOT NULL,
+  `publisher` varchar(255) NOT NULL,
+  `price` decimal(19,4) NOT NULL,
+  `image_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONSHIPS FOR TABLE `product`:
+--
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`Product_ID`, `Title`, `Author`, `Edition`, `ISBN`, `Price`) VALUES
-(1, 'Bard Tales', 'Samuel Harris', 5, '1234567', 55.75),
-(2, 'Narnia', 'Jim Carnal', 2, '1234568', 42.1),
-(3, 'Huckaberry Finn', 'Harper Lee', 1, '1234569', 88.9),
-(4, 'Twilight', 'Stephanie Meyer', 1, '', 12.5),
-(5, 'Breaking Dawn', 'Stephanie Meyer', 2, '1234560', 10);
+INSERT INTO `product` (`id`, `title`, `author`, `edition`, `isbn10`, `isbn13`, `publisher`, `price`, `image_url`) VALUES
+(3, 'Essential Calculus: Early Transcendentals', 'James Stewart', '2', '1133112285', '978-1133112280', 'Cengage Learning', '85.0000', 'https://i.ebayimg.com/images/a/T2eC16VHJHIE9nyseF5YBRIRhSKLUw~~/s-l300.jpg'),
+(4, 'Database System Concepts', 'Abraham Silberschatz', '6', '0073523321', '978-0073523323', 'McGraw-Hill Education', '161.1500', 'https://images-na.ssl-images-amazon.com/images/I/51PoU%2BwM0iL._SX395_BO1,204,203,200_.jpg'),
+(5, 'Cracking the Coding Interview: 189 Programming Questions and Solutions', 'Gayle Laakmann McDowell', '6', '0984782869', '978-0984782857', 'CareerCup', '38.0000', 'https://images-na.ssl-images-amazon.com/images/I/51l5XzLln%2BL._SX348_BO1,204,203,200_.jpg'),
+(7, 'Database Systems The Complete Book', 'Garcia-Molina ', '2', '933251867X', '978-9332518674', 'PE', '37.9000', 'https://images-na.ssl-images-amazon.com/images/I/61pBuMLr1cL.jpg'),
+(8, 'Database Reliability Engineering: Designing and Operating Resilient Database Systems', 'Laine Campbell', '1', '1491925949', '978-1491925942', 'O\'Reilly Media', '39.9900', 'https://images-na.ssl-images-amazon.com/images/I/51UvR3a63OL._SX379_BO1,204,203,200_.jpg'),
+(9, 'Calculus: Early Transcendentals', 'James Stewart ', '8', '9781285741550', '978-1285741550', 'Cengage Learning', '230.0000', 'https://images-na.ssl-images-amazon.com/images/I/41XZVHND-aL._SX423_BO1,204,203,200_.jpg'),
+(10, 'Data and Computer Communications', 'William Stallings', '10', '0133506487', '978-0133506488', 'Pearson', '165.2000', 'https://images-na.ssl-images-amazon.com/images/I/51Dz0SiHhZL._SX381_BO1,204,203,200_.jpg'),
+(11, 'JavaScript and JQuery: Interactive Front-End Web Development', 'Jon Duckett', '1', '9781118531648', '978-1118531648', 'Wiley', '33.9900', 'https://images-na.ssl-images-amazon.com/images/I/41y31M-zcgL._SX400_BO1,204,203,200_.jpg'),
+(12, 'Head First JavaScript Programming: A Brain-Friendly Guide', 'Eric Freeman', '1', '9781449340131', '978-1449340131', 'O\'Reilly Media', '33.7700', 'https://images-na.ssl-images-amazon.com/images/I/51qQTSKL2nL._SX430_BO1,204,203,200_.jpg');
+
+--
+-- Triggers `product`
+--
+DELIMITER $$
+CREATE TRIGGER `insertToList` AFTER INSERT ON `product` FOR EACH ROW INSERT INTO storage VALUES(null, NEW.id, 0)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -118,6 +151,10 @@ CREATE TABLE `provider` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- RELATIONSHIPS FOR TABLE `provider`:
+--
+
+--
 -- Dumping data for table `provider`
 --
 
@@ -128,10 +165,10 @@ INSERT INTO `provider` (`Provider_ID`, `Provider_Name`, `Provider_Phone`, `Provi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ProviderOrder`
+-- Table structure for table `providerorder`
 --
 
-CREATE TABLE `ProviderOrder` (
+CREATE TABLE `providerorder` (
   `Order_ID` int(11) NOT NULL,
   `Commission` double NOT NULL,
   `Amount` double NOT NULL,
@@ -141,10 +178,14 @@ CREATE TABLE `ProviderOrder` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ProviderOrder`
+-- RELATIONSHIPS FOR TABLE `providerorder`:
 --
 
-INSERT INTO `ProviderOrder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
+--
+-- Dumping data for table `providerorder`
+--
+
+INSERT INTO `providerorder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
 (1, 1, 2, '2018-12-05', '2018-12-31', 1),
 (2, 2, 42, '2018-12-01', '2018-12-04', 2),
 (3, 3, 12, '2018-11-06', '2018-12-05', 3),
@@ -154,10 +195,10 @@ INSERT INTO `ProviderOrder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delive
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ProviderOrderStatus`
+-- Table structure for table `providerorderstatus`
 --
 
-CREATE TABLE `ProviderOrderStatus` (
+CREATE TABLE `providerorderstatus` (
   `ID` int(11) NOT NULL,
   `Product_ID` int(11) NOT NULL,
   `ReceivedCount` int(11) NOT NULL,
@@ -166,10 +207,14 @@ CREATE TABLE `ProviderOrderStatus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ProviderOrderStatus`
+-- RELATIONSHIPS FOR TABLE `providerorderstatus`:
 --
 
-INSERT INTO `ProviderOrderStatus` (`ID`, `Product_ID`, `ReceivedCount`, `FulfilledStatus`, `Count`) VALUES
+--
+-- Dumping data for table `providerorderstatus`
+--
+
+INSERT INTO `providerorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `FulfilledStatus`, `Count`) VALUES
 (1, 1, 12, 1, 14),
 (2, 2, 35, 1, 37),
 (3, 3, 12, 0, 78),
@@ -179,22 +224,26 @@ INSERT INTO `ProviderOrderStatus` (`ID`, `Product_ID`, `ReceivedCount`, `Fulfill
 -- --------------------------------------------------------
 
 --
--- Table structure for table `RequestList`
+-- Table structure for table `requestlist`
 --
 
-CREATE TABLE `RequestList` (
+CREATE TABLE `requestlist` (
   `Request_ID` int(11) NOT NULL,
   `Order_ID` int(11) NOT NULL,
   `Status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONSHIPS FOR TABLE `requestlist`:
+--
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `RequestOrder`
+-- Table structure for table `requestorder`
 --
 
-CREATE TABLE `RequestOrder` (
+CREATE TABLE `requestorder` (
   `Order_ID` int(11) NOT NULL,
   `Commission` double NOT NULL,
   `Amount` double NOT NULL,
@@ -204,10 +253,14 @@ CREATE TABLE `RequestOrder` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `RequestOrder`
+-- RELATIONSHIPS FOR TABLE `requestorder`:
 --
 
-INSERT INTO `RequestOrder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
+--
+-- Dumping data for table `requestorder`
+--
+
+INSERT INTO `requestorder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
 (0, 2.2, 555.9, '2018-12-19', '2018-12-31', 1),
 (1, 24.7, 900.77, '2018-12-04', '0000-00-00', 0);
 
@@ -225,6 +278,10 @@ CREATE TABLE `session` (
   `User_Login` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONSHIPS FOR TABLE `session`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -232,20 +289,31 @@ CREATE TABLE `session` (
 --
 
 CREATE TABLE `storage` (
-  `Count` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `count` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONSHIPS FOR TABLE `storage`:
+--   `product_id`
+--       `product` -> `id`
+--
 
 --
 -- Dumping data for table `storage`
 --
 
-INSERT INTO `storage` (`Count`, `Product_ID`) VALUES
-(5, 1),
-(22, 2),
-(47, 3),
-(7, 4),
-(89, 5);
+INSERT INTO `storage` (`id`, `product_id`, `count`) VALUES
+(2, 3, 21),
+(3, 4, 43),
+(4, 5, 31),
+(6, 7, 0),
+(7, 8, 39),
+(8, 9, 25),
+(9, 10, 0),
+(10, 11, 0),
+(11, 12, 0);
 
 -- --------------------------------------------------------
 
@@ -254,24 +322,23 @@ INSERT INTO `storage` (`Count`, `Product_ID`) VALUES
 --
 
 CREATE TABLE `user` (
-  `User_Email` text NOT NULL,
-  `User_Password` text NOT NULL,
-  `User_FullName` text NOT NULL,
-  `User_Status` bit(1) NOT NULL,
-  `User_LastAccess` datetime NOT NULL,
-  `User_LastUpdate` datetime NOT NULL
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONSHIPS FOR TABLE `user`:
+--
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`User_Email`, `User_Password`, `User_FullName`, `User_Status`, `User_LastAccess`, `User_LastUpdate`) VALUES
-('RioatHalberto@gmail.com', 'choco55tree', 'Halberto Rio', b'1', '2018-11-23 07:08:00', '2018-11-02 19:22:08'),
-('NikolaTesla@gmail.com', 'IamNikki', 'Nikola Tesla', b'1', '2018-12-31 16:24:00', '2018-12-17 02:05:03'),
-('ObedisAmazing@yahoo.com', 'Obed77', 'Oscar Rodriguez', b'0', '2018-12-18 14:19:03', '2018-12-17 05:06:05'),
-('rebekah14@gmail.com', '1234', 'Rebekah Cardenas', b'0', '2018-11-05 02:09:22', '2018-11-22 07:28:32'),
-('Sammantha.King@yahoo.com', 'catsarecool', 'Samantha King', b'1', '2018-11-14 12:10:45', '2018-11-07 12:00:00');
+INSERT INTO `user` (`id`, `email`, `password`, `full_name`, `status`) VALUES
+(1, 'rebekah14@gmail.com', '$2y$10$mGZTG823vjIo.RB2jGYLLeC1eaMkEjP0c.QM3dIAJ5/5PB93yZ6qe', 'Rebekah Cardenas', 0);
 
 --
 -- Indexes for dumped tables
@@ -284,9 +351,9 @@ ALTER TABLE `employee`
   ADD KEY `Request_ID` (`Request_ID`);
 
 --
--- Indexes for table `EmployeeOrderStatus`
+-- Indexes for table `employeeorderstatus`
 --
-ALTER TABLE `EmployeeOrderStatus`
+ALTER TABLE `employeeorderstatus`
   ADD PRIMARY KEY (`ID`);
 
 --
@@ -299,7 +366,7 @@ ALTER TABLE `orderlist`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`Product_ID`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `provider`
@@ -308,27 +375,27 @@ ALTER TABLE `provider`
   ADD PRIMARY KEY (`Provider_ID`);
 
 --
--- Indexes for table `ProviderOrder`
+-- Indexes for table `providerorder`
 --
-ALTER TABLE `ProviderOrder`
+ALTER TABLE `providerorder`
   ADD PRIMARY KEY (`Order_ID`);
 
 --
--- Indexes for table `ProviderOrderStatus`
+-- Indexes for table `providerorderstatus`
 --
-ALTER TABLE `ProviderOrderStatus`
+ALTER TABLE `providerorderstatus`
   ADD PRIMARY KEY (`ID`) USING BTREE;
 
 --
--- Indexes for table `RequestList`
+-- Indexes for table `requestlist`
 --
-ALTER TABLE `RequestList`
+ALTER TABLE `requestlist`
   ADD PRIMARY KEY (`Request_ID`);
 
 --
--- Indexes for table `RequestOrder`
+-- Indexes for table `requestorder`
 --
-ALTER TABLE `RequestOrder`
+ALTER TABLE `requestorder`
   ADD PRIMARY KEY (`Order_ID`);
 
 --
@@ -338,26 +405,39 @@ ALTER TABLE `session`
   ADD PRIMARY KEY (`Session_ID`);
 
 --
+-- Indexes for table `storage`
+--
+ALTER TABLE `storage`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `storage_ibfk_1` (`product_id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `EmployeeOrderStatus`
+-- AUTO_INCREMENT for table `employeeorderstatus`
 --
-ALTER TABLE `EmployeeOrderStatus`
+ALTER TABLE `employeeorderstatus`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
-  MODIFY `OrderList_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `OrderList_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `provider`
@@ -366,10 +446,22 @@ ALTER TABLE `provider`
   MODIFY `Provider_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `RequestList`
+-- AUTO_INCREMENT for table `requestlist`
 --
-ALTER TABLE `RequestList`
+ALTER TABLE `requestlist`
   MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `storage`
+--
+ALTER TABLE `storage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -380,6 +472,12 @@ ALTER TABLE `RequestList`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Request_ID`) REFERENCES `requestlist` (`Request_ID`);
+
+--
+-- Constraints for table `storage`
+--
+ALTER TABLE `storage`
+  ADD CONSTRAINT `storage_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
