@@ -1,0 +1,24 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Book
+{% endblock %}
+
+{% block script %}
+<script src="{{ base_url() }}/../storage.js"></script>
+{% endblock %}
+
+
+{% block content %}
+{% for p in product %}
+<img src="{{ p.ImageUrl }}">
+<p>Title: {{ p.title }}</p>
+<p>Author: {{ p.author }}</p>
+<p>Edition: {{ p.edition }}</p>
+<p>ISBN-10: {{ p.isbn10 }}</p>
+<p>ISBN-13: {{ p.isbn13 }}</p>
+<p>Publisher: {{ p.publisher }}</p>
+<p>Price: {{ p.price }}</p>
+
+{% endfor %}
+{% endblock %}

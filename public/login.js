@@ -14,7 +14,7 @@ $("#submitBtn").on("click", function (e) {
     }).done(function (response) {
         if (response.passwordMatched === "true") {
 
-            window.location.href = baseurl + "/storage";
+            window.location.href = baseurl + "/home";
             console.log(response.email);
         } else {
             console.log("feelsbad");

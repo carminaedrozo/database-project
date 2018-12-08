@@ -19,7 +19,7 @@ Storage
             <div class="card">
                 <img class="card-img-top" src="{{ s.product.ImageUrl }}">
                 <div class="card-body">
-                    <h5 class="card-title">{{ s.product.title }}</h5>
+                    <h5 class="card-title"><a href="{{ base_url() }}/book/{{ s.product.id }}">{{ s.product.title }}</a></h5>
                     <p class="card-text">{{ s.count }} in stock.</p>
                 </div>
             </div>

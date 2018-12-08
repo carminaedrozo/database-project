@@ -76,6 +76,24 @@ $app->get('/storage', function ($request, $response, $args) {
 
     return $response;
 });
+
+$app->get('/book/{id}', function ($request, $response, $args) {
+
+    $product = ProductQuery::create()->filterById($args['id']);
+    $this->view->render($response, 'book.html', [
+        "product" => $product,
+    ]);
+
+    return $response;
+});
+
+$app->get('/home', function ($request, $response, $args) {
+
+
+    $this->view->render($response, 'home.html');
+
+    return $response;
+});
 //////////////////////
 // App run
 //////////////////////
