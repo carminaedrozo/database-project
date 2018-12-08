@@ -56,7 +56,7 @@ $app->post('/login', function ($request, $response, $args) {
     $data = null;
     $typedpword = $request->getParam("password");
 
-    if ($u->login($typedpword)){
+    if ($u->login($typedpword)) {
         $data = array('passwordMatched' => 'true', 'email' => $u->getEmail());
     } else {
         $data = array('passwordMatched' => 'false');
@@ -66,7 +66,14 @@ $app->post('/login', function ($request, $response, $args) {
 });
 
 $app->get('/storage', function ($request, $response, $args) {
-    $this->view->render($response, 'storage.html');
+    $storage = StorageQuery::create()->find();
+
+    $product = ProductQuery::create()->find();
+    $this->view->render($response, 'storage.html', [
+        "product" => $product,
+        "storage" => $storage
+    ]);
+
     return $response;
 });
 //////////////////////

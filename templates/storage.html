@@ -10,7 +10,22 @@ Storage
 
 
 {% block content %}
+<div class="container">
+    <div class="row">
 
 
+        {% for key, s in storage %}
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" src="{{ s.product.ImageUrl }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ s.product.title }}</h5>
+                    <p class="card-text">{{ s.count }} in stock.</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
 
+    </div>
+</div>
 {% endblock %}
