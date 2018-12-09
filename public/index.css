@@ -4,11 +4,11 @@
     font-family: 'Montserrat', sans-serif;
 
 }
-a {
+/* a {
     color:#ffc4e8;
     font-family: 'Text Me One', sans-serif;
     font-size: 22px;
-}
+} */
 #signin {
     font-family: 'Montserrat', sans-serif;
 }
@@ -37,9 +37,9 @@ a {
     border-color: #3a4547;
     border-radius: 10px;
 }
-.navbar-default a{
+/* .navbar-default a{
     color: #000000;
-}
+} */
 
 /* #signinboxcolor {
   background-color: #64c4d1;
@@ -51,9 +51,12 @@ a {
   background-color: #64c4d1;
 }
 
-body { background:url("/Applications/XAMPP/xamppfiles/htdocs/database-project/img/loginback.jpg") !important;
+.loginbackground {
+background:url("/Applications/XAMPP/xamppfiles/htdocs/database-project/img/loginback.jpg") no-repeat;
 background-size: 1440px 800px !important;
- background-repeat:no-repeat;
- display: cover;}
+background-repeat:no-repeat;
+display: cover;
+/* background-color: #3a4547; */
+}
 
 /* !important;} */
