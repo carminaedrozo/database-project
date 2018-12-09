@@ -18,11 +18,7 @@ a {
 #password{
     font-family: 'Montserrat', sans-serif;
 }
-a {
-  color:#ffc4e8;
-  font-family: 'Text Me One', sans-serif;
-  font-size: 22px;
-}
+
 #signin {
   font-family: 'Montserrat', sans-serif;
 }
@@ -55,4 +51,9 @@ a {
   background-color: #64c4d1;
 }
 
-body { background: #e8d5e3 !important;}
+body { background:url("/Applications/XAMPP/xamppfiles/htdocs/database-project/img/loginback.jpg") !important;
+background-size: 1440px 800px !important;
+ background-repeat:no-repeat;
+ display: cover;}
+
+/* !important;} */
