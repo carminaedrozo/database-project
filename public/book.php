@@ -66,6 +66,7 @@ $app->post('/login', function ($request, $response, $args) {
 });
 
 $app->get('/storage', function ($request, $response, $args) {
+
     $storage = StorageQuery::create()->find();
 
     $product = ProductQuery::create()->find();
@@ -93,6 +94,47 @@ $app->get('/home', function ($request, $response, $args) {
     $this->view->render($response, 'home.html');
 
     return $response;
+});
+
+$app->get('/create', function ($request, $response, $args) {
+
+
+    $this->view->render($response, 'create-book.html');
+
+    return $response;
+});
+
+$app->post('/create-book', function ($request, $response, $args) {
+    $title = $request->getParam("title");
+    $author = $request->getParam("author");
+    $edition = $request->getParam("edition");
+    $isbn10 = $request->getParam("isbn10");
+    $isbn13 = $request->getParam("isbn13");
+    $publisher = $request->getParam("publisher");
+    $price = $request->getParam("price");
+    $image = $request->getParam("image");
+    $quantity = $request->getParam("quantity");
+
+    $product = new Product();
+    $product->setTitle($title);
+    $product->setAuthor($author);
+    $product->setEdition($edition);
+    $product->setIsbn10($isbn10);
+    $product->setIsbn13($isbn13);
+    $product->setPublisher($publisher);
+    $product->setPrice($price);
+    $product->setImageUrl($image);
+    $product->save();
+
+    $lastId = $product->getId();
+
+    $s = StorageQuery::create()->filterByProductId($lastId)->findOne();
+    $s->setCount($quantity);
+    $s->save();
+
+    $data = array('title' => $product->getTitle());
+    $newResponse = $response->withJson($data);
+    return $newResponse;
 });
 //////////////////////
 // App run

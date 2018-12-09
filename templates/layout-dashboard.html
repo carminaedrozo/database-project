@@ -7,17 +7,31 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ base_url() }}/../index.css">
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400|Text+Me+One" rel="stylesheet">
     <!--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--<script-->
+    <!--src="https://code.jquery.com/jquery-3.3.1.js"-->
+    <!--integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="-->
+    <!--crossorigin="anonymous"></script>-->
+
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+
     <script>
         var baseurl = "{{base_url()}}"
     </script>
-
+    <script src="{{ base_url() }}/../layout-dashboard.js"></script>
 
 </head>
 <body>
@@ -36,10 +50,17 @@
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ0SURBVFhH7ZhNSFRhFIZHDXMISgpB8I8KaRFRYehCN4KGC9E2EgQtDFq4cRduok2Uq1AXbaKglQtBF/6saiOBBhJBQZsoMIJQJP8oI2qm51zeKe3OdUbnc+4s7gsP57vnnO98r8Pc69WYSyWTyWNwSJeFJYz1JBKJTXgD9UqHL/vEMPQATB/gO7k1YrdawhNGKjEyS0wSx+EoywtEM2q6x3WJ2vMrDm+Gz/ALbmGkSCUzXk5ummjGn0GF5Yk1sGl5E+vf0OttcimG9sNPWIZWpXeI84up3QEzsQiN5FpkbBKGtB7UltzFsCMwqsHzUKVSoOjpgBX4AY+19xrB7nh3BhlUD2819CGhVKWMov8kvLK9JtZuDTLnCoPW4RtcV3pPYkYZe5/IVDshd4PsL2HAfTC9h/Mq7VvMOGMxZ4NsrIDnGjJFKFfJiZjnGURjUKx0dsJQE3wCe4TcZsDfR4hLMTv1KJqB40rvLhr7wO44u/MuK30gwpt9he6C6SNcVMkvinE2PNVPtAB1Kh24OKsTVmEL/A9uPJ2i8Frm3hHKVMqbOPesnW9i/QgOpwon4CuY+w144RXyLHyl7uoVxQmvwCIOw3AJ7FUpbIODcAP6VPqnQjGolF+RwV3k3CCz7NWpJxuYeVrbAkWfW4P0eb8FshG9/i/8f6LNvUH4wsyGIKhfJYZqcFGXaUX9XGQwSPRFBn2imLNBziiCWltTLzyD5Fp1UDUU5CdYSt77W5kYfQcDRV9k0CeKkcEg7cWg/f+lLRP0vYSldLUU1G8S7dCR7fl00NNNzGhwzprCFB4GZMcvijX0pH3pzAec3wVx2YnkQLHYH/h1bfSBDb7QAAAAAElFTkSuQmCC">
                     Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAO9SURBVFhH5ZhdaI5hHMY3NplIvkaccIA0Q8mWA0LDSpysiNJ8NR8lJe10mGK1wmI42CxxIs5wIA6IE4pJPmc+yoHJEFETm9+195qXfbzb87zPO8Wvrp7nvu77/7//PZ/386T987S1tY1rbW1diFaxX8J2IypifzbbYR7WfzDxAFTA5LXoFfs9Qv93dAvtQVOcIjUwXwaT6Og88+Tf0DVUjlaj+dizJfaXoM2oGj3WeMH+JZTvlNFB0jxU70meo+1opLt7hbG5qAp9Qa2kqWMzyt3JQaJdSEfrA9pG8gx3BYb4bFSDxCsU/mhSyEASHPVRu44muCtpyKVL4C36ipbbDgaB1S7uFJtM25FBzonkfoJa0GLbfYOAnS7uNJt025FDbj2iGpCuzWm2E8PAfNR+h5JgkO2UwTxT0Sf0gPkG2+4eBuhRUo90Q4y3nXKYay1z64yV2eoeBmzywK22+g3mvIq+Mv04W39CxwAG6HpoZD/0oyQszDvHB6fC1p/QV+ABO2wFhtgilONmYIjVm6mJMro+NejQA7SFztG2AkN8M/F1bgaG+PU+SIW24mDqyX7NzVCQ+yM5zrgZGGL1phGVtmJgjHfl+2yFItkCBfEP0Q03Y5B4gQtcYysUERV4HjW7GUOFucB5tkIRUYGHVAvEXxI0SmJe2yxbCSGJ1n/N6H0nCb1bO/u6vrMdnhDG7VUhbOPLORodd88cWwlh3Ex0hpCzvwtPr0itsjv7R9gOcXhCGLufsWK4rXZzpRy2i2yFghRRnOJj6Ae54osUGlqqq8AttkIRUYGX0Us3Y2AMQ/rAqbYVimQLJD6d+Dfogq04mLfRIzdDkWyBxOaQQ2ey1FYczI67Z4atwBD7GlW5GRim3+0acm3FwZyMxGFbgSG3VshZbgaCWK1F9Ti6a6srdF5EWn736ZkVJRS4zkdvg62u0DkXiRpb/QJ1DWVOXR76KZD4A40B+qgWS22lHOY67qO3zFbPMGgk0rXQhCbZThnM0fE9UmurdxisXx26FhuI7f4bIQLIX4j07tZvlT69Cn9B0AoHN6LI/0yRs9j5n6IxtoNBoH5RfEb6bi22nRQcKd0QJ3xa7yR9hkgyDd13wisoz12BIFzPOR211851kk2w09oTJMtCZUjfrUqur6/1qNfnJWOmI/3AfOFYfdr2freGgcRjUQXSp6EmE/qGOIcOonLsA2y1ZNKq5I3GCfbvIa07I/8R1QVNwmS6AyvRTfSuvQpD+wd6gS6gUjTdoX8P6spEIyRb/wNpaT8BUxj5gnC16T4AAAAASUVORK5CYII=">
                     Create</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{base_url()}}/create">Book</a>
+                    <a class="dropdown-item" href="#two">two</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#three">Create</a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">

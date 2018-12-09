@@ -1,0 +1,76 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Punto Fijo - Create Book
+{% endblock %}
+
+{% block script %}
+<script src="{{ base_url() }}/../create-book.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form>
+        <div class="form-group row">
+            <label for="inputtitle" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputTitle" placeholder="Title">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputAuthor" class="col-sm-2 col-form-label">Author</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputAuthor" placeholder="Author">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputEdition" class="col-sm-2 col-form-label">Edition</label>
+            <div class="col-sm-10">
+                <input type="number" step="any" class="form-control" id="inputEdition" placeholder="Edition">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputIsbn10" class="col-sm-2 col-form-label">ISBN-10</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputIsbn10" placeholder="ISBN-10">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputIsbn13" class="col-sm-2 col-form-label">ISBN-13</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputIsbn13" placeholder="ISBN-13">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPublisher" class="col-sm-2 col-form-label">Publisher</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPublisher" placeholder="Publisher">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPrice" class="col-sm-2 col-form-label">Price</label>
+            <div class="col-sm-10">
+                <input type="number" step="0.01" class="form-control" id="inputPrice" placeholder="0.00">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-10">
+                <input type="number"  class="form-control" id="inputQuantity" placeholder="0">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputImage" class="col-sm-2 col-form-label">Image URL</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputImage" placeholder="Image URL">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary" id="addBtnBook">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
