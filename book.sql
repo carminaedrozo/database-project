@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2018 at 09:56 PM
+-- Generation Time: Dec 10, 2018 at 12:33 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -33,12 +33,6 @@ CREATE TABLE `employee` (
   `Request_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- RELATIONSHIPS FOR TABLE `employee`:
---   `Request_ID`
---       `requestlist` -> `Request_ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -52,10 +46,6 @@ CREATE TABLE `employeeorderstatus` (
   `FufilledStatus` bit(11) NOT NULL,
   `Count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `employeeorderstatus`:
---
 
 --
 -- Dumping data for table `employeeorderstatus`
@@ -78,10 +68,6 @@ CREATE TABLE `orderlist` (
   `OrderList_ID` int(11) NOT NULL,
   `Order_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `orderlist`:
---
 
 --
 -- Dumping data for table `orderlist`
@@ -110,10 +96,6 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- RELATIONSHIPS FOR TABLE `product`:
---
-
---
 -- Dumping data for table `product`
 --
 
@@ -126,7 +108,11 @@ INSERT INTO `product` (`id`, `title`, `author`, `edition`, `isbn10`, `isbn13`, `
 (9, 'Calculus: Early Transcendentals', 'James Stewart ', '8', '9781285741550', '978-1285741550', 'Cengage Learning', '230.0000', 'https://images-na.ssl-images-amazon.com/images/I/41XZVHND-aL._SX423_BO1,204,203,200_.jpg'),
 (10, 'Data and Computer Communications', 'William Stallings', '10', '0133506487', '978-0133506488', 'Pearson', '165.2000', 'https://images-na.ssl-images-amazon.com/images/I/51Dz0SiHhZL._SX381_BO1,204,203,200_.jpg'),
 (11, 'JavaScript and JQuery: Interactive Front-End Web Development', 'Jon Duckett', '1', '9781118531648', '978-1118531648', 'Wiley', '33.9900', 'https://images-na.ssl-images-amazon.com/images/I/41y31M-zcgL._SX400_BO1,204,203,200_.jpg'),
-(12, 'Head First JavaScript Programming: A Brain-Friendly Guide', 'Eric Freeman', '1', '9781449340131', '978-1449340131', 'O\'Reilly Media', '33.7700', 'https://images-na.ssl-images-amazon.com/images/I/51qQTSKL2nL._SX430_BO1,204,203,200_.jpg');
+(12, 'Head First JavaScript Programming: A Brain-Friendly Guide', 'Eric Freeman', '1', '9781449340131', '978-1449340131', 'O\'Reilly Media', '33.7700', 'https://images-na.ssl-images-amazon.com/images/I/51qQTSKL2nL._SX430_BO1,204,203,200_.jpg'),
+(13, 'PHP for the Web: Visual QuickStart Guide', 'Larry Ullman', '5', '0134291255', '978-0134291253', 'Peachpit Press', '15.6500', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg'),
+(14, 'SQL Queries for Mere Mortals: A Hands-On Guide to Data Manipulation in SQL', 'John L. Viescas', '4', '0134858336', '978-0134858333', 'Addison-Wesley Professional', '22.3000', 'https://images-na.ssl-images-amazon.com/images/I/51bYGTH%2B1wL._SX381_BO1,204,203,200_.jpg'),
+(15, 'Grokking Algorithms: An illustrated guide for programmers and other curious people', 'Aditya Bhargava', '1', '1617292230', '978-1617292231', '', '36.2900', 'https://images-na.ssl-images-amazon.com/images/I/61uUPXbhMxL._SX397_BO1,204,203,200_.jpg'),
+(16, 'Database System Concepts', 'Abraham Silberschatz', '7', '0078022150', '978-0078022159', 'McGraw-Hill Education', '189.2200', 'https://images-na.ssl-images-amazon.com/images/I/51cq3aAdqNL._SX402_BO1,204,203,200_.jpg');
 
 --
 -- Triggers `product`
@@ -151,10 +137,6 @@ CREATE TABLE `provider` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- RELATIONSHIPS FOR TABLE `provider`:
---
-
---
 -- Dumping data for table `provider`
 --
 
@@ -176,10 +158,6 @@ CREATE TABLE `providerorder` (
   `Delivered_Date` date NOT NULL,
   `Status_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `providerorder`:
---
 
 --
 -- Dumping data for table `providerorder`
@@ -207,10 +185,6 @@ CREATE TABLE `providerorderstatus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- RELATIONSHIPS FOR TABLE `providerorderstatus`:
---
-
---
 -- Dumping data for table `providerorderstatus`
 --
 
@@ -233,10 +207,6 @@ CREATE TABLE `requestlist` (
   `Status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- RELATIONSHIPS FOR TABLE `requestlist`:
---
-
 -- --------------------------------------------------------
 
 --
@@ -251,10 +221,6 @@ CREATE TABLE `requestorder` (
   `Delivered_Date` date NOT NULL,
   `Status_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `requestorder`:
---
 
 --
 -- Dumping data for table `requestorder`
@@ -278,10 +244,6 @@ CREATE TABLE `session` (
   `User_Login` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- RELATIONSHIPS FOR TABLE `session`:
---
-
 -- --------------------------------------------------------
 
 --
@@ -293,12 +255,6 @@ CREATE TABLE `storage` (
   `product_id` int(11) NOT NULL,
   `count` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `storage`:
---   `product_id`
---       `product` -> `id`
---
 
 --
 -- Dumping data for table `storage`
@@ -313,7 +269,11 @@ INSERT INTO `storage` (`id`, `product_id`, `count`) VALUES
 (8, 9, 25),
 (9, 10, 0),
 (10, 11, 0),
-(11, 12, 0);
+(11, 12, 0),
+(12, 13, 21),
+(13, 14, 47),
+(14, 15, 11),
+(15, 16, 9);
 
 -- --------------------------------------------------------
 
@@ -328,10 +288,6 @@ CREATE TABLE `user` (
   `full_name` varchar(255) NOT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONSHIPS FOR TABLE `user`:
---
 
 --
 -- Dumping data for table `user`
@@ -437,7 +393,7 @@ ALTER TABLE `orderlist`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `provider`
@@ -455,7 +411,7 @@ ALTER TABLE `requestlist`
 -- AUTO_INCREMENT for table `storage`
 --
 ALTER TABLE `storage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user`
