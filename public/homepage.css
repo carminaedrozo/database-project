@@ -89,10 +89,10 @@ section h2 {
   text-transform: uppercase;
 }
 
-#mainNav .navbar-nav > li > a.active {
+/* #mainNav .navbar-nav > li > a.active {
   color: #fdcc52 !important;
   background-color: transparent;
-}
+} */
 
 #mainNav .navbar-nav > li > a.active:hover {
   background-color: transparent;

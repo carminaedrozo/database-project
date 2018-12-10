@@ -33,9 +33,10 @@
 }
 
 #bordersignin {
-    border-width:12px !important;
+    border-width:12px;
     border-color: #3a4547;
     border-radius: 10px;
+    opacity:0.90;
 }
 /* .navbar-default a{
     color: #000000;
@@ -48,15 +49,15 @@
 } */
 
 #signinboxcolor {
-  background-color: #64c4d1;
+  background-color: #3a4547;
+  border-width:12px;
+  /* opacity:0.90; */
 }
 
 .loginbackground {
-background:url("/Applications/XAMPP/xamppfiles/htdocs/database-project/img/loginback.jpg") no-repeat;
-background-size: 1440px 800px !important;
+background:url("../templates/loginback2.jpg");
+background-size: 1440px 800px;
 background-repeat:no-repeat;
 display: cover;
 /* background-color: #3a4547; */
 }
-
-/* !important;} */
