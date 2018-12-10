@@ -10,6 +10,7 @@ use Map\UserTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -22,13 +23,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildUserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildUserQuery orderByPassword($order = Criteria::ASC) Order by the password column
- * @method     ChildUserQuery orderByFullName($order = Criteria::ASC) Order by the full_name column
  * @method     ChildUserQuery orderByStatus($order = Criteria::ASC) Order by the status column
  *
  * @method     ChildUserQuery groupById() Group by the id column
  * @method     ChildUserQuery groupByEmail() Group by the email column
  * @method     ChildUserQuery groupByPassword() Group by the password column
- * @method     ChildUserQuery groupByFullName() Group by the full_name column
  * @method     ChildUserQuery groupByStatus() Group by the status column
  *
  * @method     ChildUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -39,14 +38,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUserQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildUserQuery leftJoinInfo($relationAlias = null) Adds a LEFT JOIN clause to the query using the Info relation
+ * @method     ChildUserQuery rightJoinInfo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Info relation
+ * @method     ChildUserQuery innerJoinInfo($relationAlias = null) Adds a INNER JOIN clause to the query using the Info relation
+ *
+ * @method     ChildUserQuery joinWithInfo($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Info relation
+ *
+ * @method     ChildUserQuery leftJoinWithInfo() Adds a LEFT JOIN clause and with to the query using the Info relation
+ * @method     ChildUserQuery rightJoinWithInfo() Adds a RIGHT JOIN clause and with to the query using the Info relation
+ * @method     ChildUserQuery innerJoinWithInfo() Adds a INNER JOIN clause and with to the query using the Info relation
+ *
+ * @method     \InfoQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
  *
  * @method     ChildUser findOneById(int $id) Return the first ChildUser filtered by the id column
  * @method     ChildUser findOneByEmail(string $email) Return the first ChildUser filtered by the email column
  * @method     ChildUser findOneByPassword(string $password) Return the first ChildUser filtered by the password column
- * @method     ChildUser findOneByFullName(string $full_name) Return the first ChildUser filtered by the full_name column
- * @method     ChildUser findOneByStatus(int $status) Return the first ChildUser filtered by the status column *
+ * @method     ChildUser findOneByStatus(string $status) Return the first ChildUser filtered by the status column *
 
  * @method     ChildUser requirePk($key, ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -54,15 +64,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser requireOneById(int $id) Return the first ChildUser filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByEmail(string $email) Return the first ChildUser filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByPassword(string $password) Return the first ChildUser filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByFullName(string $full_name) Return the first ChildUser filtered by the full_name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByStatus(int $status) Return the first ChildUser filtered by the status column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByStatus(string $status) Return the first ChildUser filtered by the status column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findById(int $id) Return ChildUser objects filtered by the id column
  * @method     ChildUser[]|ObjectCollection findByEmail(string $email) Return ChildUser objects filtered by the email column
  * @method     ChildUser[]|ObjectCollection findByPassword(string $password) Return ChildUser objects filtered by the password column
- * @method     ChildUser[]|ObjectCollection findByFullName(string $full_name) Return ChildUser objects filtered by the full_name column
- * @method     ChildUser[]|ObjectCollection findByStatus(int $status) Return ChildUser objects filtered by the status column
+ * @method     ChildUser[]|ObjectCollection findByStatus(string $status) Return ChildUser objects filtered by the status column
  * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -161,7 +169,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, email, password, full_name, status FROM user WHERE id = :p0';
+        $sql = 'SELECT id, email, password, status FROM user WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -343,69 +351,101 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the full_name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByFullName('fooValue');   // WHERE full_name = 'fooValue'
-     * $query->filterByFullName('%fooValue%', Criteria::LIKE); // WHERE full_name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $fullName The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByFullName($fullName = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($fullName)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UserTableMap::COL_FULL_NAME, $fullName, $comparison);
-    }
-
-    /**
      * Filter the query on the status column
      *
      * Example usage:
      * <code>
-     * $query->filterByStatus(1234); // WHERE status = 1234
-     * $query->filterByStatus(array(12, 34)); // WHERE status IN (12, 34)
-     * $query->filterByStatus(array('min' => 12)); // WHERE status > 12
+     * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
+     * $query->filterByStatus('%fooValue%', Criteria::LIKE); // WHERE status LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $status The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $status The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
     public function filterByStatus($status = null, $comparison = null)
     {
-        if (is_array($status)) {
-            $useMinMax = false;
-            if (isset($status['min'])) {
-                $this->addUsingAlias(UserTableMap::COL_STATUS, $status['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($status['max'])) {
-                $this->addUsingAlias(UserTableMap::COL_STATUS, $status['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($status)) {
                 $comparison = Criteria::IN;
             }
         }
 
         return $this->addUsingAlias(UserTableMap::COL_STATUS, $status, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Info object
+     *
+     * @param \Info|ObjectCollection $info the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByInfo($info, $comparison = null)
+    {
+        if ($info instanceof \Info) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_ID, $info->getUserId(), $comparison);
+        } elseif ($info instanceof ObjectCollection) {
+            return $this
+                ->useInfoQuery()
+                ->filterByPrimaryKeys($info->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByInfo() only accepts arguments of type \Info or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Info relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinInfo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Info');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Info');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Info relation Info object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \InfoQuery A secondary query class using the current class as primary query
+     */
+    public function useInfoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinInfo($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Info', '\InfoQuery');
     }
 
     /**

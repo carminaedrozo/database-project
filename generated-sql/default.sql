@@ -36,6 +36,31 @@ CREATE TABLE `employeeorderstatus`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- info
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `info`;
+
+CREATE TABLE `info`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `first_name` VARCHAR(255) NOT NULL,
+    `last_name` VARCHAR(255) NOT NULL,
+    `phone_number` VARCHAR(255) NOT NULL,
+    `address` VARCHAR(255) NOT NULL,
+    `city` VARCHAR(255) NOT NULL,
+    `state` VARCHAR(255) NOT NULL,
+    `zip` VARCHAR(255) NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `user_id` (`user_id`),
+    CONSTRAINT `info_ibfk_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- orderlist
 -- ---------------------------------------------------------------------
 
@@ -174,12 +199,13 @@ CREATE TABLE `storage`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `product_id` INTEGER NOT NULL,
-    `count` INTEGER NOT NULL,
+    `count` INTEGER DEFAULT 0,
     PRIMARY KEY (`id`),
-    INDEX `product_id` (`product_id`),
+    INDEX `storage_ibfk_1` (`product_id`),
     CONSTRAINT `storage_ibfk_1`
         FOREIGN KEY (`product_id`)
         REFERENCES `product` (`id`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -193,8 +219,7 @@ CREATE TABLE `user`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
-    `full_name` VARCHAR(255) NOT NULL,
-    `status` INTEGER(1) NOT NULL,
+    `status` bit(1) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

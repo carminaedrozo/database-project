@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Storage;
-use \StorageQuery;
+use \Info;
+use \InfoQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'storage' table.
+ * This class defines the structure of the 'info' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class StorageTableMap extends TableMap
+class InfoTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class StorageTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.StorageTableMap';
+    const CLASS_NAME = '.Map.InfoTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class StorageTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'storage';
+    const TABLE_NAME = 'info';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Storage';
+    const OM_CLASS = '\\Info';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Storage';
+    const CLASS_DEFAULT = 'Info';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,22 +69,52 @@ class StorageTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'storage.id';
+    const COL_ID = 'info.id';
 
     /**
-     * the column name for the product_id field
+     * the column name for the first_name field
      */
-    const COL_PRODUCT_ID = 'storage.product_id';
+    const COL_FIRST_NAME = 'info.first_name';
 
     /**
-     * the column name for the count field
+     * the column name for the last_name field
      */
-    const COL_COUNT = 'storage.count';
+    const COL_LAST_NAME = 'info.last_name';
+
+    /**
+     * the column name for the phone_number field
+     */
+    const COL_PHONE_NUMBER = 'info.phone_number';
+
+    /**
+     * the column name for the address field
+     */
+    const COL_ADDRESS = 'info.address';
+
+    /**
+     * the column name for the city field
+     */
+    const COL_CITY = 'info.city';
+
+    /**
+     * the column name for the state field
+     */
+    const COL_STATE = 'info.state';
+
+    /**
+     * the column name for the zip field
+     */
+    const COL_ZIP = 'info.zip';
+
+    /**
+     * the column name for the user_id field
+     */
+    const COL_USER_ID = 'info.user_id';
 
     /**
      * The default string format for model objects of the related table
@@ -98,11 +128,11 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Count', ),
-        self::TYPE_CAMELNAME     => array('id', 'productId', 'count', ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID, StorageTableMap::COL_PRODUCT_ID, StorageTableMap::COL_COUNT, ),
-        self::TYPE_FIELDNAME     => array('id', 'product_id', 'count', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'LastName', 'PhoneNumber', 'Address', 'City', 'State', 'Zip', 'UserId', ),
+        self::TYPE_CAMELNAME     => array('id', 'firstName', 'lastName', 'phoneNumber', 'address', 'city', 'state', 'zip', 'userId', ),
+        self::TYPE_COLNAME       => array(InfoTableMap::COL_ID, InfoTableMap::COL_FIRST_NAME, InfoTableMap::COL_LAST_NAME, InfoTableMap::COL_PHONE_NUMBER, InfoTableMap::COL_ADDRESS, InfoTableMap::COL_CITY, InfoTableMap::COL_STATE, InfoTableMap::COL_ZIP, InfoTableMap::COL_USER_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'first_name', 'last_name', 'phone_number', 'address', 'city', 'state', 'zip', 'user_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -112,11 +142,11 @@ class StorageTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Count' => 2, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'productId' => 1, 'count' => 2, ),
-        self::TYPE_COLNAME       => array(StorageTableMap::COL_ID => 0, StorageTableMap::COL_PRODUCT_ID => 1, StorageTableMap::COL_COUNT => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'count' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'LastName' => 2, 'PhoneNumber' => 3, 'Address' => 4, 'City' => 5, 'State' => 6, 'Zip' => 7, 'UserId' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'lastName' => 2, 'phoneNumber' => 3, 'address' => 4, 'city' => 5, 'state' => 6, 'zip' => 7, 'userId' => 8, ),
+        self::TYPE_COLNAME       => array(InfoTableMap::COL_ID => 0, InfoTableMap::COL_FIRST_NAME => 1, InfoTableMap::COL_LAST_NAME => 2, InfoTableMap::COL_PHONE_NUMBER => 3, InfoTableMap::COL_ADDRESS => 4, InfoTableMap::COL_CITY => 5, InfoTableMap::COL_STATE => 6, InfoTableMap::COL_ZIP => 7, InfoTableMap::COL_USER_ID => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'first_name' => 1, 'last_name' => 2, 'phone_number' => 3, 'address' => 4, 'city' => 5, 'state' => 6, 'zip' => 7, 'user_id' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -129,16 +159,22 @@ class StorageTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('storage');
-        $this->setPhpName('Storage');
+        $this->setName('info');
+        $this->setPhpName('Info');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Storage');
+        $this->setClassName('\\Info');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('product_id', 'ProductId', 'INTEGER', 'product', 'id', true, null, null);
-        $this->addColumn('count', 'Count', 'INTEGER', false, null, 0);
+        $this->addColumn('first_name', 'FirstName', 'VARCHAR', true, 255, null);
+        $this->addColumn('last_name', 'LastName', 'VARCHAR', true, 255, null);
+        $this->addColumn('phone_number', 'PhoneNumber', 'VARCHAR', true, 255, null);
+        $this->addColumn('address', 'Address', 'VARCHAR', true, 255, null);
+        $this->addColumn('city', 'City', 'VARCHAR', true, 255, null);
+        $this->addColumn('state', 'State', 'VARCHAR', true, 255, null);
+        $this->addColumn('zip', 'Zip', 'VARCHAR', true, 255, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -146,10 +182,10 @@ class StorageTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Product', '\\Product', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
-    0 => ':product_id',
+    0 => ':user_id',
     1 => ':id',
   ),
 ), 'CASCADE', null, null, false);
@@ -212,7 +248,7 @@ class StorageTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? StorageTableMap::CLASS_DEFAULT : StorageTableMap::OM_CLASS;
+        return $withPrefix ? InfoTableMap::CLASS_DEFAULT : InfoTableMap::OM_CLASS;
     }
 
     /**
@@ -226,22 +262,22 @@ class StorageTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Storage object, last column rank)
+     * @return array           (Info object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = StorageTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = StorageTableMap::getInstanceFromPool($key))) {
+        $key = InfoTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = InfoTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + StorageTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + InfoTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = StorageTableMap::OM_CLASS;
-            /** @var Storage $obj */
+            $cls = InfoTableMap::OM_CLASS;
+            /** @var Info $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            StorageTableMap::addInstanceToPool($obj, $key);
+            InfoTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -264,18 +300,18 @@ class StorageTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = StorageTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = StorageTableMap::getInstanceFromPool($key))) {
+            $key = InfoTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = InfoTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Storage $obj */
+                /** @var Info $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                StorageTableMap::addInstanceToPool($obj, $key);
+                InfoTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -296,13 +332,25 @@ class StorageTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StorageTableMap::COL_ID);
-            $criteria->addSelectColumn(StorageTableMap::COL_PRODUCT_ID);
-            $criteria->addSelectColumn(StorageTableMap::COL_COUNT);
+            $criteria->addSelectColumn(InfoTableMap::COL_ID);
+            $criteria->addSelectColumn(InfoTableMap::COL_FIRST_NAME);
+            $criteria->addSelectColumn(InfoTableMap::COL_LAST_NAME);
+            $criteria->addSelectColumn(InfoTableMap::COL_PHONE_NUMBER);
+            $criteria->addSelectColumn(InfoTableMap::COL_ADDRESS);
+            $criteria->addSelectColumn(InfoTableMap::COL_CITY);
+            $criteria->addSelectColumn(InfoTableMap::COL_STATE);
+            $criteria->addSelectColumn(InfoTableMap::COL_ZIP);
+            $criteria->addSelectColumn(InfoTableMap::COL_USER_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.product_id');
-            $criteria->addSelectColumn($alias . '.count');
+            $criteria->addSelectColumn($alias . '.first_name');
+            $criteria->addSelectColumn($alias . '.last_name');
+            $criteria->addSelectColumn($alias . '.phone_number');
+            $criteria->addSelectColumn($alias . '.address');
+            $criteria->addSelectColumn($alias . '.city');
+            $criteria->addSelectColumn($alias . '.state');
+            $criteria->addSelectColumn($alias . '.zip');
+            $criteria->addSelectColumn($alias . '.user_id');
         }
     }
 
@@ -315,7 +363,7 @@ class StorageTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(StorageTableMap::DATABASE_NAME)->getTable(StorageTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(InfoTableMap::DATABASE_NAME)->getTable(InfoTableMap::TABLE_NAME);
     }
 
     /**
@@ -323,16 +371,16 @@ class StorageTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StorageTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(StorageTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new StorageTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(InfoTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(InfoTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new InfoTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Storage or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Info or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Storage object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Info object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -343,27 +391,27 @@ class StorageTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StorageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(InfoTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Storage) { // it's a model object
+        } elseif ($values instanceof \Info) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(StorageTableMap::DATABASE_NAME);
-            $criteria->add(StorageTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(InfoTableMap::DATABASE_NAME);
+            $criteria->add(InfoTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = StorageQuery::create()->mergeWith($criteria);
+        $query = InfoQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            StorageTableMap::clearInstancePool();
+            InfoTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                StorageTableMap::removeInstanceFromPool($singleval);
+                InfoTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -371,20 +419,20 @@ class StorageTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the storage table.
+     * Deletes all rows from the info table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return StorageQuery::create()->doDeleteAll($con);
+        return InfoQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Storage or Criteria object.
+     * Performs an INSERT on the database, given a Info or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Storage object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Info object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -393,22 +441,22 @@ class StorageTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StorageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(InfoTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Storage object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Info object
         }
 
-        if ($criteria->containsKey(StorageTableMap::COL_ID) && $criteria->keyContainsValue(StorageTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StorageTableMap::COL_ID.')');
+        if ($criteria->containsKey(InfoTableMap::COL_ID) && $criteria->keyContainsValue(InfoTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.InfoTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = StorageQuery::create()->mergeWith($criteria);
+        $query = InfoQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -417,7 +465,7 @@ class StorageTableMap extends TableMap
         });
     }
 
-} // StorageTableMap
+} // InfoTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-StorageTableMap::buildTableMap();
+InfoTableMap::buildTableMap();

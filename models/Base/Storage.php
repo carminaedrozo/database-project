@@ -78,6 +78,7 @@ abstract class Storage implements ActiveRecordInterface
     /**
      * The value for the count field.
      *
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $count;
@@ -96,10 +97,23 @@ abstract class Storage implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->count = 0;
+    }
+
+    /**
      * Initializes internal state of Base\Storage object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -424,6 +438,10 @@ abstract class Storage implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->count !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -1148,6 +1166,7 @@ abstract class Storage implements ActiveRecordInterface
         $this->count = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

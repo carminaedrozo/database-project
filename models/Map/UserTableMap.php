@@ -59,7 +59,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the id field
@@ -85,11 +85,6 @@ class UserTableMap extends TableMap
      * the column name for the password field
      */
     const COL_PASSWORD = 'user.password';
-
-    /**
-     * the column name for the full_name field
-     */
-    const COL_FULL_NAME = 'user.full_name';
 
     /**
      * the column name for the status field
@@ -108,11 +103,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Email', 'Password', 'FullName', 'Status', ),
-        self::TYPE_CAMELNAME     => array('id', 'email', 'password', 'fullName', 'status', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_FULL_NAME, UserTableMap::COL_STATUS, ),
-        self::TYPE_FIELDNAME     => array('id', 'email', 'password', 'full_name', 'status', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Email', 'Password', 'Status', ),
+        self::TYPE_CAMELNAME     => array('id', 'email', 'password', 'status', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_STATUS, ),
+        self::TYPE_FIELDNAME     => array('id', 'email', 'password', 'status', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -122,11 +117,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Email' => 1, 'Password' => 2, 'FullName' => 3, 'Status' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'fullName' => 3, 'status' => 4, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_EMAIL => 1, UserTableMap::COL_PASSWORD => 2, UserTableMap::COL_FULL_NAME => 3, UserTableMap::COL_STATUS => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'full_name' => 3, 'status' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Email' => 1, 'Password' => 2, 'Status' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'status' => 3, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_EMAIL => 1, UserTableMap::COL_PASSWORD => 2, UserTableMap::COL_STATUS => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'email' => 1, 'password' => 2, 'status' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -149,8 +144,7 @@ class UserTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
-        $this->addColumn('full_name', 'FullName', 'VARCHAR', true, 255, null);
-        $this->addColumn('status', 'Status', 'INTEGER', true, 1, null);
+        $this->addColumn('status', 'Status', 'VARCHAR', true, 1, null);
     } // initialize()
 
     /**
@@ -158,7 +152,23 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Info', '\\Info', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, 'Infos', false);
     } // buildRelations()
+    /**
+     * Method to invalidate the instance pool of all tables related to user     * by a foreign key with ON DELETE CASCADE
+     */
+    public static function clearRelatedInstancePool()
+    {
+        // Invalidate objects in related instance pools,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        InfoTableMap::clearInstancePool();
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -304,13 +314,11 @@ class UserTableMap extends TableMap
             $criteria->addSelectColumn(UserTableMap::COL_ID);
             $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
             $criteria->addSelectColumn(UserTableMap::COL_PASSWORD);
-            $criteria->addSelectColumn(UserTableMap::COL_FULL_NAME);
             $criteria->addSelectColumn(UserTableMap::COL_STATUS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.password');
-            $criteria->addSelectColumn($alias . '.full_name');
             $criteria->addSelectColumn($alias . '.status');
         }
     }
