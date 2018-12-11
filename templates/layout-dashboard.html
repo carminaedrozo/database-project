@@ -57,21 +57,20 @@
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAO9SURBVFhH5ZhdaI5hHMY3NplIvkaccIA0Q8mWA0LDSpysiNJ8NR8lJe10mGK1wmI42CxxIs5wIA6IE4pJPmc+yoHJEFETm9+195qXfbzb87zPO8Wvrp7nvu77/7//PZ/386T987S1tY1rbW1diFaxX8J2IypifzbbYR7WfzDxAFTA5LXoFfs9Qv93dAvtQVOcIjUwXwaT6Og88+Tf0DVUjlaj+dizJfaXoM2oGj3WeMH+JZTvlNFB0jxU70meo+1opLt7hbG5qAp9Qa2kqWMzyt3JQaJdSEfrA9pG8gx3BYb4bFSDxCsU/mhSyEASHPVRu44muCtpyKVL4C36ipbbDgaB1S7uFJtM25FBzonkfoJa0GLbfYOAnS7uNJt025FDbj2iGpCuzWm2E8PAfNR+h5JgkO2UwTxT0Sf0gPkG2+4eBuhRUo90Q4y3nXKYay1z64yV2eoeBmzywK22+g3mvIq+Mv04W39CxwAG6HpoZD/0oyQszDvHB6fC1p/QV+ABO2wFhtgilONmYIjVm6mJMro+NejQA7SFztG2AkN8M/F1bgaG+PU+SIW24mDqyX7NzVCQ+yM5zrgZGGL1phGVtmJgjHfl+2yFItkCBfEP0Q03Y5B4gQtcYysUERV4HjW7GUOFucB5tkIRUYGHVAvEXxI0SmJe2yxbCSGJ1n/N6H0nCb1bO/u6vrMdnhDG7VUhbOPLORodd88cWwlh3Ex0hpCzvwtPr0itsjv7R9gOcXhCGLufsWK4rXZzpRy2i2yFghRRnOJj6Ae54osUGlqqq8AttkIRUYGX0Us3Y2AMQ/rAqbYVimQLJD6d+Dfogq04mLfRIzdDkWyBxOaQQ2ey1FYczI67Z4atwBD7GlW5GRim3+0acm3FwZyMxGFbgSG3VshZbgaCWK1F9Ti6a6srdF5EWn736ZkVJRS4zkdvg62u0DkXiRpb/QJ1DWVOXR76KZD4A40B+qgWS22lHOY67qO3zFbPMGgk0rXQhCbZThnM0fE9UmurdxisXx26FhuI7f4bIQLIX4j07tZvlT69Cn9B0AoHN6LI/0yRs9j5n6IxtoNBoH5RfEb6bi22nRQcKd0QJ3xa7yR9hkgyDd13wisoz12BIFzPOR211851kk2w09oTJMtCZUjfrUqur6/1qNfnJWOmI/3AfOFYfdr2freGgcRjUQXSp6EmE/qGOIcOonLsA2y1ZNKq5I3GCfbvIa07I/8R1QVNwmS6AyvRTfSuvQpD+wd6gS6gUjTdoX8P6spEIyRb/wNpaT8BUxj5gnC16T4AAAAASUVORK5CYII=">
                     Create</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{base_url()}}/create">Book</a>
-                    <a class="dropdown-item" href="#two">two</a>
+                    <a class="dropdown-item" href="{{base_url()}}/create/book">Book</a>
                     <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#three">Create</a>
+                    <a class="dropdown-item" href="{{base_url()}}/create/account">Account</a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALWSURBVFhH7ZhPiIxhHMexB1byZ5XYlJQ/B3+yaWoVFyfJaS+E3GxyICUuLopQjpMJl41cltptcfAnKRFKe+NAZJSUkoiyeF+f37tfU9PMmGee2d/rsp/69szzfX7P7/fbd/ad95mZMskkASRJUkBH0dU0Te8zPkDdWv5/0MRm9JimMng9hsrIKGFNVWj+0MAR9Bt9QidRgYamaW046zhNP/P6AuPCbFNeUHSfVWe8g+bLroDXhfagIvqGPqBlWvaFQovQd/SUHmfKbghxPciafCTLFwqdQUaPrKYQe0xXfJMsPyjyHD3TNAjiF6vBE7J8oEYHRYyirGDYazfMFU19oMjc2CvBnhfonqZ+UOQrPQ5oGoxdQTSoqR80eBOVKZZ95oVA/Fri7cofluUHRS6q2FJZTSH2lPZsk+UDBTrRTzQkKwji7S62m2RElg8UmUWRX6gkKxj2vEa3NPWDInZS+YhWyWoKsbv1Fh+X5QdFNujtKsv6J8T1qrlRtEC2LxQ6pKIrZTWEGDvpJITnd6Kh3gorCudk1YV1u6neo4ey8oOi15CxRVYGcztqnUXn0W1d6Seat6IS6lXa1qHuHBLYsavq+cp8hzU1EZBrWGnjIEfNAYD5zvH06UZZUZDnLbqhaRw0Edwg83Wov57Y06ewCm03yObpyE7KQQ3i35VfA2v2dOpSaAbz+AbZ2EnegfH0ab/sDNYaXUE7qq2vJ/YsUViFqAbZMBvtRy9JbH/5ZYaqUw1e/v+DBK5GdtvbWdAae4O2a7kK/PwaJGANGkKGfQe2r5l9FO9QSA2s59MgiwfQD8k+OIO+1xLn3yALB60Coz3gl8sOgnjfBq0hZL+xjFJkhuxg2OfeYNGyMxZktUQeDb5C7ygwL0bs3ctouDU4pgLt4tbgLpKfjhX7RxgNnwbbhaT5fA7G8rdBxi/IftyMlT0YrivtxEHSbnSJHgfbVZIkW/8AVeyU5tcppa4AAAAASUVORK5CYII=">
-                    Supplier</a>
+                    Publishers</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALmSURBVFhH7Zg7aBRRFIbXiKCREF+FLyQoVqk0MSjEQoliI4gook0ajShiYREkxCaFCgYkEDWdlU0QVJAUPiBFLKy0EGNQCaJCCFpE7ZRdv3P9d8nu3OhOmHujmB8+7txz7rnnZ2Z3dnZyWalQKCzI5/ObYKVCf48wtQXGMFnUIPM6pedWGFkC4zAJndAPphtaMrfCyE47ZYztMABH4B5MaklY0buWZjsY23yQu8hoaoXLzPfD9V8hf43BmkbGGrWZndhkK0ywUTVqVZnVFQ3+ScOwWGXpRaMh+ALH2eiwD3J9jCafQW+NwZpeRvtonFBZelFsH/4hTb0if1SNPsJbMWUxLfGK9DLVXVIovSh+B/c19Yr8ergDDyu4qiVe4a0+isHZat7gdLFmO9yGUXgCh+i9UGmvohkkvwe+w2d4BKNq/IJhlZYlRC6OQXoMs+YTrNB8Ecen1LzbLfKIdLQzaLeXB5qWROwb3NI0oZgGn8OIpk70rVXzXoUSIh3N4FMY19SJ+TY171QooZgGx+AVLFVousErCiUU0+BZNWpXyGJ3YQoaFUoomkF62Ld2At5o3sSx3XZuugUzKJpBE2sGrJkdMxywY9TmkjOIfHiD5OrgNNhN+oNizWCyL88+PHgfSoMatKbEu8A9VjG+hhalre4MfFXOflkSZ5NYOIPE+rX5CINd0sTvLrF68ufAzu4P5mUmLQ/ZG2S+BkyWO0mPjt/Bmm63mocIbeFELphBd49LK+reawsnQkEv8Wb2bkpJ2ZMN83AGs1BQg8TWsrf3M+eD9ccYy243zMMZZN/ztnm1Yg/7Fm9QuRPzoAZroAE2VslqlZZELOglthdGu9nf+1qjEtY2q7Qk4kENXrDNU6pB5U7Mg17i5cQPMnpfa1TC2r0qLYl4OINZ6L8xaH/Ey/4QZSX2XSeDPQqlF8XXwPSYvQazhD1fMprBXWqXXhTbA6m91rU/RsVXa1nxDH8davWvKpf7CVTUT70/UdXLAAAAAElFTkSuQmCC">
-                    Employees</a>
+                    Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{base_url()}}/storage">

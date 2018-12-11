@@ -96,7 +96,7 @@ $app->get('/home', function ($request, $response, $args) {
     return $response;
 });
 
-$app->get('/create', function ($request, $response, $args) {
+$app->get('/create/book', function ($request, $response, $args) {
 
 
     $this->view->render($response, 'create-book.html');
@@ -104,7 +104,7 @@ $app->get('/create', function ($request, $response, $args) {
     return $response;
 });
 
-$app->post('/create-book', function ($request, $response, $args) {
+$app->post('/create/book', function ($request, $response, $args) {
     $title = $request->getParam("title");
     $author = $request->getParam("author");
     $edition = $request->getParam("edition");
@@ -133,6 +133,40 @@ $app->post('/create-book', function ($request, $response, $args) {
     $s->save();
 
     $data = array('title' => $product->getTitle());
+    $newResponse = $response->withJson($data);
+    return $newResponse;
+});
+
+$app->get('/create/account', function ($request, $response, $args) {
+
+
+    $this->view->render($response, 'create-account.html');
+
+    return $response;
+});
+
+$app->post('/create/account', function ($request, $response, $args) {
+
+    $role = $request->getParam("role");
+    $first=$request->getParam("first_name");
+    $last = $request->getParam("last_name");
+    $email = $request->getParam("email");
+    $password = $request->getParam("password");
+
+    $user = new User();
+    $user->setEmail($email);
+    $user->setPasswordHash($password);
+    $user->setStatus($role);
+    $user->save();
+
+    $lastId = $user->getId();
+
+    $profile = InfoQuery::create()->filterByUserId($lastId)->findOne();
+    $profile->setFirstName($first);
+    $profile->setLastName($last);
+    $profile->save();
+
+    $data = array('email' => $user->getEmail(), 'first_name' => $profile->getFirstName(), 'last_name' =>$profile->getLastName() );
     $newResponse = $response->withJson($data);
     return $newResponse;
 });

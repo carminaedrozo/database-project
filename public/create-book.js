@@ -11,7 +11,7 @@ $("#addBtnBook").on("click", function () {
     var quantity = $("#inputQuantity").val();
 
     $.ajax({
-        url: baseurl + "/create-book",
+        url: baseurl + "/create/book",
         data: {
             "title": title,
             "author": author,
