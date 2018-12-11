@@ -1,6 +1,6 @@
 $("#addBtnAccount").on("click", function () {
 
-    var role = $("#statusRole input").val();
+        var role = $("#statusRole :radio:checked").val();
     var first_name = $("#inputFirstName").val();
     var last_name = $("#inputLastName").val();
     var email = $("#inputEmailConfirm").val();
