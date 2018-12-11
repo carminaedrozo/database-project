@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2018 at 12:33 AM
+-- Generation Time: Dec 11, 2018 at 06:39 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -61,6 +61,60 @@ INSERT INTO `employeeorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `Fufille
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `info`
+--
+
+CREATE TABLE `info` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `zip` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `info`
+--
+
+INSERT INTO `info` (`id`, `first_name`, `last_name`, `phone_number`, `address`, `city`, `state`, `zip`, `user_id`) VALUES
+(1, 'Rebekah', 'Gonzales', '', '', '', '', '', 1),
+(2, 'Nell', 'TeslaBarnes', '', '', '', '', '', 2),
+(3, 'Ayanna', 'Dillon', '', '', '', '', '', 3),
+(4, 'Gray', 'Finch', '', '', '', '', '', 4),
+(5, 'Cullen', 'Dorsey', '', '', '', '', '', 5),
+(6, 'Lee', 'Contreras', '', '', '', '', '', 6),
+(7, 'Devin', 'Marquez', '', '', '', '', '', 7),
+(8, 'Iliana', 'Colon', '', '', '', '', '', 8),
+(9, 'Keane', 'Pugh', '', '', '', '', '', 9),
+(10, 'Ali', 'Molina', '', '', '', '', '', 10),
+(11, 'Rajah', 'Mclaughlin', '', '', '', '', '', 11),
+(12, 'Barbara', 'Luna', '', '', '', '', '', 12),
+(13, 'Isadora', 'Hogan', '', '', '', '', '', 13),
+(14, 'Gregory', 'Leon', '', '', '', '', '', 14),
+(15, 'Abraham', 'Carter', '', '', '', '', '', 15),
+(16, 'Hilel', 'Kinney', '', '', '', '', '', 16),
+(17, 'Demetria', 'Noble', '', '', '', '', '', 17),
+(18, 'Kyra', 'Walters', '', '', '', '', '', 18),
+(19, 'Colton', 'Jenkins', '', '', '', '', '', 19),
+(20, 'Rigel', 'Moody', '', '', '', '', '', 20),
+(21, 'Steven', 'Hamilton', '', '', '', '', '', 21),
+(22, 'John', 'Estrada', '', '', '', '', '', 22),
+(23, 'Sara', 'Rojas', '', '', '', '', '', 23),
+(24, 'Delilah', 'Lewis', '', '', '', '', '', 24),
+(25, 'Palmer', 'Bruce', '', '', '', '', '', 25),
+(26, 'Rebekah', 'Craft', '', '', '', '', '', 26),
+(27, 'Christian', 'Owen', '', '', '', '', '', 27),
+(28, 'Quemby', 'Gonzalez', '', '', '', '', '', 28),
+(29, 'Caleb', 'Howard', '', '', '', '', '', 29),
+(30, 'Melinda', 'Merritt', '', '', '', '', '', 30);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orderlist`
 --
 
@@ -112,7 +166,8 @@ INSERT INTO `product` (`id`, `title`, `author`, `edition`, `isbn10`, `isbn13`, `
 (13, 'PHP for the Web: Visual QuickStart Guide', 'Larry Ullman', '5', '0134291255', '978-0134291253', 'Peachpit Press', '15.6500', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg'),
 (14, 'SQL Queries for Mere Mortals: A Hands-On Guide to Data Manipulation in SQL', 'John L. Viescas', '4', '0134858336', '978-0134858333', 'Addison-Wesley Professional', '22.3000', 'https://images-na.ssl-images-amazon.com/images/I/51bYGTH%2B1wL._SX381_BO1,204,203,200_.jpg'),
 (15, 'Grokking Algorithms: An illustrated guide for programmers and other curious people', 'Aditya Bhargava', '1', '1617292230', '978-1617292231', '', '36.2900', 'https://images-na.ssl-images-amazon.com/images/I/61uUPXbhMxL._SX397_BO1,204,203,200_.jpg'),
-(16, 'Database System Concepts', 'Abraham Silberschatz', '7', '0078022150', '978-0078022159', 'McGraw-Hill Education', '189.2200', 'https://images-na.ssl-images-amazon.com/images/I/51cq3aAdqNL._SX402_BO1,204,203,200_.jpg');
+(16, 'Database System Concepts', 'Abraham Silberschatz', '7', '0078022150', '978-0078022159', 'McGraw-Hill Education', '189.2200', 'https://images-na.ssl-images-amazon.com/images/I/51cq3aAdqNL._SX402_BO1,204,203,200_.jpg'),
+(17, 'PqwHP for wqWeb: Visual Quick', 'qweq', '1', '0134291255', '978-0134291253', 'wewew', '12.0000', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg');
 
 --
 -- Triggers `product`
@@ -273,7 +328,8 @@ INSERT INTO `storage` (`id`, `product_id`, `count`) VALUES
 (12, 13, 21),
 (13, 14, 47),
 (14, 15, 11),
-(15, 16, 9);
+(15, 16, 9),
+(16, 17, 5);
 
 -- --------------------------------------------------------
 
@@ -285,16 +341,52 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `status` int(1) NOT NULL
+  `status` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `full_name`, `status`) VALUES
-(1, 'rebekah14@gmail.com', '$2y$10$mGZTG823vjIo.RB2jGYLLeC1eaMkEjP0c.QM3dIAJ5/5PB93yZ6qe', 'Rebekah Cardenas', 0);
+INSERT INTO `user` (`id`, `email`, `password`, `status`) VALUES
+(1, 'rebekah14@gmail.com', '$2y$10$4AgWldoo4ksbXJ.vPr0VVOglZ2Q6aC0qtfVDzazPXWRKhC/KapZi6', '0'),
+(2, 'Nullam@maurisa.com', '$2y$10$C24YkQ.64HFPol70hFDSGuDT.jYANIrYa5kCTNGnJjqdSWn61q5ZC', '1'),
+(3, 'non.sollicitudin@penatibuset.ca', '$2y$10$stxaMOdR1fr.XN6yaccza.VyksdTyPfPyio2xQJjvYtYE6Wmbte1m', '1'),
+(4, 'lacus.pede.sagittis@cursus.org', '$2y$10$ca97FNgwyVPsNh6VV5y03.0P0qtQBDGr.ZrZjSHGJY0n144/V9XcG', '1'),
+(5, 'ac.nulla.In@euismodestarcu.org', '$2y$10$7SJc3gXfmqsB9VO2I2urGuq3xZolhfi/usP49StWen3piB8mLsnOm', '1'),
+(6, 'Curabitur@Aeneansedpede.com', '$2y$10$PZYAnoZLruclhWeqPGg.6uATwO2zPzScAmDUGyijBw7Wzw0/zvuN6', '1'),
+(7, 'purus@at.com', '$2y$10$AmpJqaYtNh6JVfx3JGmnrOmGmY2VT8MI7s3QOceSkN/dN5Jb2RaAG', '1'),
+(8, 'dui.Suspendisse.ac@Aliquameratvolutpat.com', '$2y$10$MT/nqYJs.oUvAaNxKbFzCewZJbVBmSLsE17XrOS7JX9uNrLNzTSey', '1'),
+(9, 'facilisis.non@maurissit.net', '$2y$10$TY.LJaLhx2.qiZaS2j9ga.qzG8544oUOUuZ43sKdHEtIqiumePEAm', '1'),
+(10, 'dignissim.tempor.arcu@apurusDuis.co.uk', '$2y$10$P57P38nWqDGUbV6JnIJSseO2Mt21m2WF7BQ47gMhgy9W84c5aRHQe', '1'),
+(11, 'eget@risus.ca', '$2y$10$pIfa2/HvpCzt0FwBjCmObepgnXpHIy106gMXHl0Xr4HvvPOTd5W.6', '1'),
+(12, 'In.tincidunt@blanditatnisi.co.uk', '$2y$10$PEERI7I6h38IE6brI5dXgeM4EDBr.pI5uOj./dtnHHioasFmPTOz6', '1'),
+(13, 'magna@utaliquamiaculis.ca', '$2y$10$Dbk5Dj611LWNexbwJyI8xuuz2Xa4CRGxwsEKmOSsoS.sT8MulbOHq', '1'),
+(14, 'mauris.ipsum@nonenimcommodo.org', '$2y$10$FFG1LsLkxXbG28CTzAvaLeOx21kEM2Fiw0xtvNAtE0Dr7ZEkxQA/6', '1'),
+(15, 'leo.elementum@odio.co.uk', '$2y$10$qaMpq04ZoOzc03bGXrzK3uJeY2BuBwzi1UeiKjj9.cM/Y/korhw/2', '1'),
+(16, 'ullamcorper.nisl.arcu@consectetuer.edu', '$2y$10$wwd6hu9Pcd/NRogSTfnKt.ahOdAlGG0oc9Q5lm3h.BppDOoYd5RQu', '1'),
+(17, 'enim.Curabitur.massa@quisaccumsan.ca', '$2y$10$X4cW9LZi/lgZF3MuHdRrAOrDbmATi//JJWhHNR6wUuDi.9czGML/.', '1'),
+(18, 'Donec@Maurisquisturpis.ca', '$2y$10$EPUQZ3MK.iWlj6GhB3bpLOf2J6maBXd9x486pmAQ9xuNR4GhttNk.', '1'),
+(19, 'habitant@Mauris.net', '$2y$10$f8f8dwY7Q4HgkhdA5m1qh.CJ0V7DcAMIp/Rer02tobrNMiHY9dO46', '1'),
+(20, 'ultrices.iaculis.odio@egestas.edu', '$2y$10$/KE3Wsc1lqvusQ8HrPBbE.AA1yZ4T4u86nkBiEk29AF/Ulq2wTuS2', '1'),
+(21, 'nunc.In@lobortisClass.edu', '$2y$10$ro87GqUhXZlzrARiCvhljuuqaSJ5CqPyExjryLbPdUnCFHhUHsTVS', '1'),
+(22, 'diam@idlibero.edu', '$2y$10$NAkhQvl0HDPtDrRthXG2ReXfhBTvCx9B7MmFYQijtfZxY2WMDnzGS', '1'),
+(23, 'malesuada.fames@Praesentinterdum.ca', '$2y$10$Qsxwcn54Zr/FP0r.aIkGBu.mkGWbEjmLEx6fmOnn7H8AZ1zUoLVZG', '0'),
+(24, 'neque@feugiat.net', '$2y$10$WhP4Dj03Zrm4ejY290CcQOt4QfCI3sAm5OTu1xBHlma6NrRzFgPse', '0'),
+(25, 'aliquet@risusDonecegestas.ca', '$2y$10$QDbOyRHGba2GT/yVql.JJ.aFX9.TbfI63CotD/kS0roiWKtCVT/BO', '0'),
+(26, 'nec@interdum.com', '$2y$10$hNk8IthLzTbu41/x04yOXOvaSFBK1i7DLvaTz45jXT3Q52TaOnaXi', '0'),
+(27, 'pharetra@odiotristique.ca', '$2y$10$1mE8zTlPrDpek7TfeeBhXeXaG76AcCp8.3Vfl798O.ESLNNoF5XPe', '0'),
+(28, 'penatibus.et.magnis@velitSedmalesuada.net', '$2y$10$G7ZwQ0Dp8Fz9yZBucVJ22OKkAwgLEhtDhkiE9YtrD6m/1pwDXSxry', '0'),
+(29, 'sodales.Mauris@netus.edu', '$2y$10$Mu0VNmlR3VwJ7ko03nX9UuoCSdvZbWheLC8aFpExDs.3F7/vnLWTm', '1'),
+(30, 'diam@malesuadamalesuada.ca', '$2y$10$fDQFn4S6zkoHFbAD2Rh8Bu3WsYmE99mk6G1MEG4qWGsyQy06YD1u.', '1');
+
+--
+-- Triggers `user`
+--
+DELIMITER $$
+CREATE TRIGGER `addProfile` AFTER INSERT ON `user` FOR EACH ROW INSERT INTO info VALUES(null, "" , "" ,"" , "", "","" ,"" , NEW.id)
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -311,6 +403,13 @@ ALTER TABLE `employee`
 --
 ALTER TABLE `employeeorderstatus`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `info`
+--
+ALTER TABLE `info`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `orderlist`
@@ -384,6 +483,12 @@ ALTER TABLE `employeeorderstatus`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `info`
+--
+ALTER TABLE `info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
@@ -393,7 +498,7 @@ ALTER TABLE `orderlist`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `provider`
@@ -411,13 +516,13 @@ ALTER TABLE `requestlist`
 -- AUTO_INCREMENT for table `storage`
 --
 ALTER TABLE `storage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables
@@ -428,6 +533,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Request_ID`) REFERENCES `requestlist` (`Request_ID`);
+
+--
+-- Constraints for table `info`
+--
+ALTER TABLE `info`
+  ADD CONSTRAINT `info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `storage`
