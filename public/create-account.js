@@ -1,16 +1,10 @@
 $("#addBtnAccount").on("click", function () {
 
     var role = $("#statusRole :radio:checked").val();
-    // if ($("#statusRole :radio:checked").val() == "0") {
-    //     role = 0;
-    // } else if ($("#statusRole :radio:checked").val() == "1") {
-    //     role = 1;
-    // }
     var first_name = $("#inputFirstName").val();
     var last_name = $("#inputLastName").val();
     var email = $("#inputEmailConfirm").val();
     var password = $("#inputPassword").attr('placeholder');
-
 
     $.ajax({
         url: baseurl + "/create/account",
@@ -33,5 +27,6 @@ $("#addBtnAccount").on("click", function () {
         $("#inputEmailConfirm").val("");
 
     });
+
     return false;
 });

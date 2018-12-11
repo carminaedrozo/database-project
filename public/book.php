@@ -170,6 +170,20 @@ $app->post('/create/account', function ($request, $response, $args) {
     $newResponse = $response->withJson($data);
     return $newResponse;
 });
+
+$app->get('/users', function ($request, $response, $args) {
+
+    $user = UserQuery::create()->find();
+
+    $info = InfoQuery::create()->find();
+
+    $this->view->render($response, 'users.html', [
+        "user" => $user,
+        "info" => $info
+    ]);
+
+    return $response;
+});
 //////////////////////
 // App run
 //////////////////////
