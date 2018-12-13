@@ -201,6 +201,15 @@ $app->get('/users', function ($request, $response, $args) {
     return $response;
 });
 
+$app->get('/users/{id}', function ($request, $response, $args) {
+
+    $user = InfoQuery::create()->filterByUserId($args['id']);
+    $this->view->render($response, 'user-profile.html', [
+        "user" => $user
+    ]);
+
+    return $response;
+});
 $app->get('/logout', function ($request, $response, $args) {
 
     session_destroy();

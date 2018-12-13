@@ -13,8 +13,7 @@ Users
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
+            <th scope="col">Name </th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
 
@@ -22,15 +21,14 @@ Users
         </thead>
         <tbody>
         {% for key, i in info %}
-        <tr>
+        <tr><a href="{{ base_url() }}/users/{{ i.id }}">
 
-            <td>{{ i.firstName }}</td>
-            <td>{{ i.lastName }}</td>
+            <td><a href="{{ base_url() }}/users/{{ i.id }}">{{ i.lastName }}, {{ i.firstName }}</a></td>
             <td>{{ i.user.email }}</td>
             <td>{{ i.user.status }}</td>
 
 
-        </tr>
+        </a></tr>
 
         {% endfor %}
         </tbody>
