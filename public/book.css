@@ -31,3 +31,10 @@ body{
   color:white;
   font-family: 'Montserrat', sans-serif;
 }
+
+#img2 {
+  max-height: 400px;
+    min-height: 300px;
+    max-width: 300px;
+    min-width: 200px;
+}
