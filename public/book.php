@@ -111,8 +111,11 @@ $app->get('/home', function ($request, $response, $args) {
         ]);
     }
    else if($_SESSION['role'] == "Employee"){
+       $product = ProductQuery::create()->find();
+
        $this->view->render($response, 'home-users.html', [
-           "data" => $_SESSION
+           "data" => $_SESSION,
+           "product" => $product
        ]);
    }
 
