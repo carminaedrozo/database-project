@@ -105,12 +105,12 @@ $app->get('/book/{id}', function ($request, $response, $args) {
 
 $app->get('/home', function ($request, $response, $args) {
 
-    if($_SESSION['role'] === "Admin"){
+    if($_SESSION['role'] == "Admin"){
         $this->view->render($response, 'home.html', [
             "data" => $_SESSION
         ]);
     }
-   else if($_SESSION['role'] === "Employee"){
+   else if($_SESSION['role'] == "Employee"){
        $this->view->render($response, 'home-users.html', [
            "data" => $_SESSION
        ]);
