@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../index.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../book.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../p.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400|Text+Me+One" rel="stylesheet">
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+
+    <script>
+        var baseurl = "{{base_url()}}"
+    </script>
+    <script src="{{ base_url() }}/../layout-dashboard.js"></script>
+
+</head>
+<body>
+
+
+<nav class="navbar-dark bg-dark site-header sticky-top py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class=".navbar-brand py-2" href="{{base_url()}}/home">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIbSURBVGhD7Zm7L0NxFMcbtPwBuotRkFS8elUlWBFvg5hqEYtVaqv3oyLEI0wNQSJpomJo4lYsDMJAUq9gxGQx3uN3uJoqqXNvWvTmfJNP0rTnm/w+Sc/N7a2Jw+FwjJFCt81bOFAUJOJRa5pjdcmebFcoSMHaHfKqNXoKBmwH4oBAocBtC6g1zbG6QgFxQKAgZA7UGj0sojEsQo0eEZAzc2A/c4SEmMVO0kUaZsvDzfMSUKibKTvGDshZDnFIICFmsVMydH4sjV0AhdLhcBg7mtK74Xx2b1cDhZ415wN29Ig0+R4fXDsvQKFl9ekZO5rStijddq44gELrgv0MO3pEKicvz2rn7oGCc+r6FjuaomdHFL+lHrYygALOYudfLrviy+gBrwko4Cx2fl1EGiyGmomyNyRP8fci6+YuWE4DCjiLnViRnL5DyOs/eSO37yjxIp3LjshydyxVfCuiZ0diRaqmryPLXTt7xyKRJExk1/JO7PspJbIn+FhwfB39GYtoDItEH5ZFWORrWCT6sCzCIl9jWBHKbXwiRJJ+Gx+PRIrE4+9EZMHHz1t8/emzXxIxzMMHwzwOap6XrtoXJaDQNGc/xY7itzTCpvgaEcBZ7NhHL0+rpm/E1epnpPGLK+xoip4dSYmnKPGIiGyaO8CXDhRwFjupcdWKh7ojLEKNYUT0/BmqyOZ8Zd8SJCFmsZP0P0M5HA7nH8ZkegXY25l68s/8owAAAABJRU5ErkJggg==">
+            PUNTO FIJO
+        </a>
+        <a class="btn btn-dark" role="button"  href="{{base_url()}}/logout">Log Out</a>
+    </div>
+    <div class="container">
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link  " href="{{base_url()}}/home">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ0SURBVFhH7ZhNSFRhFIZHDXMISgpB8I8KaRFRYehCN4KGC9E2EgQtDFq4cRduok2Uq1AXbaKglQtBF/6saiOBBhJBQZsoMIJQJP8oI2qm51zeKe3OdUbnc+4s7gsP57vnnO98r8Pc69WYSyWTyWNwSJeFJYz1JBKJTXgD9UqHL/vEMPQATB/gO7k1YrdawhNGKjEyS0wSx+EoywtEM2q6x3WJ2vMrDm+Gz/ALbmGkSCUzXk5ummjGn0GF5Yk1sGl5E+vf0OttcimG9sNPWIZWpXeI84up3QEzsQiN5FpkbBKGtB7UltzFsCMwqsHzUKVSoOjpgBX4AY+19xrB7nh3BhlUD2819CGhVKWMov8kvLK9JtZuDTLnCoPW4RtcV3pPYkYZe5/IVDshd4PsL2HAfTC9h/Mq7VvMOGMxZ4NsrIDnGjJFKFfJiZjnGURjUKx0dsJQE3wCe4TcZsDfR4hLMTv1KJqB40rvLhr7wO44u/MuK30gwpt9he6C6SNcVMkvinE2PNVPtAB1Kh24OKsTVmEL/A9uPJ2i8Frm3hHKVMqbOPesnW9i/QgOpwon4CuY+w144RXyLHyl7uoVxQmvwCIOw3AJ7FUpbIODcAP6VPqnQjGolF+RwV3k3CCz7NWpJxuYeVrbAkWfW4P0eb8FshG9/i/8f6LNvUH4wsyGIKhfJYZqcFGXaUX9XGQwSPRFBn2imLNBziiCWltTLzyD5Fp1UDUU5CdYSt77W5kYfQcDRV9k0CeKkcEg7cWg/f+lLRP0vYSldLUU1G8S7dCR7fl00NNNzGhwzprCFB4GZMcvijX0pH3pzAec3wVx2YnkQLHYH/h1bfSBDb7QAAAAAElFTkSuQmCC">
+                    Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKXSURBVFhH7ZfPS1RRHMVHECUKWuSmUrDWbloUgu7KZZtW9RcE0soWuatdVtRK0lrUP1DRItEIq12uC4QoalEkLfoBCQbC1Od85/Qaa968Me9zEe8Dh3vvOd/LPTDKMLWKiop/4Mcmqdfrs76agXfTccf4ajGe7xjKfGYZ9HWVO8D5a4SbwNeL8bwefsYylSfyaVRnr9kv6IbEMcopg2m2Le9bT1Hg54vxvB64aCsXxibVonHjN/YmPZaLZuIC2CrG8x0VFMyNoQX0yZrn+jHHbWGu/IJbgWeqgvqI96FTaMI6Kc9xW3imvILkw+gxavlPAoto2OMtYTR9QaIudEENYrANmoHzbLt8fQP46QviX/KIZr6hy+gw2mkdsbfqMTHl6xvAT1sQ74Rj5cssB+0PoUfWkDxlngnYH5ffDHa6gljdeK+craB+R8pG5ZtR2yrejz7KZH3J0u0o4JyuIOcxR8pO2w6wWhYUzI7b172jtgOspAWv2v/Osst2wDm3IOfdvqO7V2wHWEkL3rX/3FYGdm5BwZ0XCljv2AqwkhZ8aH/JVgZ2UcElBawLtgKspAVv2/9gK+Dcq4fjUoNWBVcUsN6yFWAlLXjGkbJD8tj2sJ9ruOHPox1xwWjWsfJx2wFW0oIDaN3ZPXv6Hn5rbw71xnATePedr6P9tgPsdAUFXvZbg/2EPLaD7GdZe2KoCfyzMQzsZ2xnYKctiN2H/6YxETMq3Oc4Q56zgP1rtMdxBlHaggJfX2vvPaa5NfQAXbP0Ua85Vv4OxdffnxCnLyjI9LeX/XPkwYyK7/W1v2CknIK/YGYEzaBltGppfx2NeCwXnim34Fbhmf+74BN0rmTpJ2rg54vx/Lbj54vx/Lbj5ysqKjqnVvsJ3xL4MGv9UmAAAAAASUVORK5CYII=">
+                    Requests</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% block content%}
+{% endblock %}
+<!-- <footer class="fixed-bottom"> -->
+{% block script %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'layout-employee.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+
+        {% for p in product %}
+        <div class="col-sm-2 d-flex align-items-stretch">
+            <div class="card">
+                <img class="card-img-top" src="{{ p.imageUrl}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.title }}</h5>
+                    <p class="card-text">{{ p.price }}</p>
+                    <input type="number" class="form-control" name="quantity" value="1" size="3" >
+                    <button type="button" class="btn btn-outline-primary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

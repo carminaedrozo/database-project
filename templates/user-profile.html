@@ -1,0 +1,21 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+User
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    {% for u in user %}
+    <p>Name: {{ u.firstName }} {{ u.lastName }}</p>
+    <p>Phone Number: {{ u.phoneNumber }}</p>
+    <p>Address: {{ u.address }}, {{ u.city }}, {{ u.state }} {{ u.zip }}</p>
+    {% endfor %}
+
+</div>
+{% endblock %}

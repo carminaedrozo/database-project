@@ -61,7 +61,8 @@ $app->post('/login', function ($request, $response, $args) {
 
     if ($u->login($typedpword)) {
         $_SESSION['user'] = $p->getFirstName();
-        $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user']);
+        $_SESSION['role'] = $u->getStatus();
+        $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user'],);
     } else {
         $data = array('passwordMatched' => 'false');
     }
@@ -104,10 +105,19 @@ $app->get('/book/{id}', function ($request, $response, $args) {
 
 $app->get('/home', function ($request, $response, $args) {
 
+    if($_SESSION['role'] == "Admin"){
+        $this->view->render($response, 'home.html', [
+            "data" => $_SESSION
+        ]);
+    }
+   else if($_SESSION['role'] == "Employee"){
+       $product = ProductQuery::create()->find();
 
-    $this->view->render($response, 'home.html', [
-        "data" => $_SESSION
-    ]);
+       $this->view->render($response, 'home-users.html', [
+           "data" => $_SESSION,
+           "product" => $product
+       ]);
+   }
 
     return $response;
 });
@@ -201,6 +211,15 @@ $app->get('/users', function ($request, $response, $args) {
     return $response;
 });
 
+$app->get('/users/{id}', function ($request, $response, $args) {
+
+    $user = InfoQuery::create()->filterByUserId($args['id']);
+    $this->view->render($response, 'user-profile.html', [
+        "user" => $user
+    ]);
+
+    return $response;
+});
 $app->get('/logout', function ($request, $response, $args) {
 
     session_destroy();
