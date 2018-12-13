@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2018 at 06:39 AM
+-- Generation Time: Dec 13, 2018 at 01:35 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -180,28 +180,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `provider`
---
-
-CREATE TABLE `provider` (
-  `Provider_ID` int(11) NOT NULL,
-  `Provider_Name` text NOT NULL,
-  `Provider_Phone` bigint(11) NOT NULL,
-  `Provider_Address` text NOT NULL,
-  `OrderList_ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `provider`
---
-
-INSERT INTO `provider` (`Provider_ID`, `Provider_Name`, `Provider_Phone`, `Provider_Address`, `OrderList_ID`) VALUES
-(1, 'Marina Bay', 9561111111, '212 N 1st St', 1),
-(2, 'Santa Anna', 9562222222, '515 S Bulberry Ave', 2);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `providerorder`
 --
 
@@ -249,6 +227,29 @@ INSERT INTO `providerorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `Fulfill
 (3, 3, 12, 0, 78),
 (4, 4, 11, 0, 15),
 (5, 5, 90, 1, 200);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `publisher`
+--
+
+CREATE TABLE `publisher` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `zip` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `publisher`
+--
+
+INSERT INTO `publisher` (`id`, `name`, `phone_number`, `address`, `city`, `state`, `zip`) VALUES
+(1, 'Cengage Learning', '+1 617.289.7700 ', '20 Channel Center Street', 'Boston', 'MA', '02210');
 
 -- --------------------------------------------------------
 
@@ -424,12 +425,6 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `provider`
---
-ALTER TABLE `provider`
-  ADD PRIMARY KEY (`Provider_ID`);
-
---
 -- Indexes for table `providerorder`
 --
 ALTER TABLE `providerorder`
@@ -440,6 +435,12 @@ ALTER TABLE `providerorder`
 --
 ALTER TABLE `providerorderstatus`
   ADD PRIMARY KEY (`ID`) USING BTREE;
+
+--
+-- Indexes for table `publisher`
+--
+ALTER TABLE `publisher`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `requestlist`
@@ -501,10 +502,10 @@ ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `provider`
+-- AUTO_INCREMENT for table `publisher`
 --
-ALTER TABLE `provider`
-  MODIFY `Provider_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `publisher`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `requestlist`
