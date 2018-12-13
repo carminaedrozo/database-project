@@ -1,0 +1,21 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Publisher
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    {% for p in publisher %}
+    <p>Name: {{ p.name }}</p>
+    <p>Phone Number: {{ p.phoneNumber }}</p>
+    <p>Address: {{ p.address }}, {{ p.city }}, {{ p.state }} {{ p.zip }}</p>
+    {% endfor %}
+
+</div>
+{% endblock %}
