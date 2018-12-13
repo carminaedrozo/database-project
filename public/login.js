@@ -15,9 +15,10 @@ $("#submitBtn").on("click", function (e) {
         if (response.passwordMatched === "true") {
 
             window.location.href = baseurl + "/home";
-            console.log(response.email);
+
+
         } else {
-            console.log("feelsbad");
+
         }
     });
     return false;

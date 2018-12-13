@@ -1,17 +1,16 @@
-{% extends 'layout-dashboard.html' %}
+{% extends 'layout-employee.html' %}
 
 {% block title %}
 Home
 {% endblock %}
 
 {% block script %}
-<script src="{{ base_url() }}/../storage.js"></script>
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-<h1>Welcome! {{ data.user }}</h1>
+    <h1>Welcome! {{ data.user }}</h1>
 </div>
 
 {% endblock %}

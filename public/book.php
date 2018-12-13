@@ -61,7 +61,8 @@ $app->post('/login', function ($request, $response, $args) {
 
     if ($u->login($typedpword)) {
         $_SESSION['user'] = $p->getFirstName();
-        $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user']);
+        $_SESSION['role'] = $u->getStatus();
+        $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user'],);
     } else {
         $data = array('passwordMatched' => 'false');
     }
@@ -104,10 +105,16 @@ $app->get('/book/{id}', function ($request, $response, $args) {
 
 $app->get('/home', function ($request, $response, $args) {
 
-
-    $this->view->render($response, 'home.html', [
-        "data" => $_SESSION
-    ]);
+    if($_SESSION['role'] === "Admin"){
+        $this->view->render($response, 'home.html', [
+            "data" => $_SESSION
+        ]);
+    }
+   else if($_SESSION['role'] === "Employee"){
+       $this->view->render($response, 'home-users.html', [
+           "data" => $_SESSION
+       ]);
+   }
 
     return $response;
 });

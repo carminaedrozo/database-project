@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2018 at 01:35 AM
+-- Generation Time: Dec 13, 2018 at 03:23 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -81,10 +81,10 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `first_name`, `last_name`, `phone_number`, `address`, `city`, `state`, `zip`, `user_id`) VALUES
-(1, 'Rebekah', 'Gonzales', '', '', '', '', '', 1),
-(2, 'Nell', 'TeslaBarnes', '', '', '', '', '', 2),
-(3, 'Ayanna', 'Dillon', '', '', '', '', '', 3),
-(4, 'Gray', 'Finch', '', '', '', '', '', 4),
+(1, 'Rebekah', 'Gonzales', '1-686-640-0771', 'Ap #310-6047 Metus Av.', 'Penrith', 'TX', '03587-025', 1),
+(2, 'Nell', 'TeslaBarnes', '1-515-729-3218', 'Ap #179-7432 Ante. Av.', 'Miramichi', 'AL', '4274', 2),
+(3, 'Ayanna', 'Dillon', '1-346-577-2603', '9345 Proin Ave', 'Lexington', 'AK', '71020', 3),
+(4, 'Gray', 'Finch', '1-577-709-6314\r\n', '3906 Sed Rd.', 'Biloxi', 'AR', '76504', 4),
 (5, 'Cullen', 'Dorsey', '', '', '', '', '', 5),
 (6, 'Lee', 'Contreras', '', '', '', '', '', 6),
 (7, 'Devin', 'Marquez', '', '', '', '', '', 7),
@@ -342,7 +342,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` varchar(1) NOT NULL
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -350,36 +350,36 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `status`) VALUES
-(1, 'rebekah14@gmail.com', '$2y$10$4AgWldoo4ksbXJ.vPr0VVOglZ2Q6aC0qtfVDzazPXWRKhC/KapZi6', '0'),
-(2, 'Nullam@maurisa.com', '$2y$10$C24YkQ.64HFPol70hFDSGuDT.jYANIrYa5kCTNGnJjqdSWn61q5ZC', '1'),
-(3, 'non.sollicitudin@penatibuset.ca', '$2y$10$stxaMOdR1fr.XN6yaccza.VyksdTyPfPyio2xQJjvYtYE6Wmbte1m', '1'),
-(4, 'lacus.pede.sagittis@cursus.org', '$2y$10$ca97FNgwyVPsNh6VV5y03.0P0qtQBDGr.ZrZjSHGJY0n144/V9XcG', '1'),
-(5, 'ac.nulla.In@euismodestarcu.org', '$2y$10$7SJc3gXfmqsB9VO2I2urGuq3xZolhfi/usP49StWen3piB8mLsnOm', '1'),
-(6, 'Curabitur@Aeneansedpede.com', '$2y$10$PZYAnoZLruclhWeqPGg.6uATwO2zPzScAmDUGyijBw7Wzw0/zvuN6', '1'),
-(7, 'purus@at.com', '$2y$10$AmpJqaYtNh6JVfx3JGmnrOmGmY2VT8MI7s3QOceSkN/dN5Jb2RaAG', '1'),
-(8, 'dui.Suspendisse.ac@Aliquameratvolutpat.com', '$2y$10$MT/nqYJs.oUvAaNxKbFzCewZJbVBmSLsE17XrOS7JX9uNrLNzTSey', '1'),
-(9, 'facilisis.non@maurissit.net', '$2y$10$TY.LJaLhx2.qiZaS2j9ga.qzG8544oUOUuZ43sKdHEtIqiumePEAm', '1'),
-(10, 'dignissim.tempor.arcu@apurusDuis.co.uk', '$2y$10$P57P38nWqDGUbV6JnIJSseO2Mt21m2WF7BQ47gMhgy9W84c5aRHQe', '1'),
-(11, 'eget@risus.ca', '$2y$10$pIfa2/HvpCzt0FwBjCmObepgnXpHIy106gMXHl0Xr4HvvPOTd5W.6', '1'),
-(12, 'In.tincidunt@blanditatnisi.co.uk', '$2y$10$PEERI7I6h38IE6brI5dXgeM4EDBr.pI5uOj./dtnHHioasFmPTOz6', '1'),
-(13, 'magna@utaliquamiaculis.ca', '$2y$10$Dbk5Dj611LWNexbwJyI8xuuz2Xa4CRGxwsEKmOSsoS.sT8MulbOHq', '1'),
-(14, 'mauris.ipsum@nonenimcommodo.org', '$2y$10$FFG1LsLkxXbG28CTzAvaLeOx21kEM2Fiw0xtvNAtE0Dr7ZEkxQA/6', '1'),
-(15, 'leo.elementum@odio.co.uk', '$2y$10$qaMpq04ZoOzc03bGXrzK3uJeY2BuBwzi1UeiKjj9.cM/Y/korhw/2', '1'),
-(16, 'ullamcorper.nisl.arcu@consectetuer.edu', '$2y$10$wwd6hu9Pcd/NRogSTfnKt.ahOdAlGG0oc9Q5lm3h.BppDOoYd5RQu', '1'),
-(17, 'enim.Curabitur.massa@quisaccumsan.ca', '$2y$10$X4cW9LZi/lgZF3MuHdRrAOrDbmATi//JJWhHNR6wUuDi.9czGML/.', '1'),
-(18, 'Donec@Maurisquisturpis.ca', '$2y$10$EPUQZ3MK.iWlj6GhB3bpLOf2J6maBXd9x486pmAQ9xuNR4GhttNk.', '1'),
-(19, 'habitant@Mauris.net', '$2y$10$f8f8dwY7Q4HgkhdA5m1qh.CJ0V7DcAMIp/Rer02tobrNMiHY9dO46', '1'),
-(20, 'ultrices.iaculis.odio@egestas.edu', '$2y$10$/KE3Wsc1lqvusQ8HrPBbE.AA1yZ4T4u86nkBiEk29AF/Ulq2wTuS2', '1'),
-(21, 'nunc.In@lobortisClass.edu', '$2y$10$ro87GqUhXZlzrARiCvhljuuqaSJ5CqPyExjryLbPdUnCFHhUHsTVS', '1'),
-(22, 'diam@idlibero.edu', '$2y$10$NAkhQvl0HDPtDrRthXG2ReXfhBTvCx9B7MmFYQijtfZxY2WMDnzGS', '1'),
-(23, 'malesuada.fames@Praesentinterdum.ca', '$2y$10$Qsxwcn54Zr/FP0r.aIkGBu.mkGWbEjmLEx6fmOnn7H8AZ1zUoLVZG', '0'),
-(24, 'neque@feugiat.net', '$2y$10$WhP4Dj03Zrm4ejY290CcQOt4QfCI3sAm5OTu1xBHlma6NrRzFgPse', '0'),
-(25, 'aliquet@risusDonecegestas.ca', '$2y$10$QDbOyRHGba2GT/yVql.JJ.aFX9.TbfI63CotD/kS0roiWKtCVT/BO', '0'),
-(26, 'nec@interdum.com', '$2y$10$hNk8IthLzTbu41/x04yOXOvaSFBK1i7DLvaTz45jXT3Q52TaOnaXi', '0'),
-(27, 'pharetra@odiotristique.ca', '$2y$10$1mE8zTlPrDpek7TfeeBhXeXaG76AcCp8.3Vfl798O.ESLNNoF5XPe', '0'),
-(28, 'penatibus.et.magnis@velitSedmalesuada.net', '$2y$10$G7ZwQ0Dp8Fz9yZBucVJ22OKkAwgLEhtDhkiE9YtrD6m/1pwDXSxry', '0'),
-(29, 'sodales.Mauris@netus.edu', '$2y$10$Mu0VNmlR3VwJ7ko03nX9UuoCSdvZbWheLC8aFpExDs.3F7/vnLWTm', '1'),
-(30, 'diam@malesuadamalesuada.ca', '$2y$10$fDQFn4S6zkoHFbAD2Rh8Bu3WsYmE99mk6G1MEG4qWGsyQy06YD1u.', '1');
+(1, 'rebekah14@gmail.com', '$2y$10$4AgWldoo4ksbXJ.vPr0VVOglZ2Q6aC0qtfVDzazPXWRKhC/KapZi6', 'Admin'),
+(2, 'Nullam@maurisa.com', '$2y$10$C24YkQ.64HFPol70hFDSGuDT.jYANIrYa5kCTNGnJjqdSWn61q5ZC', 'Employee'),
+(3, 'non.sollicitudin@penatibuset.ca', '$2y$10$stxaMOdR1fr.XN6yaccza.VyksdTyPfPyio2xQJjvYtYE6Wmbte1m', 'Employee'),
+(4, 'lacus.pede.sagittis@cursus.org', '$2y$10$ca97FNgwyVPsNh6VV5y03.0P0qtQBDGr.ZrZjSHGJY0n144/V9XcG', 'Employee'),
+(5, 'ac.nulla.In@euismodestarcu.org', '$2y$10$7SJc3gXfmqsB9VO2I2urGuq3xZolhfi/usP49StWen3piB8mLsnOm', 'Employee'),
+(6, 'Curabitur@Aeneansedpede.com', '$2y$10$PZYAnoZLruclhWeqPGg.6uATwO2zPzScAmDUGyijBw7Wzw0/zvuN6', 'Employee'),
+(7, 'purus@at.com', '$2y$10$AmpJqaYtNh6JVfx3JGmnrOmGmY2VT8MI7s3QOceSkN/dN5Jb2RaAG', 'Employee'),
+(8, 'dui.Suspendisse.ac@Aliquameratvolutpat.com', '$2y$10$MT/nqYJs.oUvAaNxKbFzCewZJbVBmSLsE17XrOS7JX9uNrLNzTSey', 'Employee'),
+(9, 'facilisis.non@maurissit.net', '$2y$10$TY.LJaLhx2.qiZaS2j9ga.qzG8544oUOUuZ43sKdHEtIqiumePEAm', 'Employee'),
+(10, 'dignissim.tempor.arcu@apurusDuis.co.uk', '$2y$10$P57P38nWqDGUbV6JnIJSseO2Mt21m2WF7BQ47gMhgy9W84c5aRHQe', 'Employee'),
+(11, 'eget@risus.ca', '$2y$10$pIfa2/HvpCzt0FwBjCmObepgnXpHIy106gMXHl0Xr4HvvPOTd5W.6', 'Employee'),
+(12, 'In.tincidunt@blanditatnisi.co.uk', '$2y$10$PEERI7I6h38IE6brI5dXgeM4EDBr.pI5uOj./dtnHHioasFmPTOz6', 'Employee'),
+(13, 'magna@utaliquamiaculis.ca', '$2y$10$Dbk5Dj611LWNexbwJyI8xuuz2Xa4CRGxwsEKmOSsoS.sT8MulbOHq', 'Employee'),
+(14, 'mauris.ipsum@nonenimcommodo.org', '$2y$10$FFG1LsLkxXbG28CTzAvaLeOx21kEM2Fiw0xtvNAtE0Dr7ZEkxQA/6', 'Employee'),
+(15, 'leo.elementum@odio.co.uk', '$2y$10$qaMpq04ZoOzc03bGXrzK3uJeY2BuBwzi1UeiKjj9.cM/Y/korhw/2', 'Employee'),
+(16, 'ullamcorper.nisl.arcu@consectetuer.edu', '$2y$10$wwd6hu9Pcd/NRogSTfnKt.ahOdAlGG0oc9Q5lm3h.BppDOoYd5RQu', 'Employee'),
+(17, 'enim.Curabitur.massa@quisaccumsan.ca', '$2y$10$X4cW9LZi/lgZF3MuHdRrAOrDbmATi//JJWhHNR6wUuDi.9czGML/.', 'Employee'),
+(18, 'Donec@Maurisquisturpis.ca', '$2y$10$EPUQZ3MK.iWlj6GhB3bpLOf2J6maBXd9x486pmAQ9xuNR4GhttNk.', 'Employee'),
+(19, 'habitant@Mauris.net', '$2y$10$f8f8dwY7Q4HgkhdA5m1qh.CJ0V7DcAMIp/Rer02tobrNMiHY9dO46', 'Employee'),
+(20, 'ultrices.iaculis.odio@egestas.edu', '$2y$10$/KE3Wsc1lqvusQ8HrPBbE.AA1yZ4T4u86nkBiEk29AF/Ulq2wTuS2', 'Employee'),
+(21, 'nunc.In@lobortisClass.edu', '$2y$10$ro87GqUhXZlzrARiCvhljuuqaSJ5CqPyExjryLbPdUnCFHhUHsTVS', 'Employee'),
+(22, 'diam@idlibero.edu', '$2y$10$NAkhQvl0HDPtDrRthXG2ReXfhBTvCx9B7MmFYQijtfZxY2WMDnzGS', 'Employee'),
+(23, 'malesuada.fames@Praesentinterdum.ca', '$2y$10$Qsxwcn54Zr/FP0r.aIkGBu.mkGWbEjmLEx6fmOnn7H8AZ1zUoLVZG', 'Admin'),
+(24, 'neque@feugiat.net', '$2y$10$WhP4Dj03Zrm4ejY290CcQOt4QfCI3sAm5OTu1xBHlma6NrRzFgPse', 'Admin'),
+(25, 'aliquet@risusDonecegestas.ca', '$2y$10$QDbOyRHGba2GT/yVql.JJ.aFX9.TbfI63CotD/kS0roiWKtCVT/BO', 'Admin'),
+(26, 'nec@interdum.com', '$2y$10$hNk8IthLzTbu41/x04yOXOvaSFBK1i7DLvaTz45jXT3Q52TaOnaXi', 'Admin'),
+(27, 'pharetra@odiotristique.ca', '$2y$10$1mE8zTlPrDpek7TfeeBhXeXaG76AcCp8.3Vfl798O.ESLNNoF5XPe', 'Admin'),
+(28, 'penatibus.et.magnis@velitSedmalesuada.net', '$2y$10$G7ZwQ0Dp8Fz9yZBucVJ22OKkAwgLEhtDhkiE9YtrD6m/1pwDXSxry', 'Admin'),
+(29, 'sodales.Mauris@netus.edu', '$2y$10$Mu0VNmlR3VwJ7ko03nX9UuoCSdvZbWheLC8aFpExDs.3F7/vnLWTm', 'Employee'),
+(30, 'diam@malesuadamalesuada.ca', '$2y$10$fDQFn4S6zkoHFbAD2Rh8Bu3WsYmE99mk6G1MEG4qWGsyQy06YD1u.', 'Employee');
 
 --
 -- Triggers `user`
