@@ -1,9 +1,9 @@
 <?php
 
-use Base\ProviderQuery as BaseProviderQuery;
+use Base\PublisherQuery as BasePublisherQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'provider' table.
+ * Skeleton subclass for performing query and update operations on the 'publisher' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\ProviderQuery as BaseProviderQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class ProviderQuery extends BaseProviderQuery
+class PublisherQuery extends BasePublisherQuery
 {
 
 }

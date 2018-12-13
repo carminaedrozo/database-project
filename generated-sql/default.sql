@@ -94,22 +94,6 @@ CREATE TABLE `product`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- provider
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `provider`;
-
-CREATE TABLE `provider`
-(
-    `Provider_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Provider_Name` TEXT NOT NULL,
-    `Provider_Phone` BIGINT(11) NOT NULL,
-    `Provider_Address` TEXT NOT NULL,
-    `OrderList_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`Provider_ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- providerorder
 -- ---------------------------------------------------------------------
 
@@ -140,6 +124,24 @@ CREATE TABLE `providerorderstatus`
     `FulfilledStatus` INTEGER NOT NULL,
     `Count` INTEGER NOT NULL,
     PRIMARY KEY (`ID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- publisher
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `publisher`;
+
+CREATE TABLE `publisher`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `phone_number` VARCHAR(255) NOT NULL,
+    `address` VARCHAR(255) NOT NULL,
+    `city` VARCHAR(255) NOT NULL,
+    `state` VARCHAR(255) NOT NULL,
+    `zip` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

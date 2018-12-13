@@ -1,9 +1,9 @@
 <?php
 
-use Base\Provider as BaseProvider;
+use Base\Publisher as BasePublisher;
 
 /**
- * Skeleton subclass for representing a row from the 'provider' table.
+ * Skeleton subclass for representing a row from the 'publisher' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Provider as BaseProvider;
  * long as it does not already exist in the output directory.
  *
  */
-class Provider extends BaseProvider
+class Publisher extends BasePublisher
 {
 
 }

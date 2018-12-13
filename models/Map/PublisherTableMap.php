@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Provider;
-use \ProviderQuery;
+use \Publisher;
+use \PublisherQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'provider' table.
+ * This class defines the structure of the 'publisher' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class ProviderTableMap extends TableMap
+class PublisherTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class ProviderTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.ProviderTableMap';
+    const CLASS_NAME = '.Map.PublisherTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class ProviderTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'provider';
+    const TABLE_NAME = 'publisher';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Provider';
+    const OM_CLASS = '\\Publisher';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Provider';
+    const CLASS_DEFAULT = 'Publisher';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -69,32 +69,42 @@ class ProviderTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
-     * the column name for the Provider_ID field
+     * the column name for the id field
      */
-    const COL_PROVIDER_ID = 'provider.Provider_ID';
+    const COL_ID = 'publisher.id';
 
     /**
-     * the column name for the Provider_Name field
+     * the column name for the name field
      */
-    const COL_PROVIDER_NAME = 'provider.Provider_Name';
+    const COL_NAME = 'publisher.name';
 
     /**
-     * the column name for the Provider_Phone field
+     * the column name for the phone_number field
      */
-    const COL_PROVIDER_PHONE = 'provider.Provider_Phone';
+    const COL_PHONE_NUMBER = 'publisher.phone_number';
 
     /**
-     * the column name for the Provider_Address field
+     * the column name for the address field
      */
-    const COL_PROVIDER_ADDRESS = 'provider.Provider_Address';
+    const COL_ADDRESS = 'publisher.address';
 
     /**
-     * the column name for the OrderList_ID field
+     * the column name for the city field
      */
-    const COL_ORDERLIST_ID = 'provider.OrderList_ID';
+    const COL_CITY = 'publisher.city';
+
+    /**
+     * the column name for the state field
+     */
+    const COL_STATE = 'publisher.state';
+
+    /**
+     * the column name for the zip field
+     */
+    const COL_ZIP = 'publisher.zip';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +118,11 @@ class ProviderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('ProviderId', 'ProviderName', 'ProviderPhone', 'ProviderAddress', 'OrderlistId', ),
-        self::TYPE_CAMELNAME     => array('providerId', 'providerName', 'providerPhone', 'providerAddress', 'orderlistId', ),
-        self::TYPE_COLNAME       => array(ProviderTableMap::COL_PROVIDER_ID, ProviderTableMap::COL_PROVIDER_NAME, ProviderTableMap::COL_PROVIDER_PHONE, ProviderTableMap::COL_PROVIDER_ADDRESS, ProviderTableMap::COL_ORDERLIST_ID, ),
-        self::TYPE_FIELDNAME     => array('Provider_ID', 'Provider_Name', 'Provider_Phone', 'Provider_Address', 'OrderList_ID', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'PhoneNumber', 'Address', 'City', 'State', 'Zip', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'phoneNumber', 'address', 'city', 'state', 'zip', ),
+        self::TYPE_COLNAME       => array(PublisherTableMap::COL_ID, PublisherTableMap::COL_NAME, PublisherTableMap::COL_PHONE_NUMBER, PublisherTableMap::COL_ADDRESS, PublisherTableMap::COL_CITY, PublisherTableMap::COL_STATE, PublisherTableMap::COL_ZIP, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'phone_number', 'address', 'city', 'state', 'zip', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -122,11 +132,11 @@ class ProviderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('ProviderId' => 0, 'ProviderName' => 1, 'ProviderPhone' => 2, 'ProviderAddress' => 3, 'OrderlistId' => 4, ),
-        self::TYPE_CAMELNAME     => array('providerId' => 0, 'providerName' => 1, 'providerPhone' => 2, 'providerAddress' => 3, 'orderlistId' => 4, ),
-        self::TYPE_COLNAME       => array(ProviderTableMap::COL_PROVIDER_ID => 0, ProviderTableMap::COL_PROVIDER_NAME => 1, ProviderTableMap::COL_PROVIDER_PHONE => 2, ProviderTableMap::COL_PROVIDER_ADDRESS => 3, ProviderTableMap::COL_ORDERLIST_ID => 4, ),
-        self::TYPE_FIELDNAME     => array('Provider_ID' => 0, 'Provider_Name' => 1, 'Provider_Phone' => 2, 'Provider_Address' => 3, 'OrderList_ID' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'PhoneNumber' => 2, 'Address' => 3, 'City' => 4, 'State' => 5, 'Zip' => 6, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'phoneNumber' => 2, 'address' => 3, 'city' => 4, 'state' => 5, 'zip' => 6, ),
+        self::TYPE_COLNAME       => array(PublisherTableMap::COL_ID => 0, PublisherTableMap::COL_NAME => 1, PublisherTableMap::COL_PHONE_NUMBER => 2, PublisherTableMap::COL_ADDRESS => 3, PublisherTableMap::COL_CITY => 4, PublisherTableMap::COL_STATE => 5, PublisherTableMap::COL_ZIP => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'phone_number' => 2, 'address' => 3, 'city' => 4, 'state' => 5, 'zip' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -139,18 +149,20 @@ class ProviderTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('provider');
-        $this->setPhpName('Provider');
+        $this->setName('publisher');
+        $this->setPhpName('Publisher');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Provider');
+        $this->setClassName('\\Publisher');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('Provider_ID', 'ProviderId', 'INTEGER', true, null, null);
-        $this->addColumn('Provider_Name', 'ProviderName', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('Provider_Phone', 'ProviderPhone', 'BIGINT', true, 11, null);
-        $this->addColumn('Provider_Address', 'ProviderAddress', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('OrderList_ID', 'OrderlistId', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 255, null);
+        $this->addColumn('phone_number', 'PhoneNumber', 'VARCHAR', true, 255, null);
+        $this->addColumn('address', 'Address', 'VARCHAR', true, 255, null);
+        $this->addColumn('city', 'City', 'VARCHAR', true, 255, null);
+        $this->addColumn('state', 'State', 'VARCHAR', true, 255, null);
+        $this->addColumn('zip', 'Zip', 'VARCHAR', true, 255, null);
     } // initialize()
 
     /**
@@ -176,11 +188,11 @@ class ProviderTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -200,7 +212,7 @@ class ProviderTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -217,7 +229,7 @@ class ProviderTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? ProviderTableMap::CLASS_DEFAULT : ProviderTableMap::OM_CLASS;
+        return $withPrefix ? PublisherTableMap::CLASS_DEFAULT : PublisherTableMap::OM_CLASS;
     }
 
     /**
@@ -231,22 +243,22 @@ class ProviderTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Provider object, last column rank)
+     * @return array           (Publisher object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = ProviderTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = ProviderTableMap::getInstanceFromPool($key))) {
+        $key = PublisherTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = PublisherTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + ProviderTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + PublisherTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ProviderTableMap::OM_CLASS;
-            /** @var Provider $obj */
+            $cls = PublisherTableMap::OM_CLASS;
+            /** @var Publisher $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            ProviderTableMap::addInstanceToPool($obj, $key);
+            PublisherTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -269,18 +281,18 @@ class ProviderTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = ProviderTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = ProviderTableMap::getInstanceFromPool($key))) {
+            $key = PublisherTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = PublisherTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Provider $obj */
+                /** @var Publisher $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ProviderTableMap::addInstanceToPool($obj, $key);
+                PublisherTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -301,17 +313,21 @@ class ProviderTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProviderTableMap::COL_PROVIDER_ID);
-            $criteria->addSelectColumn(ProviderTableMap::COL_PROVIDER_NAME);
-            $criteria->addSelectColumn(ProviderTableMap::COL_PROVIDER_PHONE);
-            $criteria->addSelectColumn(ProviderTableMap::COL_PROVIDER_ADDRESS);
-            $criteria->addSelectColumn(ProviderTableMap::COL_ORDERLIST_ID);
+            $criteria->addSelectColumn(PublisherTableMap::COL_ID);
+            $criteria->addSelectColumn(PublisherTableMap::COL_NAME);
+            $criteria->addSelectColumn(PublisherTableMap::COL_PHONE_NUMBER);
+            $criteria->addSelectColumn(PublisherTableMap::COL_ADDRESS);
+            $criteria->addSelectColumn(PublisherTableMap::COL_CITY);
+            $criteria->addSelectColumn(PublisherTableMap::COL_STATE);
+            $criteria->addSelectColumn(PublisherTableMap::COL_ZIP);
         } else {
-            $criteria->addSelectColumn($alias . '.Provider_ID');
-            $criteria->addSelectColumn($alias . '.Provider_Name');
-            $criteria->addSelectColumn($alias . '.Provider_Phone');
-            $criteria->addSelectColumn($alias . '.Provider_Address');
-            $criteria->addSelectColumn($alias . '.OrderList_ID');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.phone_number');
+            $criteria->addSelectColumn($alias . '.address');
+            $criteria->addSelectColumn($alias . '.city');
+            $criteria->addSelectColumn($alias . '.state');
+            $criteria->addSelectColumn($alias . '.zip');
         }
     }
 
@@ -324,7 +340,7 @@ class ProviderTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(ProviderTableMap::DATABASE_NAME)->getTable(ProviderTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(PublisherTableMap::DATABASE_NAME)->getTable(PublisherTableMap::TABLE_NAME);
     }
 
     /**
@@ -332,16 +348,16 @@ class ProviderTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(ProviderTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(ProviderTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new ProviderTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(PublisherTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(PublisherTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new PublisherTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Provider or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Publisher or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Provider object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Publisher object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -352,27 +368,27 @@ class ProviderTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PublisherTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Provider) { // it's a model object
+        } elseif ($values instanceof \Publisher) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ProviderTableMap::DATABASE_NAME);
-            $criteria->add(ProviderTableMap::COL_PROVIDER_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PublisherTableMap::DATABASE_NAME);
+            $criteria->add(PublisherTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = ProviderQuery::create()->mergeWith($criteria);
+        $query = PublisherQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            ProviderTableMap::clearInstancePool();
+            PublisherTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                ProviderTableMap::removeInstanceFromPool($singleval);
+                PublisherTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -380,20 +396,20 @@ class ProviderTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the provider table.
+     * Deletes all rows from the publisher table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return ProviderQuery::create()->doDeleteAll($con);
+        return PublisherQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Provider or Criteria object.
+     * Performs an INSERT on the database, given a Publisher or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Provider object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Publisher object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -402,22 +418,22 @@ class ProviderTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PublisherTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Provider object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Publisher object
         }
 
-        if ($criteria->containsKey(ProviderTableMap::COL_PROVIDER_ID) && $criteria->keyContainsValue(ProviderTableMap::COL_PROVIDER_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProviderTableMap::COL_PROVIDER_ID.')');
+        if ($criteria->containsKey(PublisherTableMap::COL_ID) && $criteria->keyContainsValue(PublisherTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PublisherTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = ProviderQuery::create()->mergeWith($criteria);
+        $query = PublisherQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -426,7 +442,7 @@ class ProviderTableMap extends TableMap
         });
     }
 
-} // ProviderTableMap
+} // PublisherTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-ProviderTableMap::buildTableMap();
+PublisherTableMap::buildTableMap();

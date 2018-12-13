@@ -2,10 +2,10 @@
 
 namespace Base;
 
-use \ProviderQuery as ChildProviderQuery;
+use \PublisherQuery as ChildPublisherQuery;
 use \Exception;
 use \PDO;
-use Map\ProviderTableMap;
+use Map\PublisherTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -19,18 +19,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'provider' table.
+ * Base class that represents a row from the 'publisher' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Provider implements ActiveRecordInterface
+abstract class Publisher implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\ProviderTableMap';
+    const TABLE_MAP = '\\Map\\PublisherTableMap';
 
 
     /**
@@ -60,39 +60,53 @@ abstract class Provider implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the provider_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $provider_id;
+    protected $id;
 
     /**
-     * The value for the provider_name field.
+     * The value for the name field.
      *
      * @var        string
      */
-    protected $provider_name;
+    protected $name;
 
     /**
-     * The value for the provider_phone field.
+     * The value for the phone_number field.
      *
      * @var        string
      */
-    protected $provider_phone;
+    protected $phone_number;
 
     /**
-     * The value for the provider_address field.
+     * The value for the address field.
      *
      * @var        string
      */
-    protected $provider_address;
+    protected $address;
 
     /**
-     * The value for the orderlist_id field.
+     * The value for the city field.
      *
-     * @var        int
+     * @var        string
      */
-    protected $orderlist_id;
+    protected $city;
+
+    /**
+     * The value for the state field.
+     *
+     * @var        string
+     */
+    protected $state;
+
+    /**
+     * The value for the zip field.
+     *
+     * @var        string
+     */
+    protected $zip;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -103,7 +117,7 @@ abstract class Provider implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Provider object.
+     * Initializes internal state of Base\Publisher object.
      */
     public function __construct()
     {
@@ -198,9 +212,9 @@ abstract class Provider implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Provider</code> instance.  If
-     * <code>obj</code> is an instance of <code>Provider</code>, delegates to
-     * <code>equals(Provider)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Publisher</code> instance.  If
+     * <code>obj</code> is an instance of <code>Publisher</code>, delegates to
+     * <code>equals(Publisher)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -266,7 +280,7 @@ abstract class Provider implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Provider The current object, for fluid interface
+     * @return $this|Publisher The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -328,154 +342,214 @@ abstract class Provider implements ActiveRecordInterface
     }
 
     /**
-     * Get the [provider_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getProviderId()
+    public function getId()
     {
-        return $this->provider_id;
+        return $this->id;
     }
 
     /**
-     * Get the [provider_name] column value.
+     * Get the [name] column value.
      *
      * @return string
      */
-    public function getProviderName()
+    public function getName()
     {
-        return $this->provider_name;
+        return $this->name;
     }
 
     /**
-     * Get the [provider_phone] column value.
+     * Get the [phone_number] column value.
      *
      * @return string
      */
-    public function getProviderPhone()
+    public function getPhoneNumber()
     {
-        return $this->provider_phone;
+        return $this->phone_number;
     }
 
     /**
-     * Get the [provider_address] column value.
+     * Get the [address] column value.
      *
      * @return string
      */
-    public function getProviderAddress()
+    public function getAddress()
     {
-        return $this->provider_address;
+        return $this->address;
     }
 
     /**
-     * Get the [orderlist_id] column value.
+     * Get the [city] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getOrderlistId()
+    public function getCity()
     {
-        return $this->orderlist_id;
+        return $this->city;
     }
 
     /**
-     * Set the value of [provider_id] column.
+     * Get the [state] column value.
+     *
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Get the [zip] column value.
+     *
+     * @return string
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    /**
+     * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Provider The current object (for fluent API support)
+     * @return $this|\Publisher The current object (for fluent API support)
      */
-    public function setProviderId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->provider_id !== $v) {
-            $this->provider_id = $v;
-            $this->modifiedColumns[ProviderTableMap::COL_PROVIDER_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setProviderId()
+    } // setId()
 
     /**
-     * Set the value of [provider_name] column.
+     * Set the value of [name] column.
      *
      * @param string $v new value
-     * @return $this|\Provider The current object (for fluent API support)
+     * @return $this|\Publisher The current object (for fluent API support)
      */
-    public function setProviderName($v)
+    public function setName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->provider_name !== $v) {
-            $this->provider_name = $v;
-            $this->modifiedColumns[ProviderTableMap::COL_PROVIDER_NAME] = true;
+        if ($this->name !== $v) {
+            $this->name = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_NAME] = true;
         }
 
         return $this;
-    } // setProviderName()
+    } // setName()
 
     /**
-     * Set the value of [provider_phone] column.
+     * Set the value of [phone_number] column.
      *
      * @param string $v new value
-     * @return $this|\Provider The current object (for fluent API support)
+     * @return $this|\Publisher The current object (for fluent API support)
      */
-    public function setProviderPhone($v)
+    public function setPhoneNumber($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->provider_phone !== $v) {
-            $this->provider_phone = $v;
-            $this->modifiedColumns[ProviderTableMap::COL_PROVIDER_PHONE] = true;
+        if ($this->phone_number !== $v) {
+            $this->phone_number = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_PHONE_NUMBER] = true;
         }
 
         return $this;
-    } // setProviderPhone()
+    } // setPhoneNumber()
 
     /**
-     * Set the value of [provider_address] column.
+     * Set the value of [address] column.
      *
      * @param string $v new value
-     * @return $this|\Provider The current object (for fluent API support)
+     * @return $this|\Publisher The current object (for fluent API support)
      */
-    public function setProviderAddress($v)
+    public function setAddress($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->provider_address !== $v) {
-            $this->provider_address = $v;
-            $this->modifiedColumns[ProviderTableMap::COL_PROVIDER_ADDRESS] = true;
+        if ($this->address !== $v) {
+            $this->address = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_ADDRESS] = true;
         }
 
         return $this;
-    } // setProviderAddress()
+    } // setAddress()
 
     /**
-     * Set the value of [orderlist_id] column.
+     * Set the value of [city] column.
      *
-     * @param int $v new value
-     * @return $this|\Provider The current object (for fluent API support)
+     * @param string $v new value
+     * @return $this|\Publisher The current object (for fluent API support)
      */
-    public function setOrderlistId($v)
+    public function setCity($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->orderlist_id !== $v) {
-            $this->orderlist_id = $v;
-            $this->modifiedColumns[ProviderTableMap::COL_ORDERLIST_ID] = true;
+        if ($this->city !== $v) {
+            $this->city = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_CITY] = true;
         }
 
         return $this;
-    } // setOrderlistId()
+    } // setCity()
+
+    /**
+     * Set the value of [state] column.
+     *
+     * @param string $v new value
+     * @return $this|\Publisher The current object (for fluent API support)
+     */
+    public function setState($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->state !== $v) {
+            $this->state = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_STATE] = true;
+        }
+
+        return $this;
+    } // setState()
+
+    /**
+     * Set the value of [zip] column.
+     *
+     * @param string $v new value
+     * @return $this|\Publisher The current object (for fluent API support)
+     */
+    public function setZip($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->zip !== $v) {
+            $this->zip = $v;
+            $this->modifiedColumns[PublisherTableMap::COL_ZIP] = true;
+        }
+
+        return $this;
+    } // setZip()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -513,20 +587,26 @@ abstract class Provider implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProviderTableMap::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->provider_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PublisherTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProviderTableMap::translateFieldName('ProviderName', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->provider_name = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PublisherTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ProviderTableMap::translateFieldName('ProviderPhone', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->provider_phone = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PublisherTableMap::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->phone_number = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProviderTableMap::translateFieldName('ProviderAddress', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->provider_address = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PublisherTableMap::translateFieldName('Address', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProviderTableMap::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->orderlist_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PublisherTableMap::translateFieldName('City', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->city = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PublisherTableMap::translateFieldName('State', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->state = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PublisherTableMap::translateFieldName('Zip', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->zip = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -535,10 +615,10 @@ abstract class Provider implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = ProviderTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PublisherTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Provider'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Publisher'), 0, $e);
         }
     }
 
@@ -580,13 +660,13 @@ abstract class Provider implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ProviderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(PublisherTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildProviderQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildPublisherQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -605,8 +685,8 @@ abstract class Provider implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Provider::setDeleted()
-     * @see Provider::isDeleted()
+     * @see Publisher::setDeleted()
+     * @see Publisher::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -615,11 +695,11 @@ abstract class Provider implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PublisherTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildProviderQuery::create()
+            $deleteQuery = ChildPublisherQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -654,7 +734,7 @@ abstract class Provider implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PublisherTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -673,7 +753,7 @@ abstract class Provider implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProviderTableMap::addInstanceToPool($this);
+                PublisherTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -730,30 +810,36 @@ abstract class Provider implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ProviderTableMap::COL_PROVIDER_ID] = true;
-        if (null !== $this->provider_id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProviderTableMap::COL_PROVIDER_ID . ')');
+        $this->modifiedColumns[PublisherTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PublisherTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Provider_ID';
+        if ($this->isColumnModified(PublisherTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Provider_Name';
+        if ($this->isColumnModified(PublisherTableMap::COL_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'name';
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_PHONE)) {
-            $modifiedColumns[':p' . $index++]  = 'Provider_Phone';
+        if ($this->isColumnModified(PublisherTableMap::COL_PHONE_NUMBER)) {
+            $modifiedColumns[':p' . $index++]  = 'phone_number';
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_ADDRESS)) {
-            $modifiedColumns[':p' . $index++]  = 'Provider_Address';
+        if ($this->isColumnModified(PublisherTableMap::COL_ADDRESS)) {
+            $modifiedColumns[':p' . $index++]  = 'address';
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_ORDERLIST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'OrderList_ID';
+        if ($this->isColumnModified(PublisherTableMap::COL_CITY)) {
+            $modifiedColumns[':p' . $index++]  = 'city';
+        }
+        if ($this->isColumnModified(PublisherTableMap::COL_STATE)) {
+            $modifiedColumns[':p' . $index++]  = 'state';
+        }
+        if ($this->isColumnModified(PublisherTableMap::COL_ZIP)) {
+            $modifiedColumns[':p' . $index++]  = 'zip';
         }
 
         $sql = sprintf(
-            'INSERT INTO provider (%s) VALUES (%s)',
+            'INSERT INTO publisher (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -762,20 +848,26 @@ abstract class Provider implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'Provider_ID':
-                        $stmt->bindValue($identifier, $this->provider_id, PDO::PARAM_INT);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Provider_Name':
-                        $stmt->bindValue($identifier, $this->provider_name, PDO::PARAM_STR);
+                    case 'name':
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'Provider_Phone':
-                        $stmt->bindValue($identifier, $this->provider_phone, PDO::PARAM_INT);
+                    case 'phone_number':
+                        $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_STR);
                         break;
-                    case 'Provider_Address':
-                        $stmt->bindValue($identifier, $this->provider_address, PDO::PARAM_STR);
+                    case 'address':
+                        $stmt->bindValue($identifier, $this->address, PDO::PARAM_STR);
                         break;
-                    case 'OrderList_ID':
-                        $stmt->bindValue($identifier, $this->orderlist_id, PDO::PARAM_INT);
+                    case 'city':
+                        $stmt->bindValue($identifier, $this->city, PDO::PARAM_STR);
+                        break;
+                    case 'state':
+                        $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
+                        break;
+                    case 'zip':
+                        $stmt->bindValue($identifier, $this->zip, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -790,7 +882,7 @@ abstract class Provider implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setProviderId($pk);
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -823,7 +915,7 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProviderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PublisherTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -840,19 +932,25 @@ abstract class Provider implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getProviderId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getProviderName();
+                return $this->getName();
                 break;
             case 2:
-                return $this->getProviderPhone();
+                return $this->getPhoneNumber();
                 break;
             case 3:
-                return $this->getProviderAddress();
+                return $this->getAddress();
                 break;
             case 4:
-                return $this->getOrderlistId();
+                return $this->getCity();
+                break;
+            case 5:
+                return $this->getState();
+                break;
+            case 6:
+                return $this->getZip();
                 break;
             default:
                 return null;
@@ -877,17 +975,19 @@ abstract class Provider implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Provider'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Publisher'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Provider'][$this->hashCode()] = true;
-        $keys = ProviderTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Publisher'][$this->hashCode()] = true;
+        $keys = PublisherTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getProviderId(),
-            $keys[1] => $this->getProviderName(),
-            $keys[2] => $this->getProviderPhone(),
-            $keys[3] => $this->getProviderAddress(),
-            $keys[4] => $this->getOrderlistId(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getName(),
+            $keys[2] => $this->getPhoneNumber(),
+            $keys[3] => $this->getAddress(),
+            $keys[4] => $this->getCity(),
+            $keys[5] => $this->getState(),
+            $keys[6] => $this->getZip(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -907,11 +1007,11 @@ abstract class Provider implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Provider
+     * @return $this|\Publisher
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProviderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PublisherTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -922,25 +1022,31 @@ abstract class Provider implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Provider
+     * @return $this|\Publisher
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setProviderId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setProviderName($value);
+                $this->setName($value);
                 break;
             case 2:
-                $this->setProviderPhone($value);
+                $this->setPhoneNumber($value);
                 break;
             case 3:
-                $this->setProviderAddress($value);
+                $this->setAddress($value);
                 break;
             case 4:
-                $this->setOrderlistId($value);
+                $this->setCity($value);
+                break;
+            case 5:
+                $this->setState($value);
+                break;
+            case 6:
+                $this->setZip($value);
                 break;
         } // switch()
 
@@ -966,22 +1072,28 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ProviderTableMap::getFieldNames($keyType);
+        $keys = PublisherTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setProviderId($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setProviderName($arr[$keys[1]]);
+            $this->setName($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setProviderPhone($arr[$keys[2]]);
+            $this->setPhoneNumber($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setProviderAddress($arr[$keys[3]]);
+            $this->setAddress($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setOrderlistId($arr[$keys[4]]);
+            $this->setCity($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setState($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setZip($arr[$keys[6]]);
         }
     }
 
@@ -1002,7 +1114,7 @@ abstract class Provider implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Provider The current object, for fluid interface
+     * @return $this|\Publisher The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1022,22 +1134,28 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProviderTableMap::DATABASE_NAME);
+        $criteria = new Criteria(PublisherTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_ID)) {
-            $criteria->add(ProviderTableMap::COL_PROVIDER_ID, $this->provider_id);
+        if ($this->isColumnModified(PublisherTableMap::COL_ID)) {
+            $criteria->add(PublisherTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_NAME)) {
-            $criteria->add(ProviderTableMap::COL_PROVIDER_NAME, $this->provider_name);
+        if ($this->isColumnModified(PublisherTableMap::COL_NAME)) {
+            $criteria->add(PublisherTableMap::COL_NAME, $this->name);
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_PHONE)) {
-            $criteria->add(ProviderTableMap::COL_PROVIDER_PHONE, $this->provider_phone);
+        if ($this->isColumnModified(PublisherTableMap::COL_PHONE_NUMBER)) {
+            $criteria->add(PublisherTableMap::COL_PHONE_NUMBER, $this->phone_number);
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_PROVIDER_ADDRESS)) {
-            $criteria->add(ProviderTableMap::COL_PROVIDER_ADDRESS, $this->provider_address);
+        if ($this->isColumnModified(PublisherTableMap::COL_ADDRESS)) {
+            $criteria->add(PublisherTableMap::COL_ADDRESS, $this->address);
         }
-        if ($this->isColumnModified(ProviderTableMap::COL_ORDERLIST_ID)) {
-            $criteria->add(ProviderTableMap::COL_ORDERLIST_ID, $this->orderlist_id);
+        if ($this->isColumnModified(PublisherTableMap::COL_CITY)) {
+            $criteria->add(PublisherTableMap::COL_CITY, $this->city);
+        }
+        if ($this->isColumnModified(PublisherTableMap::COL_STATE)) {
+            $criteria->add(PublisherTableMap::COL_STATE, $this->state);
+        }
+        if ($this->isColumnModified(PublisherTableMap::COL_ZIP)) {
+            $criteria->add(PublisherTableMap::COL_ZIP, $this->zip);
         }
 
         return $criteria;
@@ -1055,8 +1173,8 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildProviderQuery::create();
-        $criteria->add(ProviderTableMap::COL_PROVIDER_ID, $this->provider_id);
+        $criteria = ChildPublisherQuery::create();
+        $criteria->add(PublisherTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1069,7 +1187,7 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getProviderId();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1089,18 +1207,18 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getProviderId();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (provider_id column).
+     * Generic method to set the primary key (id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setProviderId($key);
+        $this->setId($key);
     }
 
     /**
@@ -1109,7 +1227,7 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getProviderId();
+        return null === $this->getId();
     }
 
     /**
@@ -1118,20 +1236,22 @@ abstract class Provider implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Provider (or compatible) type.
+     * @param      object $copyObj An object of \Publisher (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setProviderName($this->getProviderName());
-        $copyObj->setProviderPhone($this->getProviderPhone());
-        $copyObj->setProviderAddress($this->getProviderAddress());
-        $copyObj->setOrderlistId($this->getOrderlistId());
+        $copyObj->setName($this->getName());
+        $copyObj->setPhoneNumber($this->getPhoneNumber());
+        $copyObj->setAddress($this->getAddress());
+        $copyObj->setCity($this->getCity());
+        $copyObj->setState($this->getState());
+        $copyObj->setZip($this->getZip());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setProviderId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1144,7 +1264,7 @@ abstract class Provider implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Provider Clone of current object.
+     * @return \Publisher Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1164,11 +1284,13 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->provider_id = null;
-        $this->provider_name = null;
-        $this->provider_phone = null;
-        $this->provider_address = null;
-        $this->orderlist_id = null;
+        $this->id = null;
+        $this->name = null;
+        $this->phone_number = null;
+        $this->address = null;
+        $this->city = null;
+        $this->state = null;
+        $this->zip = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1198,7 +1320,7 @@ abstract class Provider implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProviderTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PublisherTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

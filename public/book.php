@@ -9,6 +9,9 @@
 require '../vendor/autoload.php';
 require '../generated-conf/config.php';
 
+session_cache_limiter(false);
+session_start();
+
 //////////////////////
 // Slim Setup
 //////////////////////
@@ -52,12 +55,13 @@ $app->get('/home-login', function ($request, $response, $args) {
 $app->post('/login', function ($request, $response, $args) {
 
     $u = UserQuery::create()->filterByEmail($request->getParam("email"))->findOne();
-
+    $p = InfoQuery::create()->filterByUserId($u->getId())->findOne();
     $data = null;
     $typedpword = $request->getParam("password");
 
     if ($u->login($typedpword)) {
-        $data = array('passwordMatched' => 'true', 'email' => $u->getEmail());
+        $_SESSION['user'] = $p->getFirstName();
+        $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user']);
     } else {
         $data = array('passwordMatched' => 'false');
     }
@@ -67,7 +71,17 @@ $app->post('/login', function ($request, $response, $args) {
 
 $app->get('/storage', function ($request, $response, $args) {
 
-    $storage = StorageQuery::create()->find();
+
+    if (isset($_GET["sort"])) {
+        $val = $_GET["sort"];
+        if ($val == "stock_asc") {
+            $storage = StorageQuery::create()->orderByCount()->find();
+        } else {
+            $storage = StorageQuery::create()->orderByCount('desc')->find();
+        }
+    } else {
+        $storage = StorageQuery::create()->find();
+    }
 
     $product = ProductQuery::create()->find();
     $this->view->render($response, 'storage.html', [
@@ -91,7 +105,9 @@ $app->get('/book/{id}', function ($request, $response, $args) {
 $app->get('/home', function ($request, $response, $args) {
 
 
-    $this->view->render($response, 'home.html');
+    $this->view->render($response, 'home.html', [
+        "data" => $_SESSION
+    ]);
 
     return $response;
 });
@@ -148,7 +164,7 @@ $app->get('/create/account', function ($request, $response, $args) {
 $app->post('/create/account', function ($request, $response, $args) {
 
     $role = $request->getParam("role");
-    $first=$request->getParam("first_name");
+    $first = $request->getParam("first_name");
     $last = $request->getParam("last_name");
     $email = $request->getParam("email");
     $password = $request->getParam("password");
@@ -166,7 +182,7 @@ $app->post('/create/account', function ($request, $response, $args) {
     $profile->setLastName($last);
     $profile->save();
 
-    $data = array('email' => $user->getEmail(), 'first_name' => $profile->getFirstName(), 'last_name' =>$profile->getLastName() );
+    $data = array('email' => $user->getEmail(), 'first_name' => $profile->getFirstName(), 'last_name' => $profile->getLastName());
     $newResponse = $response->withJson($data);
     return $newResponse;
 });
@@ -184,6 +200,23 @@ $app->get('/users', function ($request, $response, $args) {
 
     return $response;
 });
+
+$app->get('/logout', function ($request, $response, $args) {
+
+    session_destroy();
+    $this->view->render($response, 'homepage.html');
+    return $response;
+});
+
+$app->get('/publishers', function ($request, $response, $args) {
+    $publisher = PublisherQuery::create()->find();
+    $this->view->render($response, 'publishers.html', [
+        "publisher" => $publisher
+    ]);
+
+    return $response;
+});
+
 //////////////////////
 // App run
 //////////////////////
