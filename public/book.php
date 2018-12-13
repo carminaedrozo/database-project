@@ -110,14 +110,14 @@ $app->get('/home', function ($request, $response, $args) {
             "data" => $_SESSION
         ]);
     }
-   else if($_SESSION['role'] == "Employee"){
-       $product = ProductQuery::create()->find();
+    else if($_SESSION['role'] == "Employee"){
+        $product = ProductQuery::create()->find();
 
-       $this->view->render($response, 'home-users.html', [
-           "data" => $_SESSION,
-           "product" => $product
-       ]);
-   }
+        $this->view->render($response, 'home-users.html', [
+            "data" => $_SESSION,
+            "product" => $product
+        ]);
+    }
 
     return $response;
 });
@@ -230,6 +230,15 @@ $app->get('/logout', function ($request, $response, $args) {
 $app->get('/publishers', function ($request, $response, $args) {
     $publisher = PublisherQuery::create()->find();
     $this->view->render($response, 'publishers.html', [
+        "publisher" => $publisher
+    ]);
+
+    return $response;
+});
+$app->get('/publisher/{id}', function ($request, $response, $args) {
+    $publisher = PublisherQuery::create()->filterById($args['id']);
+
+    $this->view->render($response, 'publisher-info.html', [
         "publisher" => $publisher
     ]);
 
