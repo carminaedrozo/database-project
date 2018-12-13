@@ -9,13 +9,18 @@ Publisher
 
 
 {% block content %}
-
-<div class="container">
+<body>
+  <div class = "row justify-content-md-center mt-5">
+<div class="card info2 mb-3">
     {% for p in publisher %}
-    <p>Name: {{ p.name }}</p>
-    <p>Phone Number: {{ p.phoneNumber }}</p>
-    <p>Address: {{ p.address }}, {{ p.city }}, {{ p.state }} {{ p.zip }}</p>
+    <ul class="list-group list-group-flush">
+    <li class="list-group-item py-2">Name: {{ p.name }}</li>
+    <li class="list-group-item py-2">Phone Number: {{ p.phoneNumber }}</li>
+    <li class="list-group-item py-2">Address: {{ p.address }}, {{ p.city }}, {{ p.state }} {{ p.zip }}</li>
     {% endfor %}
 
-</div>
+  </ul>
+  </div>
+  </div>
+  </body>
 {% endblock %}
