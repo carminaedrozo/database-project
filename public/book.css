@@ -1,0 +1,26 @@
+.info{
+background-color:#383a3a;
+/* opacity: 0.66; */
+width: 1300px;
+height: 400px;
+padding-top: 50px;
+padding-left: 25px;
+padding-right: 25px;
+border-radius: 2rem;
+border-color: #575a5b;
+}
+
+.mr-3{
+
+  margin-left: 0.35rem;
+}
+
+p{
+font-family: 'Helvetica';
+}
+
+.list-group-item{
+
+  background-color: #575a5b;
+  color: white;
+}

@@ -10,20 +10,29 @@ Book
 
 
 {% block content %}
-<!-- <div class = "container"> -->
-<div class = "media mx-auto" style="width: 700px;">
+
+    <!--Panel-->
+    <div class = "row justify-content-md-center mt-5">
+    <div class="card info mb-3">
+      <div class="media ">
 {% for p in product %}
-<img class="align-self-center mr-3" src="{{ p.ImageUrl }}">
-<div class="media-body">
-<p>Title: {{ p.title }}</p>
-<p>Author: {{ p.author }}</p>
-<p>Edition: {{ p.edition }}</p>
-<p>ISBN-10: {{ p.isbn10 }}</p>
-<p>ISBN-13: {{ p.isbn13 }}</p>
-<p>Publisher: {{ p.publisher }}</p>
-<p>Price: {{ p.price }}</p>
+<img class=" mx-auto" src="{{ p.ImageUrl }}">
+<div class="media-body text-center text-md-left ml-md-3 ml-0">
+<ul class="list-group list-group-flush">
+<li class="list-group-item py-2">Title: {{ p.title }}</li>
+
+<li class="list-group-item py-2">Author: {{ p.author }}</li>
+<li class="list-group-item py-2">Edition: {{ p.edition }}</li>
+<li class="list-group-item py-2">ISBN-10: {{ p.isbn10 }}</li>
+<li class="list-group-item py-2">ISBN-13: {{ p.isbn13 }}</li>
+<li class="list-group-item py-2">Publisher: {{ p.publisher }}</li>
+<li class="list-group-item py-2">Price: {{ p.price }}</li>
 {% endfor %}
 <!-- </div> -->
+</ul>
 </div>
 </div>
+</div>
+</div>
+
 {% endblock %}
