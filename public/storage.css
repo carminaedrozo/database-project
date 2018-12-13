@@ -12,9 +12,11 @@
 
   font-size: 12px;
   color: black;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+
 }
 .card-title{
 font-size: 13px;
-font-family: 'Montserrat', sans-serif;
+font-family: 'Montserrat', serif;
+font-style: bold;
 }

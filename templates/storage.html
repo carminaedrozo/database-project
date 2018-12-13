@@ -10,13 +10,13 @@ Storage
 
 
 {% block content %}
-<div class="container">
+<div class="container xx">
     <div class="row">
 
 
         {% for key, s in storage %}
         <div class="col-sm-2">
-            <div class="card">
+            <div class="card mt-3">
                 <img class="card-img-top" src="{{ s.product.ImageUrl }}">
                 <div class="card-body">
                     <h5 class="card-title"><a href="{{ base_url() }}/book/{{ s.product.id }}">{{ s.product.title }}</a>
