@@ -6,7 +6,7 @@ height: 400px;
 padding-top: 50px;
 padding-left: 25px;
 padding-right: 25px;
-border-radius: 2rem;
+border-radius: 1rem;
 border-color: #575a5b;
 }
 
@@ -15,12 +15,17 @@ border-color: #575a5b;
   margin-left: 0.35rem;
 }
 
-p{
-font-family: 'Helvetica';
+p {
+font-family: 'Noto Sans TC', sans-serif;
 }
 
 .list-group-item{
 
   background-color: #575a5b;
   color: white;
+}
+
+body{
+  background: #292b2b;
+  color:white;
 }
