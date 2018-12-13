@@ -1,6 +1,11 @@
 $("#addBtnAccount").on("click", function () {
+    var role="";
+    if($("#statusRole :radio:checked").val() === 0){
+        role= "Admin";
+    }else if($("#statusRole :radio:checked").val() === 1){
+        role= "Employee"
+    }
 
-    var role = $("#statusRole :radio:checked").val();
     var first_name = $("#inputFirstName").val();
     var last_name = $("#inputLastName").val();
     var email = $("#inputEmailConfirm").val();
@@ -27,6 +32,5 @@ $("#addBtnAccount").on("click", function () {
         $("#inputEmailConfirm").val("");
 
     });
-
     return false;
 });

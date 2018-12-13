@@ -48,6 +48,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildProductQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildProductQuery leftJoinCart($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cart relation
+ * @method     ChildProductQuery rightJoinCart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cart relation
+ * @method     ChildProductQuery innerJoinCart($relationAlias = null) Adds a INNER JOIN clause to the query using the Cart relation
+ *
+ * @method     ChildProductQuery joinWithCart($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Cart relation
+ *
+ * @method     ChildProductQuery leftJoinWithCart() Adds a LEFT JOIN clause and with to the query using the Cart relation
+ * @method     ChildProductQuery rightJoinWithCart() Adds a RIGHT JOIN clause and with to the query using the Cart relation
+ * @method     ChildProductQuery innerJoinWithCart() Adds a INNER JOIN clause and with to the query using the Cart relation
+ *
  * @method     ChildProductQuery leftJoinStorage($relationAlias = null) Adds a LEFT JOIN clause to the query using the Storage relation
  * @method     ChildProductQuery rightJoinStorage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Storage relation
  * @method     ChildProductQuery innerJoinStorage($relationAlias = null) Adds a INNER JOIN clause to the query using the Storage relation
@@ -58,7 +68,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductQuery rightJoinWithStorage() Adds a RIGHT JOIN clause and with to the query using the Storage relation
  * @method     ChildProductQuery innerJoinWithStorage() Adds a INNER JOIN clause and with to the query using the Storage relation
  *
- * @method     \StorageQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \CartQuery|\StorageQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildProduct findOne(ConnectionInterface $con = null) Return the first ChildProduct matching the query
  * @method     ChildProduct findOneOrCreate(ConnectionInterface $con = null) Return the first ChildProduct matching the query, or a new ChildProduct object populated from the query conditions when no match is found
@@ -539,6 +549,79 @@ abstract class ProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductTableMap::COL_IMAGE_URL, $imageUrl, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Cart object
+     *
+     * @param \Cart|ObjectCollection $cart the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByCart($cart, $comparison = null)
+    {
+        if ($cart instanceof \Cart) {
+            return $this
+                ->addUsingAlias(ProductTableMap::COL_ID, $cart->getProductId(), $comparison);
+        } elseif ($cart instanceof ObjectCollection) {
+            return $this
+                ->useCartQuery()
+                ->filterByPrimaryKeys($cart->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCart() only accepts arguments of type \Cart or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Cart relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildProductQuery The current query, for fluid interface
+     */
+    public function joinCart($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Cart');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Cart');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Cart relation Cart object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \CartQuery A secondary query class using the current class as primary query
+     */
+    public function useCartQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCart($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Cart', '\CartQuery');
     }
 
     /**

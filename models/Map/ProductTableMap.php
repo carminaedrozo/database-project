@@ -182,6 +182,13 @@ class ProductTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Cart', '\\Cart', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':product_id',
+    1 => ':id',
+  ),
+), null, null, 'Carts', false);
         $this->addRelation('Storage', '\\Storage', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

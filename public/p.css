@@ -4,6 +4,21 @@
     object-fit: cover;
 }
 .card-body {
-    height: 10vw;
+    height: 15vw;
     object-fit: cover;
+}
+
+.card-text{
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+
+}
+.card-title{
+    font-size: 12px;
+    font-family: 'Montserrat', serif;
+}
+
+body {
+    background: #292b2b;
+    font-family: 'Montserrat', sans-serif;
 }

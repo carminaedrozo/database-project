@@ -62,6 +62,7 @@ $app->post('/login', function ($request, $response, $args) {
     if ($u->login($typedpword)) {
         $_SESSION['user'] = $p->getFirstName();
         $_SESSION['role'] = $u->getStatus();
+        $_SESSION['user_id'] = $u->getId();
         $data = array('passwordMatched' => 'true', 'email' => $_SESSION['user'],);
     } else {
         $data = array('passwordMatched' => 'false');
@@ -77,7 +78,7 @@ $app->get('/storage', function ($request, $response, $args) {
         $val = $_GET["sort"];
         if ($val == "stock_asc") {
             $storage = StorageQuery::create()->orderByCount()->find();
-        } else {
+        } else if ($val == "stock_desc") {
             $storage = StorageQuery::create()->orderByCount('desc')->find();
         }
     } else {
@@ -105,17 +106,15 @@ $app->get('/book/{id}', function ($request, $response, $args) {
 
 $app->get('/home', function ($request, $response, $args) {
 
-    if($_SESSION['role'] == "Admin"){
+    if ($_SESSION['role'] == "Admin") {
         $this->view->render($response, 'home.html', [
             "data" => $_SESSION
         ]);
-    }
-    else if($_SESSION['role'] == "Employee"){
+    } else if ($_SESSION['role'] == "Employee") {
         $product = ProductQuery::create()->find();
 
         $this->view->render($response, 'home-users.html', [
-            "data" => $_SESSION,
-            "product" => $product
+            "data" => $_SESSION
         ]);
     }
 
@@ -244,7 +243,74 @@ $app->get('/publisher/{id}', function ($request, $response, $args) {
 
     return $response;
 });
+$app->get('/request', function ($request, $response, $args) {
 
+    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"]);
+    $product = ProductQuery::create()->find();
+    $this->view->render($response, 'request-employee.html', [
+        "cart" => $cart,
+        "product" => $product
+    ]);
+    return $response;
+});
+$app->post('/cart/{id}', function ($request, $response, $args) {
+
+    $cart_check = CartQuery::create()->findOneByProductId($args['id']);
+    $cart_count_check = CartQuery::create()->filterByProductId($args['id'])->count();
+    if ($cart_count_check >= 1) {
+        $quantity_added = $_POST["quantity"];
+        $current_quantity = $cart_check->getQuantity();
+        $cart_check->setQuantity($quantity_added + $current_quantity);
+        $cart_check->save();
+
+        $cart_check->setTotalPrice($cart_check->getPrice() * $cart_check->getQuantity());
+        $cart_check->save();
+    } else {
+        $prod_price = ProductQuery::create()->findOneById($args['id']);
+        $quantity = $_POST["quantity"];
+        $c = new Cart();
+        $c->setProductId($args['id']);
+        $c->setPrice($prod_price->getPrice());
+        $c->setQuantity($quantity);
+        $c->setUserId($_SESSION["user_id"]);
+        $c->save();
+        $c->setTotalPrice($c->getPrice() * $c->getQuantity());
+        $c->save();
+    }
+
+    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"])->filterByStatus("Pending");
+    $product = ProductQuery::create()->find();
+    $this->view->render($response, 'cart.html', [
+        "cart" => $cart,
+        "product" => $product
+    ]);
+});
+
+$app->get('/cart', function ($request, $response, $args) {
+
+    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"]);
+    $product = ProductQuery::create()->find();
+    $this->view->render($response, 'cart.html', [
+        "cart" => $cart,
+        "product" => $product
+    ]);
+});
+
+$app->post('/sub/req}', function ($request, $response, $args) {
+
+    $c = CartQuery::create()->filterByUserId($_SESSION["user_id"])->findByStatus("Pending");
+    $c->setStatus("Submitted");
+    $c->save();
+
+    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"])->filterByStatus("Pending");
+    $product = ProductQuery::create()->find();
+    $this->view->render($response, 'cart.html', [
+        "cart" => $cart,
+        "product" => $product
+    ]);
+    return $response;
+
+});
 //////////////////////
 // App run
 //////////////////////

@@ -1,9 +1,9 @@
 <?php
 
-use Base\Requestlist as BaseRequestlist;
+use Base\Requests as BaseRequests;
 
 /**
- * Skeleton subclass for representing a row from the 'requestlist' table.
+ * Skeleton subclass for representing a row from the 'requests' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Requestlist as BaseRequestlist;
  * long as it does not already exist in the output directory.
  *
  */
-class Requestlist extends BaseRequestlist
+class Requests extends BaseRequests
 {
 
 }

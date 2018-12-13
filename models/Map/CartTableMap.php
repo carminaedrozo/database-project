@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Employeeorderstatus;
-use \EmployeeorderstatusQuery;
+use \Cart;
+use \CartQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'employeeorderstatus' table.
+ * This class defines the structure of the 'cart' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class EmployeeorderstatusTableMap extends TableMap
+class CartTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class EmployeeorderstatusTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.EmployeeorderstatusTableMap';
+    const CLASS_NAME = '.Map.CartTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class EmployeeorderstatusTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'employeeorderstatus';
+    const TABLE_NAME = 'cart';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Employeeorderstatus';
+    const OM_CLASS = '\\Cart';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Employeeorderstatus';
+    const CLASS_DEFAULT = 'Cart';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -69,32 +69,47 @@ class EmployeeorderstatusTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
-     * the column name for the ID field
+     * the column name for the id field
      */
-    const COL_ID = 'employeeorderstatus.ID';
+    const COL_ID = 'cart.id';
 
     /**
-     * the column name for the Product_ID field
+     * the column name for the request_id field
      */
-    const COL_PRODUCT_ID = 'employeeorderstatus.Product_ID';
+    const COL_REQUEST_ID = 'cart.request_id';
 
     /**
-     * the column name for the ReceivedCount field
+     * the column name for the product_id field
      */
-    const COL_RECEIVEDCOUNT = 'employeeorderstatus.ReceivedCount';
+    const COL_PRODUCT_ID = 'cart.product_id';
 
     /**
-     * the column name for the FufilledStatus field
+     * the column name for the quantity field
      */
-    const COL_FUFILLEDSTATUS = 'employeeorderstatus.FufilledStatus';
+    const COL_QUANTITY = 'cart.quantity';
 
     /**
-     * the column name for the Count field
+     * the column name for the price field
      */
-    const COL_COUNT = 'employeeorderstatus.Count';
+    const COL_PRICE = 'cart.price';
+
+    /**
+     * the column name for the total_price field
+     */
+    const COL_TOTAL_PRICE = 'cart.total_price';
+
+    /**
+     * the column name for the user_id field
+     */
+    const COL_USER_ID = 'cart.user_id';
+
+    /**
+     * the column name for the status field
+     */
+    const COL_STATUS = 'cart.status';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +123,11 @@ class EmployeeorderstatusTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Receivedcount', 'Fufilledstatus', 'Count', ),
-        self::TYPE_CAMELNAME     => array('id', 'productId', 'receivedcount', 'fufilledstatus', 'count', ),
-        self::TYPE_COLNAME       => array(EmployeeorderstatusTableMap::COL_ID, EmployeeorderstatusTableMap::COL_PRODUCT_ID, EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT, EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS, EmployeeorderstatusTableMap::COL_COUNT, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Product_ID', 'ReceivedCount', 'FufilledStatus', 'Count', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'RequestId', 'ProductId', 'Quantity', 'Price', 'TotalPrice', 'UserId', 'Status', ),
+        self::TYPE_CAMELNAME     => array('id', 'requestId', 'productId', 'quantity', 'price', 'totalPrice', 'userId', 'status', ),
+        self::TYPE_COLNAME       => array(CartTableMap::COL_ID, CartTableMap::COL_REQUEST_ID, CartTableMap::COL_PRODUCT_ID, CartTableMap::COL_QUANTITY, CartTableMap::COL_PRICE, CartTableMap::COL_TOTAL_PRICE, CartTableMap::COL_USER_ID, CartTableMap::COL_STATUS, ),
+        self::TYPE_FIELDNAME     => array('id', 'request_id', 'product_id', 'quantity', 'price', 'total_price', 'user_id', 'status', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -122,11 +137,11 @@ class EmployeeorderstatusTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Receivedcount' => 2, 'Fufilledstatus' => 3, 'Count' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'productId' => 1, 'receivedcount' => 2, 'fufilledstatus' => 3, 'count' => 4, ),
-        self::TYPE_COLNAME       => array(EmployeeorderstatusTableMap::COL_ID => 0, EmployeeorderstatusTableMap::COL_PRODUCT_ID => 1, EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT => 2, EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS => 3, EmployeeorderstatusTableMap::COL_COUNT => 4, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Product_ID' => 1, 'ReceivedCount' => 2, 'FufilledStatus' => 3, 'Count' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'RequestId' => 1, 'ProductId' => 2, 'Quantity' => 3, 'Price' => 4, 'TotalPrice' => 5, 'UserId' => 6, 'Status' => 7, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'requestId' => 1, 'productId' => 2, 'quantity' => 3, 'price' => 4, 'totalPrice' => 5, 'userId' => 6, 'status' => 7, ),
+        self::TYPE_COLNAME       => array(CartTableMap::COL_ID => 0, CartTableMap::COL_REQUEST_ID => 1, CartTableMap::COL_PRODUCT_ID => 2, CartTableMap::COL_QUANTITY => 3, CartTableMap::COL_PRICE => 4, CartTableMap::COL_TOTAL_PRICE => 5, CartTableMap::COL_USER_ID => 6, CartTableMap::COL_STATUS => 7, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'request_id' => 1, 'product_id' => 2, 'quantity' => 3, 'price' => 4, 'total_price' => 5, 'user_id' => 6, 'status' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -139,18 +154,21 @@ class EmployeeorderstatusTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('employeeorderstatus');
-        $this->setPhpName('Employeeorderstatus');
+        $this->setName('cart');
+        $this->setPhpName('Cart');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Employeeorderstatus');
+        $this->setClassName('\\Cart');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Product_ID', 'ProductId', 'INTEGER', true, null, null);
-        $this->addColumn('ReceivedCount', 'Receivedcount', 'INTEGER', true, null, null);
-        $this->addColumn('FufilledStatus', 'Fufilledstatus', 'VARCHAR', true, 11, null);
-        $this->addColumn('Count', 'Count', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('request_id', 'RequestId', 'INTEGER', true, null, null);
+        $this->addForeignKey('product_id', 'ProductId', 'INTEGER', 'product', 'id', true, null, null);
+        $this->addColumn('quantity', 'Quantity', 'INTEGER', true, null, null);
+        $this->addColumn('price', 'Price', 'DECIMAL', true, 19, null);
+        $this->addColumn('total_price', 'TotalPrice', 'DECIMAL', true, 19, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', true, null, null);
+        $this->addColumn('status', 'Status', 'VARCHAR', true, 255, 'Pending');
     } // initialize()
 
     /**
@@ -158,6 +176,20 @@ class EmployeeorderstatusTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Product', '\\Product', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':product_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -217,7 +249,7 @@ class EmployeeorderstatusTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? EmployeeorderstatusTableMap::CLASS_DEFAULT : EmployeeorderstatusTableMap::OM_CLASS;
+        return $withPrefix ? CartTableMap::CLASS_DEFAULT : CartTableMap::OM_CLASS;
     }
 
     /**
@@ -231,22 +263,22 @@ class EmployeeorderstatusTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Employeeorderstatus object, last column rank)
+     * @return array           (Cart object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = EmployeeorderstatusTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = EmployeeorderstatusTableMap::getInstanceFromPool($key))) {
+        $key = CartTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = CartTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + EmployeeorderstatusTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + CartTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = EmployeeorderstatusTableMap::OM_CLASS;
-            /** @var Employeeorderstatus $obj */
+            $cls = CartTableMap::OM_CLASS;
+            /** @var Cart $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            EmployeeorderstatusTableMap::addInstanceToPool($obj, $key);
+            CartTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -269,18 +301,18 @@ class EmployeeorderstatusTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = EmployeeorderstatusTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = EmployeeorderstatusTableMap::getInstanceFromPool($key))) {
+            $key = CartTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = CartTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Employeeorderstatus $obj */
+                /** @var Cart $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                EmployeeorderstatusTableMap::addInstanceToPool($obj, $key);
+                CartTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -301,17 +333,23 @@ class EmployeeorderstatusTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_ID);
-            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_PRODUCT_ID);
-            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT);
-            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS);
-            $criteria->addSelectColumn(EmployeeorderstatusTableMap::COL_COUNT);
+            $criteria->addSelectColumn(CartTableMap::COL_ID);
+            $criteria->addSelectColumn(CartTableMap::COL_REQUEST_ID);
+            $criteria->addSelectColumn(CartTableMap::COL_PRODUCT_ID);
+            $criteria->addSelectColumn(CartTableMap::COL_QUANTITY);
+            $criteria->addSelectColumn(CartTableMap::COL_PRICE);
+            $criteria->addSelectColumn(CartTableMap::COL_TOTAL_PRICE);
+            $criteria->addSelectColumn(CartTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(CartTableMap::COL_STATUS);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Product_ID');
-            $criteria->addSelectColumn($alias . '.ReceivedCount');
-            $criteria->addSelectColumn($alias . '.FufilledStatus');
-            $criteria->addSelectColumn($alias . '.Count');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.request_id');
+            $criteria->addSelectColumn($alias . '.product_id');
+            $criteria->addSelectColumn($alias . '.quantity');
+            $criteria->addSelectColumn($alias . '.price');
+            $criteria->addSelectColumn($alias . '.total_price');
+            $criteria->addSelectColumn($alias . '.user_id');
+            $criteria->addSelectColumn($alias . '.status');
         }
     }
 
@@ -324,7 +362,7 @@ class EmployeeorderstatusTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(EmployeeorderstatusTableMap::DATABASE_NAME)->getTable(EmployeeorderstatusTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(CartTableMap::DATABASE_NAME)->getTable(CartTableMap::TABLE_NAME);
     }
 
     /**
@@ -332,16 +370,16 @@ class EmployeeorderstatusTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EmployeeorderstatusTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EmployeeorderstatusTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EmployeeorderstatusTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(CartTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(CartTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new CartTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Employeeorderstatus or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Cart or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Employeeorderstatus object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Cart object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -352,27 +390,27 @@ class EmployeeorderstatusTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CartTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Employeeorderstatus) { // it's a model object
+        } elseif ($values instanceof \Cart) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(EmployeeorderstatusTableMap::DATABASE_NAME);
-            $criteria->add(EmployeeorderstatusTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(CartTableMap::DATABASE_NAME);
+            $criteria->add(CartTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = EmployeeorderstatusQuery::create()->mergeWith($criteria);
+        $query = CartQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            EmployeeorderstatusTableMap::clearInstancePool();
+            CartTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                EmployeeorderstatusTableMap::removeInstanceFromPool($singleval);
+                CartTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -380,20 +418,20 @@ class EmployeeorderstatusTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the employeeorderstatus table.
+     * Deletes all rows from the cart table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return EmployeeorderstatusQuery::create()->doDeleteAll($con);
+        return CartQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Employeeorderstatus or Criteria object.
+     * Performs an INSERT on the database, given a Cart or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Employeeorderstatus object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Cart object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -402,22 +440,22 @@ class EmployeeorderstatusTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CartTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Employeeorderstatus object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Cart object
         }
 
-        if ($criteria->containsKey(EmployeeorderstatusTableMap::COL_ID) && $criteria->keyContainsValue(EmployeeorderstatusTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.EmployeeorderstatusTableMap::COL_ID.')');
+        if ($criteria->containsKey(CartTableMap::COL_ID) && $criteria->keyContainsValue(CartTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CartTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = EmployeeorderstatusQuery::create()->mergeWith($criteria);
+        $query = CartQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -426,7 +464,7 @@ class EmployeeorderstatusTableMap extends TableMap
         });
     }
 
-} // EmployeeorderstatusTableMap
+} // CartTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-EmployeeorderstatusTableMap::buildTableMap();
+CartTableMap::buildTableMap();

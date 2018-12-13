@@ -133,7 +133,7 @@ class EmployeeTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addColumn('User_Login', 'UserLogin', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('Request_ID', 'RequestId', 'INTEGER', 'requestlist', 'Request_ID', true, null, null);
+        $this->addColumn('Request_ID', 'RequestId', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -141,13 +141,6 @@ class EmployeeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Requestlist', '\\Requestlist', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':Request_ID',
-    1 => ':Request_ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**

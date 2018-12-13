@@ -1,9 +1,9 @@
 <?php
 
-use Base\Employeeorderstatus as BaseEmployeeorderstatus;
+use Base\CartQuery as BaseCartQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'employeeorderstatus' table.
+ * Skeleton subclass for performing query and update operations on the 'cart' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Employeeorderstatus as BaseEmployeeorderstatus;
  * long as it does not already exist in the output directory.
  *
  */
-class Employeeorderstatus extends BaseEmployeeorderstatus
+class CartQuery extends BaseCartQuery
 {
 
 }
