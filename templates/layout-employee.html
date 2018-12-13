@@ -6,11 +6,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ base_url() }}/../index.css">
-    <link rel="stylesheet" href="{{ base_url() }}/../book.css">
+    <!--<link rel="stylesheet" href="{{ base_url() }}/../index.css">-->
+    <!--<link rel="stylesheet" href="{{ base_url() }}/../book.css">-->
     <link rel="stylesheet" href="{{ base_url() }}/../p.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400|Text+Me+One" rel="stylesheet">
-
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -50,9 +49,14 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{base_url()}}/request">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKXSURBVFhH7ZfPS1RRHMVHECUKWuSmUrDWbloUgu7KZZtW9RcE0soWuatdVtRK0lrUP1DRItEIq12uC4QoalEkLfoBCQbC1Od85/Qaa968Me9zEe8Dh3vvOd/LPTDKMLWKiop/4Mcmqdfrs76agXfTccf4ajGe7xjKfGYZ9HWVO8D5a4SbwNeL8bwefsYylSfyaVRnr9kv6IbEMcopg2m2Le9bT1Hg54vxvB64aCsXxibVonHjN/YmPZaLZuIC2CrG8x0VFMyNoQX0yZrn+jHHbWGu/IJbgWeqgvqI96FTaMI6Kc9xW3imvILkw+gxavlPAoto2OMtYTR9QaIudEENYrANmoHzbLt8fQP46QviX/KIZr6hy+gw2mkdsbfqMTHl6xvAT1sQ74Rj5cssB+0PoUfWkDxlngnYH5ffDHa6gljdeK+craB+R8pG5ZtR2yrejz7KZH3J0u0o4JyuIOcxR8pO2w6wWhYUzI7b172jtgOspAWv2v/Osst2wDm3IOfdvqO7V2wHWEkL3rX/3FYGdm5BwZ0XCljv2AqwkhZ8aH/JVgZ2UcElBawLtgKspAVv2/9gK+Dcq4fjUoNWBVcUsN6yFWAlLXjGkbJD8tj2sJ9ruOHPox1xwWjWsfJx2wFW0oIDaN3ZPXv6Hn5rbw71xnATePedr6P9tgPsdAUFXvZbg/2EPLaD7GdZe2KoCfyzMQzsZ2xnYKctiN2H/6YxETMq3Oc4Q56zgP1rtMdxBlHaggJfX2vvPaa5NfQAXbP0Ua85Vv4OxdffnxCnLyjI9LeX/XPkwYyK7/W1v2CknIK/YGYEzaBltGppfx2NeCwXnim34Fbhmf+74BN0rmTpJ2rg54vx/Lbj54vx/Lbj5ysqKjqnVvsJ3xL4MGv9UmAAAAAASUVORK5CYII=">
-                    Requests</a>
+                    Request</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{base_url()}}/cart">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKXSURBVFhH7ZfPS1RRHMVHECUKWuSmUrDWbloUgu7KZZtW9RcE0soWuatdVtRK0lrUP1DRItEIq12uC4QoalEkLfoBCQbC1Od85/Qaa968Me9zEe8Dh3vvOd/LPTDKMLWKiop/4Mcmqdfrs76agXfTccf4ajGe7xjKfGYZ9HWVO8D5a4SbwNeL8bwefsYylSfyaVRnr9kv6IbEMcopg2m2Le9bT1Hg54vxvB64aCsXxibVonHjN/YmPZaLZuIC2CrG8x0VFMyNoQX0yZrn+jHHbWGu/IJbgWeqgvqI96FTaMI6Kc9xW3imvILkw+gxavlPAoto2OMtYTR9QaIudEENYrANmoHzbLt8fQP46QviX/KIZr6hy+gw2mkdsbfqMTHl6xvAT1sQ74Rj5cssB+0PoUfWkDxlngnYH5ffDHa6gljdeK+craB+R8pG5ZtR2yrejz7KZH3J0u0o4JyuIOcxR8pO2w6wWhYUzI7b172jtgOspAWv2v/Osst2wDm3IOfdvqO7V2wHWEkL3rX/3FYGdm5BwZ0XCljv2AqwkhZ8aH/JVgZ2UcElBawLtgKspAVv2/9gK+Dcq4fjUoNWBVcUsN6yFWAlLXjGkbJD8tj2sJ9ruOHPox1xwWjWsfJx2wFW0oIDaN3ZPXv6Hn5rbw71xnATePedr6P9tgPsdAUFXvZbg/2EPLaD7GdZe2KoCfyzMQzsZ2xnYKctiN2H/6YxETMq3Oc4Q56zgP1rtMdxBlHaggJfX2vvPaa5NfQAXbP0Ua85Vv4OxdffnxCnLyjI9LeX/XPkwYyK7/W1v2CknIK/YGYEzaBltGppfx2NeCwXnim34Fbhmf+74BN0rmTpJ2rg54vx/Lbj54vx/Lbj5ysqKjqnVvsJ3xL4MGv9UmAAAAAASUVORK5CYII=">
+                    Cart</a>
             </li>
         </ul>
     </div>

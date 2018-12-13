@@ -152,6 +152,13 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Cart', '\\Cart', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, 'Carts', false);
         $this->addRelation('Info', '\\Info', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

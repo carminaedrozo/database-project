@@ -2,10 +2,10 @@
 
 namespace Base;
 
-use \EmployeeorderstatusQuery as ChildEmployeeorderstatusQuery;
+use \RequeststatusQuery as ChildRequeststatusQuery;
 use \Exception;
 use \PDO;
-use Map\EmployeeorderstatusTableMap;
+use Map\RequeststatusTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -19,18 +19,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'employeeorderstatus' table.
+ * Base class that represents a row from the 'requeststatus' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Employeeorderstatus implements ActiveRecordInterface
+abstract class Requeststatus implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\EmployeeorderstatusTableMap';
+    const TABLE_MAP = '\\Map\\RequeststatusTableMap';
 
 
     /**
@@ -67,32 +67,11 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the product_id field.
-     *
-     * @var        int
-     */
-    protected $product_id;
-
-    /**
-     * The value for the receivedcount field.
-     *
-     * @var        int
-     */
-    protected $receivedcount;
-
-    /**
-     * The value for the fufilledstatus field.
+     * The value for the status field.
      *
      * @var        string
      */
-    protected $fufilledstatus;
-
-    /**
-     * The value for the count field.
-     *
-     * @var        int
-     */
-    protected $count;
+    protected $status;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -103,7 +82,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Employeeorderstatus object.
+     * Initializes internal state of Base\Requeststatus object.
      */
     public function __construct()
     {
@@ -198,9 +177,9 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Employeeorderstatus</code> instance.  If
-     * <code>obj</code> is an instance of <code>Employeeorderstatus</code>, delegates to
-     * <code>equals(Employeeorderstatus)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Requeststatus</code> instance.  If
+     * <code>obj</code> is an instance of <code>Requeststatus</code>, delegates to
+     * <code>equals(Requeststatus)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -266,7 +245,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Employeeorderstatus The current object, for fluid interface
+     * @return $this|Requeststatus The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -338,50 +317,20 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     }
 
     /**
-     * Get the [product_id] column value.
-     *
-     * @return int
-     */
-    public function getProductId()
-    {
-        return $this->product_id;
-    }
-
-    /**
-     * Get the [receivedcount] column value.
-     *
-     * @return int
-     */
-    public function getReceivedcount()
-    {
-        return $this->receivedcount;
-    }
-
-    /**
-     * Get the [fufilledstatus] column value.
+     * Get the [status] column value.
      *
      * @return string
      */
-    public function getFufilledstatus()
+    public function getStatus()
     {
-        return $this->fufilledstatus;
-    }
-
-    /**
-     * Get the [count] column value.
-     *
-     * @return int
-     */
-    public function getCount()
-    {
-        return $this->count;
+        return $this->status;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Employeeorderstatus The current object (for fluent API support)
+     * @return $this|\Requeststatus The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -391,91 +340,31 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[EmployeeorderstatusTableMap::COL_ID] = true;
+            $this->modifiedColumns[RequeststatusTableMap::COL_ID] = true;
         }
 
         return $this;
     } // setId()
 
     /**
-     * Set the value of [product_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Employeeorderstatus The current object (for fluent API support)
-     */
-    public function setProductId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[EmployeeorderstatusTableMap::COL_PRODUCT_ID] = true;
-        }
-
-        return $this;
-    } // setProductId()
-
-    /**
-     * Set the value of [receivedcount] column.
-     *
-     * @param int $v new value
-     * @return $this|\Employeeorderstatus The current object (for fluent API support)
-     */
-    public function setReceivedcount($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->receivedcount !== $v) {
-            $this->receivedcount = $v;
-            $this->modifiedColumns[EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT] = true;
-        }
-
-        return $this;
-    } // setReceivedcount()
-
-    /**
-     * Set the value of [fufilledstatus] column.
+     * Set the value of [status] column.
      *
      * @param string $v new value
-     * @return $this|\Employeeorderstatus The current object (for fluent API support)
+     * @return $this|\Requeststatus The current object (for fluent API support)
      */
-    public function setFufilledstatus($v)
+    public function setStatus($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->fufilledstatus !== $v) {
-            $this->fufilledstatus = $v;
-            $this->modifiedColumns[EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS] = true;
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[RequeststatusTableMap::COL_STATUS] = true;
         }
 
         return $this;
-    } // setFufilledstatus()
-
-    /**
-     * Set the value of [count] column.
-     *
-     * @param int $v new value
-     * @return $this|\Employeeorderstatus The current object (for fluent API support)
-     */
-    public function setCount($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->count !== $v) {
-            $this->count = $v;
-            $this->modifiedColumns[EmployeeorderstatusTableMap::COL_COUNT] = true;
-        }
-
-        return $this;
-    } // setCount()
+    } // setStatus()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -513,20 +402,11 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : EmployeeorderstatusTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequeststatusTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : EmployeeorderstatusTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->product_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : EmployeeorderstatusTableMap::translateFieldName('Receivedcount', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->receivedcount = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : EmployeeorderstatusTableMap::translateFieldName('Fufilledstatus', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->fufilledstatus = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : EmployeeorderstatusTableMap::translateFieldName('Count', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->count = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequeststatusTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -535,10 +415,10 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = EmployeeorderstatusTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = RequeststatusTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Employeeorderstatus'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Requeststatus'), 0, $e);
         }
     }
 
@@ -580,13 +460,13 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequeststatusTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildEmployeeorderstatusQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildRequeststatusQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -605,8 +485,8 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Employeeorderstatus::setDeleted()
-     * @see Employeeorderstatus::isDeleted()
+     * @see Requeststatus::setDeleted()
+     * @see Requeststatus::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -615,11 +495,11 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequeststatusTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildEmployeeorderstatusQuery::create()
+            $deleteQuery = ChildRequeststatusQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -654,7 +534,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EmployeeorderstatusTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequeststatusTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -673,7 +553,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                EmployeeorderstatusTableMap::addInstanceToPool($this);
+                RequeststatusTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -730,30 +610,21 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[EmployeeorderstatusTableMap::COL_ID] = true;
+        $this->modifiedColumns[RequeststatusTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . EmployeeorderstatusTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . RequeststatusTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
+        if ($this->isColumnModified(RequeststatusTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_PRODUCT_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Product_ID';
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'ReceivedCount';
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS)) {
-            $modifiedColumns[':p' . $index++]  = 'FufilledStatus';
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_COUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'Count';
+        if ($this->isColumnModified(RequeststatusTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'status';
         }
 
         $sql = sprintf(
-            'INSERT INTO employeeorderstatus (%s) VALUES (%s)',
+            'INSERT INTO requeststatus (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -762,20 +633,11 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Product_ID':
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
-                        break;
-                    case 'ReceivedCount':
-                        $stmt->bindValue($identifier, $this->receivedcount, PDO::PARAM_INT);
-                        break;
-                    case 'FufilledStatus':
-                        $stmt->bindValue($identifier, $this->fufilledstatus, PDO::PARAM_STR);
-                        break;
-                    case 'Count':
-                        $stmt->bindValue($identifier, $this->count, PDO::PARAM_INT);
+                    case 'status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -823,7 +685,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = EmployeeorderstatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequeststatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -843,16 +705,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getProductId();
-                break;
-            case 2:
-                return $this->getReceivedcount();
-                break;
-            case 3:
-                return $this->getFufilledstatus();
-                break;
-            case 4:
-                return $this->getCount();
+                return $this->getStatus();
                 break;
             default:
                 return null;
@@ -877,17 +730,14 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Employeeorderstatus'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Requeststatus'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Employeeorderstatus'][$this->hashCode()] = true;
-        $keys = EmployeeorderstatusTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Requeststatus'][$this->hashCode()] = true;
+        $keys = RequeststatusTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getProductId(),
-            $keys[2] => $this->getReceivedcount(),
-            $keys[3] => $this->getFufilledstatus(),
-            $keys[4] => $this->getCount(),
+            $keys[1] => $this->getStatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -907,11 +757,11 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Employeeorderstatus
+     * @return $this|\Requeststatus
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = EmployeeorderstatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequeststatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -922,7 +772,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Employeeorderstatus
+     * @return $this|\Requeststatus
      */
     public function setByPosition($pos, $value)
     {
@@ -931,16 +781,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setProductId($value);
-                break;
-            case 2:
-                $this->setReceivedcount($value);
-                break;
-            case 3:
-                $this->setFufilledstatus($value);
-                break;
-            case 4:
-                $this->setCount($value);
+                $this->setStatus($value);
                 break;
         } // switch()
 
@@ -966,22 +807,13 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = EmployeeorderstatusTableMap::getFieldNames($keyType);
+        $keys = RequeststatusTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setProductId($arr[$keys[1]]);
-        }
-        if (array_key_exists($keys[2], $arr)) {
-            $this->setReceivedcount($arr[$keys[2]]);
-        }
-        if (array_key_exists($keys[3], $arr)) {
-            $this->setFufilledstatus($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setCount($arr[$keys[4]]);
+            $this->setStatus($arr[$keys[1]]);
         }
     }
 
@@ -1002,7 +834,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Employeeorderstatus The current object, for fluid interface
+     * @return $this|\Requeststatus The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1022,22 +854,13 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(EmployeeorderstatusTableMap::DATABASE_NAME);
+        $criteria = new Criteria(RequeststatusTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_ID)) {
-            $criteria->add(EmployeeorderstatusTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(RequeststatusTableMap::COL_ID)) {
+            $criteria->add(RequeststatusTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_PRODUCT_ID)) {
-            $criteria->add(EmployeeorderstatusTableMap::COL_PRODUCT_ID, $this->product_id);
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT)) {
-            $criteria->add(EmployeeorderstatusTableMap::COL_RECEIVEDCOUNT, $this->receivedcount);
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS)) {
-            $criteria->add(EmployeeorderstatusTableMap::COL_FUFILLEDSTATUS, $this->fufilledstatus);
-        }
-        if ($this->isColumnModified(EmployeeorderstatusTableMap::COL_COUNT)) {
-            $criteria->add(EmployeeorderstatusTableMap::COL_COUNT, $this->count);
+        if ($this->isColumnModified(RequeststatusTableMap::COL_STATUS)) {
+            $criteria->add(RequeststatusTableMap::COL_STATUS, $this->status);
         }
 
         return $criteria;
@@ -1055,8 +878,8 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildEmployeeorderstatusQuery::create();
-        $criteria->add(EmployeeorderstatusTableMap::COL_ID, $this->id);
+        $criteria = ChildRequeststatusQuery::create();
+        $criteria->add(RequeststatusTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1118,17 +941,14 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Employeeorderstatus (or compatible) type.
+     * @param      object $copyObj An object of \Requeststatus (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setProductId($this->getProductId());
-        $copyObj->setReceivedcount($this->getReceivedcount());
-        $copyObj->setFufilledstatus($this->getFufilledstatus());
-        $copyObj->setCount($this->getCount());
+        $copyObj->setStatus($this->getStatus());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1144,7 +964,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Employeeorderstatus Clone of current object.
+     * @return \Requeststatus Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1165,10 +985,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->product_id = null;
-        $this->receivedcount = null;
-        $this->fufilledstatus = null;
-        $this->count = null;
+        $this->status = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1198,7 +1015,7 @@ abstract class Employeeorderstatus implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(EmployeeorderstatusTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(RequeststatusTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

@@ -4,6 +4,33 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
+-- cart
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cart`;
+
+CREATE TABLE `cart`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `request_id` INTEGER NOT NULL,
+    `product_id` INTEGER NOT NULL,
+    `quantity` INTEGER NOT NULL,
+    `price` DECIMAL(19,2) NOT NULL,
+    `total_price` DECIMAL(19,2) NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    `status` VARCHAR(255) DEFAULT 'Pending' NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `user_id` (`user_id`),
+    INDEX `product_id` (`product_id`),
+    CONSTRAINT `cart_ibfk_2`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `cart_ibfk_3`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- employee
 -- ---------------------------------------------------------------------
 
@@ -13,26 +40,7 @@ CREATE TABLE `employee`
 (
     `User_Login` TEXT NOT NULL,
     `Request_ID` INTEGER NOT NULL,
-    INDEX `Request_ID` (`Request_ID`),
-    CONSTRAINT `employee_ibfk_1`
-        FOREIGN KEY (`Request_ID`)
-        REFERENCES `requestlist` (`Request_ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- employeeorderstatus
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `employeeorderstatus`;
-
-CREATE TABLE `employeeorderstatus`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Product_ID` INTEGER NOT NULL,
-    `ReceivedCount` INTEGER NOT NULL,
-    `FufilledStatus` bit(11) NOT NULL,
-    `Count` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`)
+    INDEX `Request_ID` (`Request_ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -88,7 +96,7 @@ CREATE TABLE `product`
     `isbn10` VARCHAR(255) NOT NULL,
     `isbn13` VARCHAR(255) NOT NULL,
     `publisher` VARCHAR(255) NOT NULL,
-    `price` DECIMAL(19,4) NOT NULL,
+    `price` DECIMAL(19,2) NOT NULL,
     `image_url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -145,34 +153,33 @@ CREATE TABLE `publisher`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- requestlist
+-- requests
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `requestlist`;
+DROP TABLE IF EXISTS `requests`;
 
-CREATE TABLE `requestlist`
+CREATE TABLE `requests`
 (
-    `Request_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Order_ID` INTEGER NOT NULL,
-    `Status` INTEGER NOT NULL,
-    PRIMARY KEY (`Request_ID`)
+    `id` INTEGER NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    `status_id` INTEGER NOT NULL,
+    `total` DECIMAL(19,4) NOT NULL,
+    `date_requested` DATE,
+    `date_completed` DATE,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- requestorder
+-- requeststatus
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `requestorder`;
+DROP TABLE IF EXISTS `requeststatus`;
 
-CREATE TABLE `requestorder`
+CREATE TABLE `requeststatus`
 (
-    `Order_ID` INTEGER NOT NULL,
-    `Commission` DOUBLE NOT NULL,
-    `Amount` DOUBLE NOT NULL,
-    `Date` DATE NOT NULL,
-    `Delivered_Date` DATE NOT NULL,
-    `Status_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`Order_ID`)
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `status` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

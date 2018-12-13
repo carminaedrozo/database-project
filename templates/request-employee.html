@@ -1,0 +1,37 @@
+{% extends 'layout-employee.html' %}
+
+{% block title %}
+Request
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+
+        {% for p in product %}
+        <div class="col-sm-2 d-flex align-items-stretch info">
+            <div class="card text-white bg-dark">
+                <img class="card-img-top" src="{{ p.imageUrl}}">
+
+                <div class="card-body">
+                    <form action="{{ base_url() }}/cart/{{p.id}}" method="POST">
+                        <h5 class="card-title">{{ p.title | slice(0,40) }}...</h5>
+                        <p class="card-text">{{ p.price }}</p>
+                        <input type="number" name="quantity" class="form-control" value="1" size="3">
+                        <button type="submit" class="btn btn-primary" id="addCart">Add to Cart</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

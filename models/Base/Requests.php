@@ -2,11 +2,11 @@
 
 namespace Base;
 
-use \RequestorderQuery as ChildRequestorderQuery;
+use \RequestsQuery as ChildRequestsQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\RequestorderTableMap;
+use Map\RequestsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,18 +21,18 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'requestorder' table.
+ * Base class that represents a row from the 'requests' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Requestorder implements ActiveRecordInterface
+abstract class Requests implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\RequestorderTableMap';
+    const TABLE_MAP = '\\Map\\RequestsTableMap';
 
 
     /**
@@ -62,39 +62,18 @@ abstract class Requestorder implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the order_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $order_id;
+    protected $id;
 
     /**
-     * The value for the commission field.
+     * The value for the user_id field.
      *
-     * @var        double
+     * @var        int
      */
-    protected $commission;
-
-    /**
-     * The value for the amount field.
-     *
-     * @var        double
-     */
-    protected $amount;
-
-    /**
-     * The value for the date field.
-     *
-     * @var        DateTime
-     */
-    protected $date;
-
-    /**
-     * The value for the delivered_date field.
-     *
-     * @var        DateTime
-     */
-    protected $delivered_date;
+    protected $user_id;
 
     /**
      * The value for the status_id field.
@@ -102,6 +81,27 @@ abstract class Requestorder implements ActiveRecordInterface
      * @var        int
      */
     protected $status_id;
+
+    /**
+     * The value for the total field.
+     *
+     * @var        string
+     */
+    protected $total;
+
+    /**
+     * The value for the date_requested field.
+     *
+     * @var        DateTime
+     */
+    protected $date_requested;
+
+    /**
+     * The value for the date_completed field.
+     *
+     * @var        DateTime
+     */
+    protected $date_completed;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,7 +112,7 @@ abstract class Requestorder implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Requestorder object.
+     * Initializes internal state of Base\Requests object.
      */
     public function __construct()
     {
@@ -207,9 +207,9 @@ abstract class Requestorder implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Requestorder</code> instance.  If
-     * <code>obj</code> is an instance of <code>Requestorder</code>, delegates to
-     * <code>equals(Requestorder)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Requests</code> instance.  If
+     * <code>obj</code> is an instance of <code>Requests</code>, delegates to
+     * <code>equals(Requests)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -275,7 +275,7 @@ abstract class Requestorder implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Requestorder The current object, for fluid interface
+     * @return $this|Requests The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -337,73 +337,23 @@ abstract class Requestorder implements ActiveRecordInterface
     }
 
     /**
-     * Get the [order_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getOrderId()
+    public function getId()
     {
-        return $this->order_id;
+        return $this->id;
     }
 
     /**
-     * Get the [commission] column value.
+     * Get the [user_id] column value.
      *
-     * @return double
+     * @return int
      */
-    public function getCommission()
+    public function getUserId()
     {
-        return $this->commission;
-    }
-
-    /**
-     * Get the [amount] column value.
-     *
-     * @return double
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [date] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDate($format = NULL)
-    {
-        if ($format === null) {
-            return $this->date;
-        } else {
-            return $this->date instanceof \DateTimeInterface ? $this->date->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [delivered_date] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDeliveredDate($format = NULL)
-    {
-        if ($format === null) {
-            return $this->delivered_date;
-        } else {
-            return $this->delivered_date instanceof \DateTimeInterface ? $this->delivered_date->format($format) : null;
-        }
+        return $this->user_id;
     }
 
     /**
@@ -417,110 +367,100 @@ abstract class Requestorder implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [order_id] column.
+     * Get the [total] column value.
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [date_requested] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getDateRequested($format = NULL)
+    {
+        if ($format === null) {
+            return $this->date_requested;
+        } else {
+            return $this->date_requested instanceof \DateTimeInterface ? $this->date_requested->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [date_completed] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getDateCompleted($format = NULL)
+    {
+        if ($format === null) {
+            return $this->date_completed;
+        } else {
+            return $this->date_completed instanceof \DateTimeInterface ? $this->date_completed->format($format) : null;
+        }
+    }
+
+    /**
+     * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Requestorder The current object (for fluent API support)
+     * @return $this|\Requests The current object (for fluent API support)
      */
-    public function setOrderId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->order_id !== $v) {
-            $this->order_id = $v;
-            $this->modifiedColumns[RequestorderTableMap::COL_ORDER_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[RequestsTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setOrderId()
+    } // setId()
 
     /**
-     * Set the value of [commission] column.
+     * Set the value of [user_id] column.
      *
-     * @param double $v new value
-     * @return $this|\Requestorder The current object (for fluent API support)
+     * @param int $v new value
+     * @return $this|\Requests The current object (for fluent API support)
      */
-    public function setCommission($v)
+    public function setUserId($v)
     {
         if ($v !== null) {
-            $v = (double) $v;
+            $v = (int) $v;
         }
 
-        if ($this->commission !== $v) {
-            $this->commission = $v;
-            $this->modifiedColumns[RequestorderTableMap::COL_COMMISSION] = true;
-        }
-
-        return $this;
-    } // setCommission()
-
-    /**
-     * Set the value of [amount] column.
-     *
-     * @param double $v new value
-     * @return $this|\Requestorder The current object (for fluent API support)
-     */
-    public function setAmount($v)
-    {
-        if ($v !== null) {
-            $v = (double) $v;
-        }
-
-        if ($this->amount !== $v) {
-            $this->amount = $v;
-            $this->modifiedColumns[RequestorderTableMap::COL_AMOUNT] = true;
+        if ($this->user_id !== $v) {
+            $this->user_id = $v;
+            $this->modifiedColumns[RequestsTableMap::COL_USER_ID] = true;
         }
 
         return $this;
-    } // setAmount()
-
-    /**
-     * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Requestorder The current object (for fluent API support)
-     */
-    public function setDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->date !== null || $dt !== null) {
-            if ($this->date === null || $dt === null || $dt->format("Y-m-d") !== $this->date->format("Y-m-d")) {
-                $this->date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[RequestorderTableMap::COL_DATE] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setDate()
-
-    /**
-     * Sets the value of [delivered_date] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Requestorder The current object (for fluent API support)
-     */
-    public function setDeliveredDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->delivered_date !== null || $dt !== null) {
-            if ($this->delivered_date === null || $dt === null || $dt->format("Y-m-d") !== $this->delivered_date->format("Y-m-d")) {
-                $this->delivered_date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[RequestorderTableMap::COL_DELIVERED_DATE] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setDeliveredDate()
+    } // setUserId()
 
     /**
      * Set the value of [status_id] column.
      *
      * @param int $v new value
-     * @return $this|\Requestorder The current object (for fluent API support)
+     * @return $this|\Requests The current object (for fluent API support)
      */
     public function setStatusId($v)
     {
@@ -530,11 +470,71 @@ abstract class Requestorder implements ActiveRecordInterface
 
         if ($this->status_id !== $v) {
             $this->status_id = $v;
-            $this->modifiedColumns[RequestorderTableMap::COL_STATUS_ID] = true;
+            $this->modifiedColumns[RequestsTableMap::COL_STATUS_ID] = true;
         }
 
         return $this;
     } // setStatusId()
+
+    /**
+     * Set the value of [total] column.
+     *
+     * @param string $v new value
+     * @return $this|\Requests The current object (for fluent API support)
+     */
+    public function setTotal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->total !== $v) {
+            $this->total = $v;
+            $this->modifiedColumns[RequestsTableMap::COL_TOTAL] = true;
+        }
+
+        return $this;
+    } // setTotal()
+
+    /**
+     * Sets the value of [date_requested] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Requests The current object (for fluent API support)
+     */
+    public function setDateRequested($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->date_requested !== null || $dt !== null) {
+            if ($this->date_requested === null || $dt === null || $dt->format("Y-m-d") !== $this->date_requested->format("Y-m-d")) {
+                $this->date_requested = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[RequestsTableMap::COL_DATE_REQUESTED] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setDateRequested()
+
+    /**
+     * Sets the value of [date_completed] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Requests The current object (for fluent API support)
+     */
+    public function setDateCompleted($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->date_completed !== null || $dt !== null) {
+            if ($this->date_completed === null || $dt === null || $dt->format("Y-m-d") !== $this->date_completed->format("Y-m-d")) {
+                $this->date_completed = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[RequestsTableMap::COL_DATE_COMPLETED] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setDateCompleted()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -572,29 +572,29 @@ abstract class Requestorder implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestorderTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->order_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestsTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestorderTableMap::translateFieldName('Commission', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->commission = (null !== $col) ? (double) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestsTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->user_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : RequestorderTableMap::translateFieldName('Amount', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->amount = (null !== $col) ? (double) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : RequestorderTableMap::translateFieldName('Date', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : RequestorderTableMap::translateFieldName('DeliveredDate', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->delivered_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : RequestorderTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : RequestsTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->status_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : RequestsTableMap::translateFieldName('Total', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->total = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : RequestsTableMap::translateFieldName('DateRequested', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00') {
+                $col = null;
+            }
+            $this->date_requested = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : RequestsTableMap::translateFieldName('DateCompleted', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00') {
+                $col = null;
+            }
+            $this->date_completed = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -603,10 +603,10 @@ abstract class Requestorder implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = RequestorderTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = RequestsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Requestorder'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Requests'), 0, $e);
         }
     }
 
@@ -648,13 +648,13 @@ abstract class Requestorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(RequestorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequestsTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildRequestorderQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildRequestsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -673,8 +673,8 @@ abstract class Requestorder implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Requestorder::setDeleted()
-     * @see Requestorder::isDeleted()
+     * @see Requests::setDeleted()
+     * @see Requests::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -683,11 +683,11 @@ abstract class Requestorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildRequestorderQuery::create()
+            $deleteQuery = ChildRequestsQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -722,7 +722,7 @@ abstract class Requestorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -741,7 +741,7 @@ abstract class Requestorder implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                RequestorderTableMap::addInstanceToPool($this);
+                RequestsTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -800,27 +800,27 @@ abstract class Requestorder implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(RequestorderTableMap::COL_ORDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Order_ID';
+        if ($this->isColumnModified(RequestsTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_COMMISSION)) {
-            $modifiedColumns[':p' . $index++]  = 'Commission';
+        if ($this->isColumnModified(RequestsTableMap::COL_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'user_id';
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_AMOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'Amount';
+        if ($this->isColumnModified(RequestsTableMap::COL_STATUS_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'status_id';
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'Date';
+        if ($this->isColumnModified(RequestsTableMap::COL_TOTAL)) {
+            $modifiedColumns[':p' . $index++]  = 'total';
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_DELIVERED_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'Delivered_Date';
+        if ($this->isColumnModified(RequestsTableMap::COL_DATE_REQUESTED)) {
+            $modifiedColumns[':p' . $index++]  = 'date_requested';
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_STATUS_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Status_ID';
+        if ($this->isColumnModified(RequestsTableMap::COL_DATE_COMPLETED)) {
+            $modifiedColumns[':p' . $index++]  = 'date_completed';
         }
 
         $sql = sprintf(
-            'INSERT INTO requestorder (%s) VALUES (%s)',
+            'INSERT INTO requests (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -829,23 +829,23 @@ abstract class Requestorder implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'Order_ID':
-                        $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Commission':
-                        $stmt->bindValue($identifier, $this->commission, PDO::PARAM_STR);
+                    case 'user_id':
+                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case 'Amount':
-                        $stmt->bindValue($identifier, $this->amount, PDO::PARAM_STR);
-                        break;
-                    case 'Date':
-                        $stmt->bindValue($identifier, $this->date ? $this->date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Delivered_Date':
-                        $stmt->bindValue($identifier, $this->delivered_date ? $this->delivered_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Status_ID':
+                    case 'status_id':
                         $stmt->bindValue($identifier, $this->status_id, PDO::PARAM_INT);
+                        break;
+                    case 'total':
+                        $stmt->bindValue($identifier, $this->total, PDO::PARAM_STR);
+                        break;
+                    case 'date_requested':
+                        $stmt->bindValue($identifier, $this->date_requested ? $this->date_requested->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case 'date_completed':
+                        $stmt->bindValue($identifier, $this->date_completed ? $this->date_completed->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -886,7 +886,7 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestorderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -903,22 +903,22 @@ abstract class Requestorder implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getOrderId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getCommission();
+                return $this->getUserId();
                 break;
             case 2:
-                return $this->getAmount();
+                return $this->getStatusId();
                 break;
             case 3:
-                return $this->getDate();
+                return $this->getTotal();
                 break;
             case 4:
-                return $this->getDeliveredDate();
+                return $this->getDateRequested();
                 break;
             case 5:
-                return $this->getStatusId();
+                return $this->getDateCompleted();
                 break;
             default:
                 return null;
@@ -943,25 +943,25 @@ abstract class Requestorder implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Requestorder'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Requests'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Requestorder'][$this->hashCode()] = true;
-        $keys = RequestorderTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Requests'][$this->hashCode()] = true;
+        $keys = RequestsTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getOrderId(),
-            $keys[1] => $this->getCommission(),
-            $keys[2] => $this->getAmount(),
-            $keys[3] => $this->getDate(),
-            $keys[4] => $this->getDeliveredDate(),
-            $keys[5] => $this->getStatusId(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getUserId(),
+            $keys[2] => $this->getStatusId(),
+            $keys[3] => $this->getTotal(),
+            $keys[4] => $this->getDateRequested(),
+            $keys[5] => $this->getDateCompleted(),
         );
-        if ($result[$keys[3]] instanceof \DateTimeInterface) {
-            $result[$keys[3]] = $result[$keys[3]]->format('c');
-        }
-
         if ($result[$keys[4]] instanceof \DateTimeInterface) {
             $result[$keys[4]] = $result[$keys[4]]->format('c');
+        }
+
+        if ($result[$keys[5]] instanceof \DateTimeInterface) {
+            $result[$keys[5]] = $result[$keys[5]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -982,11 +982,11 @@ abstract class Requestorder implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Requestorder
+     * @return $this|\Requests
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestorderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -997,28 +997,28 @@ abstract class Requestorder implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Requestorder
+     * @return $this|\Requests
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setOrderId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setCommission($value);
+                $this->setUserId($value);
                 break;
             case 2:
-                $this->setAmount($value);
+                $this->setStatusId($value);
                 break;
             case 3:
-                $this->setDate($value);
+                $this->setTotal($value);
                 break;
             case 4:
-                $this->setDeliveredDate($value);
+                $this->setDateRequested($value);
                 break;
             case 5:
-                $this->setStatusId($value);
+                $this->setDateCompleted($value);
                 break;
         } // switch()
 
@@ -1044,25 +1044,25 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = RequestorderTableMap::getFieldNames($keyType);
+        $keys = RequestsTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setOrderId($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setCommission($arr[$keys[1]]);
+            $this->setUserId($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setAmount($arr[$keys[2]]);
+            $this->setStatusId($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDate($arr[$keys[3]]);
+            $this->setTotal($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDeliveredDate($arr[$keys[4]]);
+            $this->setDateRequested($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setStatusId($arr[$keys[5]]);
+            $this->setDateCompleted($arr[$keys[5]]);
         }
     }
 
@@ -1083,7 +1083,7 @@ abstract class Requestorder implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Requestorder The current object, for fluid interface
+     * @return $this|\Requests The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1103,25 +1103,25 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(RequestorderTableMap::DATABASE_NAME);
+        $criteria = new Criteria(RequestsTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(RequestorderTableMap::COL_ORDER_ID)) {
-            $criteria->add(RequestorderTableMap::COL_ORDER_ID, $this->order_id);
+        if ($this->isColumnModified(RequestsTableMap::COL_ID)) {
+            $criteria->add(RequestsTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_COMMISSION)) {
-            $criteria->add(RequestorderTableMap::COL_COMMISSION, $this->commission);
+        if ($this->isColumnModified(RequestsTableMap::COL_USER_ID)) {
+            $criteria->add(RequestsTableMap::COL_USER_ID, $this->user_id);
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_AMOUNT)) {
-            $criteria->add(RequestorderTableMap::COL_AMOUNT, $this->amount);
+        if ($this->isColumnModified(RequestsTableMap::COL_STATUS_ID)) {
+            $criteria->add(RequestsTableMap::COL_STATUS_ID, $this->status_id);
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_DATE)) {
-            $criteria->add(RequestorderTableMap::COL_DATE, $this->date);
+        if ($this->isColumnModified(RequestsTableMap::COL_TOTAL)) {
+            $criteria->add(RequestsTableMap::COL_TOTAL, $this->total);
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_DELIVERED_DATE)) {
-            $criteria->add(RequestorderTableMap::COL_DELIVERED_DATE, $this->delivered_date);
+        if ($this->isColumnModified(RequestsTableMap::COL_DATE_REQUESTED)) {
+            $criteria->add(RequestsTableMap::COL_DATE_REQUESTED, $this->date_requested);
         }
-        if ($this->isColumnModified(RequestorderTableMap::COL_STATUS_ID)) {
-            $criteria->add(RequestorderTableMap::COL_STATUS_ID, $this->status_id);
+        if ($this->isColumnModified(RequestsTableMap::COL_DATE_COMPLETED)) {
+            $criteria->add(RequestsTableMap::COL_DATE_COMPLETED, $this->date_completed);
         }
 
         return $criteria;
@@ -1139,8 +1139,8 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildRequestorderQuery::create();
-        $criteria->add(RequestorderTableMap::COL_ORDER_ID, $this->order_id);
+        $criteria = ChildRequestsQuery::create();
+        $criteria->add(RequestsTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1153,7 +1153,7 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getOrderId();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1173,18 +1173,18 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getOrderId();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (order_id column).
+     * Generic method to set the primary key (id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setOrderId($key);
+        $this->setId($key);
     }
 
     /**
@@ -1193,7 +1193,7 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getOrderId();
+        return null === $this->getId();
     }
 
     /**
@@ -1202,19 +1202,19 @@ abstract class Requestorder implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Requestorder (or compatible) type.
+     * @param      object $copyObj An object of \Requests (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setOrderId($this->getOrderId());
-        $copyObj->setCommission($this->getCommission());
-        $copyObj->setAmount($this->getAmount());
-        $copyObj->setDate($this->getDate());
-        $copyObj->setDeliveredDate($this->getDeliveredDate());
+        $copyObj->setId($this->getId());
+        $copyObj->setUserId($this->getUserId());
         $copyObj->setStatusId($this->getStatusId());
+        $copyObj->setTotal($this->getTotal());
+        $copyObj->setDateRequested($this->getDateRequested());
+        $copyObj->setDateCompleted($this->getDateCompleted());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1229,7 +1229,7 @@ abstract class Requestorder implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Requestorder Clone of current object.
+     * @return \Requests Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1249,12 +1249,12 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->order_id = null;
-        $this->commission = null;
-        $this->amount = null;
-        $this->date = null;
-        $this->delivered_date = null;
+        $this->id = null;
+        $this->user_id = null;
         $this->status_id = null;
+        $this->total = null;
+        $this->date_requested = null;
+        $this->date_completed = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1284,7 +1284,7 @@ abstract class Requestorder implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(RequestorderTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(RequestsTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

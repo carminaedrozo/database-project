@@ -2,12 +2,15 @@
 
 namespace Base;
 
+use \Cart as ChildCart;
+use \CartQuery as ChildCartQuery;
 use \Info as ChildInfo;
 use \InfoQuery as ChildInfoQuery;
 use \User as ChildUser;
 use \UserQuery as ChildUserQuery;
 use \Exception;
 use \PDO;
+use Map\CartTableMap;
 use Map\InfoTableMap;
 use Map\UserTableMap;
 use Propel\Runtime\Propel;
@@ -93,6 +96,12 @@ abstract class User implements ActiveRecordInterface
     protected $status;
 
     /**
+     * @var        ObjectCollection|ChildCart[] Collection to store aggregation of ChildCart objects.
+     */
+    protected $collCarts;
+    protected $collCartsPartial;
+
+    /**
      * @var        ObjectCollection|ChildInfo[] Collection to store aggregation of ChildInfo objects.
      */
     protected $collInfos;
@@ -105,6 +114,12 @@ abstract class User implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildCart[]
+     */
+    protected $cartsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -573,6 +588,8 @@ abstract class User implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCarts = null;
+
             $this->collInfos = null;
 
         } // if (deep)
@@ -687,6 +704,23 @@ abstract class User implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->cartsScheduledForDeletion !== null) {
+                if (!$this->cartsScheduledForDeletion->isEmpty()) {
+                    \CartQuery::create()
+                        ->filterByPrimaryKeys($this->cartsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->cartsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCarts !== null) {
+                foreach ($this->collCarts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->infosScheduledForDeletion !== null) {
@@ -882,6 +916,21 @@ abstract class User implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collCarts) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'carts';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'carts';
+                        break;
+                    default:
+                        $key = 'Carts';
+                }
+
+                $result[$key] = $this->collCarts->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collInfos) {
 
                 switch ($keyType) {
@@ -1129,6 +1178,12 @@ abstract class User implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
+            foreach ($this->getCarts() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCart($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getInfos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addInfo($relObj->copy($deepCopy));
@@ -1176,10 +1231,264 @@ abstract class User implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Cart' == $relationName) {
+            $this->initCarts();
+            return;
+        }
         if ('Info' == $relationName) {
             $this->initInfos();
             return;
         }
+    }
+
+    /**
+     * Clears out the collCarts collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCarts()
+     */
+    public function clearCarts()
+    {
+        $this->collCarts = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collCarts collection loaded partially.
+     */
+    public function resetPartialCarts($v = true)
+    {
+        $this->collCartsPartial = $v;
+    }
+
+    /**
+     * Initializes the collCarts collection.
+     *
+     * By default this just sets the collCarts collection to an empty array (like clearcollCarts());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCarts($overrideExisting = true)
+    {
+        if (null !== $this->collCarts && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = CartTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collCarts = new $collectionClassName;
+        $this->collCarts->setModel('\Cart');
+    }
+
+    /**
+     * Gets an array of ChildCart objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildCart[] List of ChildCart objects
+     * @throws PropelException
+     */
+    public function getCarts(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCartsPartial && !$this->isNew();
+        if (null === $this->collCarts || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCarts) {
+                // return empty collection
+                $this->initCarts();
+            } else {
+                $collCarts = ChildCartQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCartsPartial && count($collCarts)) {
+                        $this->initCarts(false);
+
+                        foreach ($collCarts as $obj) {
+                            if (false == $this->collCarts->contains($obj)) {
+                                $this->collCarts->append($obj);
+                            }
+                        }
+
+                        $this->collCartsPartial = true;
+                    }
+
+                    return $collCarts;
+                }
+
+                if ($partial && $this->collCarts) {
+                    foreach ($this->collCarts as $obj) {
+                        if ($obj->isNew()) {
+                            $collCarts[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCarts = $collCarts;
+                $this->collCartsPartial = false;
+            }
+        }
+
+        return $this->collCarts;
+    }
+
+    /**
+     * Sets a collection of ChildCart objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $carts A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setCarts(Collection $carts, ConnectionInterface $con = null)
+    {
+        /** @var ChildCart[] $cartsToDelete */
+        $cartsToDelete = $this->getCarts(new Criteria(), $con)->diff($carts);
+
+
+        $this->cartsScheduledForDeletion = $cartsToDelete;
+
+        foreach ($cartsToDelete as $cartRemoved) {
+            $cartRemoved->setUser(null);
+        }
+
+        $this->collCarts = null;
+        foreach ($carts as $cart) {
+            $this->addCart($cart);
+        }
+
+        $this->collCarts = $carts;
+        $this->collCartsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Cart objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Cart objects.
+     * @throws PropelException
+     */
+    public function countCarts(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCartsPartial && !$this->isNew();
+        if (null === $this->collCarts || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCarts) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCarts());
+            }
+
+            $query = ChildCartQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collCarts);
+    }
+
+    /**
+     * Method called to associate a ChildCart object to this object
+     * through the ChildCart foreign key attribute.
+     *
+     * @param  ChildCart $l ChildCart
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function addCart(ChildCart $l)
+    {
+        if ($this->collCarts === null) {
+            $this->initCarts();
+            $this->collCartsPartial = true;
+        }
+
+        if (!$this->collCarts->contains($l)) {
+            $this->doAddCart($l);
+
+            if ($this->cartsScheduledForDeletion and $this->cartsScheduledForDeletion->contains($l)) {
+                $this->cartsScheduledForDeletion->remove($this->cartsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildCart $cart The ChildCart object to add.
+     */
+    protected function doAddCart(ChildCart $cart)
+    {
+        $this->collCarts[]= $cart;
+        $cart->setUser($this);
+    }
+
+    /**
+     * @param  ChildCart $cart The ChildCart object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeCart(ChildCart $cart)
+    {
+        if ($this->getCarts()->contains($cart)) {
+            $pos = $this->collCarts->search($cart);
+            $this->collCarts->remove($pos);
+            if (null === $this->cartsScheduledForDeletion) {
+                $this->cartsScheduledForDeletion = clone $this->collCarts;
+                $this->cartsScheduledForDeletion->clear();
+            }
+            $this->cartsScheduledForDeletion[]= clone $cart;
+            $cart->setUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this User is new, it will return
+     * an empty collection; or if this User has previously
+     * been saved, it will retrieve related Carts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in User.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildCart[] List of ChildCart objects
+     */
+    public function getCartsJoinProduct(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildCartQuery::create(null, $criteria);
+        $query->joinWith('Product', $joinBehavior);
+
+        return $this->getCarts($query, $con);
     }
 
     /**
@@ -1436,6 +1745,11 @@ abstract class User implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collCarts) {
+                foreach ($this->collCarts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collInfos) {
                 foreach ($this->collInfos as $o) {
                     $o->clearAllReferences($deep);
@@ -1443,6 +1757,7 @@ abstract class User implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collCarts = null;
         $this->collInfos = null;
     }
 

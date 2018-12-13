@@ -1,9 +1,9 @@
 <?php
 
-use Base\RequestlistQuery as BaseRequestlistQuery;
+use Base\Cart as BaseCart;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'requestlist' table.
+ * Skeleton subclass for representing a row from the 'cart' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\RequestlistQuery as BaseRequestlistQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class RequestlistQuery extends BaseRequestlistQuery
+class Cart extends BaseCart
 {
 
 }
