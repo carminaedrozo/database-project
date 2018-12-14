@@ -1,0 +1,21 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Request - Info
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    {% for key, r in requests %}
+    <p>Request#00{{ r.id }}</p>
+    <p>Status {{ r.status }}</p>
+    <p>Date Requested: </p>
+    {% endfor %}
+
+</div>
+{% endblock %}

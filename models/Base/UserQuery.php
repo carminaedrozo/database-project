@@ -58,7 +58,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWithInfo() Adds a RIGHT JOIN clause and with to the query using the Info relation
  * @method     ChildUserQuery innerJoinWithInfo() Adds a INNER JOIN clause and with to the query using the Info relation
  *
- * @method     \CartQuery|\InfoQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildUserQuery leftJoinRequestslist($relationAlias = null) Adds a LEFT JOIN clause to the query using the Requestslist relation
+ * @method     ChildUserQuery rightJoinRequestslist($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Requestslist relation
+ * @method     ChildUserQuery innerJoinRequestslist($relationAlias = null) Adds a INNER JOIN clause to the query using the Requestslist relation
+ *
+ * @method     ChildUserQuery joinWithRequestslist($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Requestslist relation
+ *
+ * @method     ChildUserQuery leftJoinWithRequestslist() Adds a LEFT JOIN clause and with to the query using the Requestslist relation
+ * @method     ChildUserQuery rightJoinWithRequestslist() Adds a RIGHT JOIN clause and with to the query using the Requestslist relation
+ * @method     ChildUserQuery innerJoinWithRequestslist() Adds a INNER JOIN clause and with to the query using the Requestslist relation
+ *
+ * @method     \CartQuery|\InfoQuery|\RequestslistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
@@ -529,6 +539,79 @@ abstract class UserQuery extends ModelCriteria
         return $this
             ->joinInfo($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Info', '\InfoQuery');
+    }
+
+    /**
+     * Filter the query by a related \Requestslist object
+     *
+     * @param \Requestslist|ObjectCollection $requestslist the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByRequestslist($requestslist, $comparison = null)
+    {
+        if ($requestslist instanceof \Requestslist) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_ID, $requestslist->getUserId(), $comparison);
+        } elseif ($requestslist instanceof ObjectCollection) {
+            return $this
+                ->useRequestslistQuery()
+                ->filterByPrimaryKeys($requestslist->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByRequestslist() only accepts arguments of type \Requestslist or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Requestslist relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinRequestslist($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Requestslist');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Requestslist');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Requestslist relation Requestslist object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \RequestslistQuery A secondary query class using the current class as primary query
+     */
+    public function useRequestslistQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinRequestslist($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Requestslist', '\RequestslistQuery');
     }
 
     /**

@@ -60,18 +60,32 @@ abstract class Orderlist implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the orderlist_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $orderlist_id;
+    protected $id;
 
     /**
-     * The value for the order_id field.
+     * The value for the title field.
+     *
+     * @var        string
+     */
+    protected $title;
+
+    /**
+     * The value for the quantity field.
      *
      * @var        int
      */
-    protected $order_id;
+    protected $quantity;
+
+    /**
+     * The value for the status field.
+     *
+     * @var        int
+     */
+    protected $status;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -307,64 +321,124 @@ abstract class Orderlist implements ActiveRecordInterface
     }
 
     /**
-     * Get the [orderlist_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getOrderlistId()
+    public function getId()
     {
-        return $this->orderlist_id;
+        return $this->id;
     }
 
     /**
-     * Get the [order_id] column value.
+     * Get the [title] column value.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Get the [quantity] column value.
      *
      * @return int
      */
-    public function getOrderId()
+    public function getQuantity()
     {
-        return $this->order_id;
+        return $this->quantity;
     }
 
     /**
-     * Set the value of [orderlist_id] column.
+     * Get the [status] column value.
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of [id] column.
      *
      * @param int $v new value
      * @return $this|\Orderlist The current object (for fluent API support)
      */
-    public function setOrderlistId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->orderlist_id !== $v) {
-            $this->orderlist_id = $v;
-            $this->modifiedColumns[OrderlistTableMap::COL_ORDERLIST_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[OrderlistTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setOrderlistId()
+    } // setId()
 
     /**
-     * Set the value of [order_id] column.
+     * Set the value of [title] column.
+     *
+     * @param string $v new value
+     * @return $this|\Orderlist The current object (for fluent API support)
+     */
+    public function setTitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[OrderlistTableMap::COL_TITLE] = true;
+        }
+
+        return $this;
+    } // setTitle()
+
+    /**
+     * Set the value of [quantity] column.
      *
      * @param int $v new value
      * @return $this|\Orderlist The current object (for fluent API support)
      */
-    public function setOrderId($v)
+    public function setQuantity($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->order_id !== $v) {
-            $this->order_id = $v;
-            $this->modifiedColumns[OrderlistTableMap::COL_ORDER_ID] = true;
+        if ($this->quantity !== $v) {
+            $this->quantity = $v;
+            $this->modifiedColumns[OrderlistTableMap::COL_QUANTITY] = true;
         }
 
         return $this;
-    } // setOrderId()
+    } // setQuantity()
+
+    /**
+     * Set the value of [status] column.
+     *
+     * @param int $v new value
+     * @return $this|\Orderlist The current object (for fluent API support)
+     */
+    public function setStatus($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[OrderlistTableMap::COL_STATUS] = true;
+        }
+
+        return $this;
+    } // setStatus()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -402,11 +476,17 @@ abstract class Orderlist implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : OrderlistTableMap::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->orderlist_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : OrderlistTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OrderlistTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->order_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OrderlistTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->title = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OrderlistTableMap::translateFieldName('Quantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->quantity = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderlistTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -415,7 +495,7 @@ abstract class Orderlist implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = OrderlistTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = OrderlistTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Orderlist'), 0, $e);
@@ -610,17 +690,23 @@ abstract class Orderlist implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[OrderlistTableMap::COL_ORDERLIST_ID] = true;
-        if (null !== $this->orderlist_id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . OrderlistTableMap::COL_ORDERLIST_ID . ')');
+        $this->modifiedColumns[OrderlistTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . OrderlistTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(OrderlistTableMap::COL_ORDERLIST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'OrderList_ID';
+        if ($this->isColumnModified(OrderlistTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(OrderlistTableMap::COL_ORDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Order_ID';
+        if ($this->isColumnModified(OrderlistTableMap::COL_TITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'title';
+        }
+        if ($this->isColumnModified(OrderlistTableMap::COL_QUANTITY)) {
+            $modifiedColumns[':p' . $index++]  = 'quantity';
+        }
+        if ($this->isColumnModified(OrderlistTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'status';
         }
 
         $sql = sprintf(
@@ -633,11 +719,17 @@ abstract class Orderlist implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'OrderList_ID':
-                        $stmt->bindValue($identifier, $this->orderlist_id, PDO::PARAM_INT);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Order_ID':
-                        $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
+                    case 'title':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
+                    case 'quantity':
+                        $stmt->bindValue($identifier, $this->quantity, PDO::PARAM_INT);
+                        break;
+                    case 'status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -652,7 +744,7 @@ abstract class Orderlist implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setOrderlistId($pk);
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -702,10 +794,16 @@ abstract class Orderlist implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getOrderlistId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getOrderId();
+                return $this->getTitle();
+                break;
+            case 2:
+                return $this->getQuantity();
+                break;
+            case 3:
+                return $this->getStatus();
                 break;
             default:
                 return null;
@@ -736,8 +834,10 @@ abstract class Orderlist implements ActiveRecordInterface
         $alreadyDumpedObjects['Orderlist'][$this->hashCode()] = true;
         $keys = OrderlistTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getOrderlistId(),
-            $keys[1] => $this->getOrderId(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getTitle(),
+            $keys[2] => $this->getQuantity(),
+            $keys[3] => $this->getStatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -778,10 +878,16 @@ abstract class Orderlist implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setOrderlistId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setOrderId($value);
+                $this->setTitle($value);
+                break;
+            case 2:
+                $this->setQuantity($value);
+                break;
+            case 3:
+                $this->setStatus($value);
                 break;
         } // switch()
 
@@ -810,10 +916,16 @@ abstract class Orderlist implements ActiveRecordInterface
         $keys = OrderlistTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setOrderlistId($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setOrderId($arr[$keys[1]]);
+            $this->setTitle($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setQuantity($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setStatus($arr[$keys[3]]);
         }
     }
 
@@ -856,11 +968,17 @@ abstract class Orderlist implements ActiveRecordInterface
     {
         $criteria = new Criteria(OrderlistTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(OrderlistTableMap::COL_ORDERLIST_ID)) {
-            $criteria->add(OrderlistTableMap::COL_ORDERLIST_ID, $this->orderlist_id);
+        if ($this->isColumnModified(OrderlistTableMap::COL_ID)) {
+            $criteria->add(OrderlistTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(OrderlistTableMap::COL_ORDER_ID)) {
-            $criteria->add(OrderlistTableMap::COL_ORDER_ID, $this->order_id);
+        if ($this->isColumnModified(OrderlistTableMap::COL_TITLE)) {
+            $criteria->add(OrderlistTableMap::COL_TITLE, $this->title);
+        }
+        if ($this->isColumnModified(OrderlistTableMap::COL_QUANTITY)) {
+            $criteria->add(OrderlistTableMap::COL_QUANTITY, $this->quantity);
+        }
+        if ($this->isColumnModified(OrderlistTableMap::COL_STATUS)) {
+            $criteria->add(OrderlistTableMap::COL_STATUS, $this->status);
         }
 
         return $criteria;
@@ -879,7 +997,7 @@ abstract class Orderlist implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildOrderlistQuery::create();
-        $criteria->add(OrderlistTableMap::COL_ORDERLIST_ID, $this->orderlist_id);
+        $criteria->add(OrderlistTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -892,7 +1010,7 @@ abstract class Orderlist implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getOrderlistId();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -912,18 +1030,18 @@ abstract class Orderlist implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getOrderlistId();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (orderlist_id column).
+     * Generic method to set the primary key (id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setOrderlistId($key);
+        $this->setId($key);
     }
 
     /**
@@ -932,7 +1050,7 @@ abstract class Orderlist implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getOrderlistId();
+        return null === $this->getId();
     }
 
     /**
@@ -948,10 +1066,12 @@ abstract class Orderlist implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setOrderId($this->getOrderId());
+        $copyObj->setTitle($this->getTitle());
+        $copyObj->setQuantity($this->getQuantity());
+        $copyObj->setStatus($this->getStatus());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setOrderlistId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -984,8 +1104,10 @@ abstract class Orderlist implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->orderlist_id = null;
-        $this->order_id = null;
+        $this->id = null;
+        $this->title = null;
+        $this->quantity = null;
+        $this->status = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

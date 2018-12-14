@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2018 at 03:23 AM
+-- Generation Time: Dec 14, 2018 at 08:23 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -25,38 +25,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `employee`
+-- Table structure for table `cart`
 --
 
-CREATE TABLE `employee` (
-  `User_Login` text NOT NULL,
-  `Request_ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `employeeorderstatus`
---
-
-CREATE TABLE `employeeorderstatus` (
-  `ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `ReceivedCount` int(11) NOT NULL,
-  `FufilledStatus` bit(11) NOT NULL,
-  `Count` int(11) NOT NULL
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `requestid` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `price` decimal(19,2) DEFAULT NULL,
+  `total_price` decimal(19,2) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `employeeorderstatus`
+-- Dumping data for table `cart`
 --
 
-INSERT INTO `employeeorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `FufilledStatus`, `Count`) VALUES
-(1, 0, 7, b'00000000000', 44),
-(2, 2, 9, b'00000000001', 22),
-(3, 3, 34, b'00000000000', 9),
-(4, 4, 78, b'00000000001', 90),
-(5, 5, 4, b'00000000000', 22);
+INSERT INTO `cart` (`id`, `requestid`, `product_id`, `quantity`, `price`, `total_price`, `user_id`, `status`) VALUES
+(76, 4, 4, 1, '161.15', '161.15', 31, 'Submitted'),
+(77, 4, 3, 1, '85.00', '85.00', 31, 'Submitted'),
+(78, 1, 5, 1, '38.00', '38.00', 31, 'Submitted'),
+(79, 2, 11, 1, '33.99', '33.99', 31, 'Submitted'),
+(80, 2, 5, 1, '38.00', '38.00', 31, 'Submitted'),
+(81, 3, 4, -9, '161.15', '-1450.35', 31, 'Submitted');
 
 -- --------------------------------------------------------
 
@@ -110,7 +103,8 @@ INSERT INTO `info` (`id`, `first_name`, `last_name`, `phone_number`, `address`, 
 (27, 'Christian', 'Owen', '', '', '', '', '', 27),
 (28, 'Quemby', 'Gonzalez', '', '', '', '', '', 28),
 (29, 'Caleb', 'Howard', '', '', '', '', '', 29),
-(30, 'Melinda', 'Merritt', '', '', '', '', '', 30);
+(30, 'Melinda', 'Merritt', '', '', '', '', '', 30),
+(31, 'Inah', 'Guerrero', '', '', '', '', '', 31);
 
 -- --------------------------------------------------------
 
@@ -119,17 +113,39 @@ INSERT INTO `info` (`id`, `first_name`, `last_name`, `phone_number`, `address`, 
 --
 
 CREATE TABLE `orderlist` (
-  `OrderList_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `orderlist`
 --
 
-INSERT INTO `orderlist` (`OrderList_ID`, `Order_ID`) VALUES
-(1, 1),
-(3, 0);
+INSERT INTO `orderlist` (`id`, `title`, `quantity`, `status`) VALUES
+(34, 'Data Structures', 8, 1),
+(35, 'Math', 0, 1),
+(36, 'Math', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderstatus`
+--
+
+CREATE TABLE `orderstatus` (
+  `id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderstatus`
+--
+
+INSERT INTO `orderstatus` (`id`, `status`) VALUES
+(1, 'Pending'),
+(2, 'Completed');
 
 -- --------------------------------------------------------
 
@@ -145,7 +161,7 @@ CREATE TABLE `product` (
   `isbn10` varchar(255) NOT NULL,
   `isbn13` varchar(255) NOT NULL,
   `publisher` varchar(255) NOT NULL,
-  `price` decimal(19,4) NOT NULL,
+  `price` decimal(19,2) NOT NULL,
   `image_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -154,20 +170,20 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `author`, `edition`, `isbn10`, `isbn13`, `publisher`, `price`, `image_url`) VALUES
-(3, 'Essential Calculus: Early Transcendentals', 'James Stewart', '2', '1133112285', '978-1133112280', 'Cengage Learning', '85.0000', 'https://i.ebayimg.com/images/a/T2eC16VHJHIE9nyseF5YBRIRhSKLUw~~/s-l300.jpg'),
-(4, 'Database System Concepts', 'Abraham Silberschatz', '6', '0073523321', '978-0073523323', 'McGraw-Hill Education', '161.1500', 'https://images-na.ssl-images-amazon.com/images/I/51PoU%2BwM0iL._SX395_BO1,204,203,200_.jpg'),
-(5, 'Cracking the Coding Interview: 189 Programming Questions and Solutions', 'Gayle Laakmann McDowell', '6', '0984782869', '978-0984782857', 'CareerCup', '38.0000', 'https://images-na.ssl-images-amazon.com/images/I/51l5XzLln%2BL._SX348_BO1,204,203,200_.jpg'),
-(7, 'Database Systems The Complete Book', 'Garcia-Molina ', '2', '933251867X', '978-9332518674', 'PE', '37.9000', 'https://images-na.ssl-images-amazon.com/images/I/61pBuMLr1cL.jpg'),
-(8, 'Database Reliability Engineering: Designing and Operating Resilient Database Systems', 'Laine Campbell', '1', '1491925949', '978-1491925942', 'O\'Reilly Media', '39.9900', 'https://images-na.ssl-images-amazon.com/images/I/51UvR3a63OL._SX379_BO1,204,203,200_.jpg'),
-(9, 'Calculus: Early Transcendentals', 'James Stewart ', '8', '9781285741550', '978-1285741550', 'Cengage Learning', '230.0000', 'https://images-na.ssl-images-amazon.com/images/I/41XZVHND-aL._SX423_BO1,204,203,200_.jpg'),
-(10, 'Data and Computer Communications', 'William Stallings', '10', '0133506487', '978-0133506488', 'Pearson', '165.2000', 'https://images-na.ssl-images-amazon.com/images/I/51Dz0SiHhZL._SX381_BO1,204,203,200_.jpg'),
-(11, 'JavaScript and JQuery: Interactive Front-End Web Development', 'Jon Duckett', '1', '9781118531648', '978-1118531648', 'Wiley', '33.9900', 'https://images-na.ssl-images-amazon.com/images/I/41y31M-zcgL._SX400_BO1,204,203,200_.jpg'),
-(12, 'Head First JavaScript Programming: A Brain-Friendly Guide', 'Eric Freeman', '1', '9781449340131', '978-1449340131', 'O\'Reilly Media', '33.7700', 'https://images-na.ssl-images-amazon.com/images/I/51qQTSKL2nL._SX430_BO1,204,203,200_.jpg'),
-(13, 'PHP for the Web: Visual QuickStart Guide', 'Larry Ullman', '5', '0134291255', '978-0134291253', 'Peachpit Press', '15.6500', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg'),
-(14, 'SQL Queries for Mere Mortals: A Hands-On Guide to Data Manipulation in SQL', 'John L. Viescas', '4', '0134858336', '978-0134858333', 'Addison-Wesley Professional', '22.3000', 'https://images-na.ssl-images-amazon.com/images/I/51bYGTH%2B1wL._SX381_BO1,204,203,200_.jpg'),
-(15, 'Grokking Algorithms: An illustrated guide for programmers and other curious people', 'Aditya Bhargava', '1', '1617292230', '978-1617292231', '', '36.2900', 'https://images-na.ssl-images-amazon.com/images/I/61uUPXbhMxL._SX397_BO1,204,203,200_.jpg'),
-(16, 'Database System Concepts', 'Abraham Silberschatz', '7', '0078022150', '978-0078022159', 'McGraw-Hill Education', '189.2200', 'https://images-na.ssl-images-amazon.com/images/I/51cq3aAdqNL._SX402_BO1,204,203,200_.jpg'),
-(17, 'PqwHP for wqWeb: Visual Quick', 'qweq', '1', '0134291255', '978-0134291253', 'wewew', '12.0000', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg');
+(3, 'Essential Calculus: Early Transcendentals', 'James Stewart', '2', '1133112285', '978-1133112280', 'Cengage Learning', '85.00', 'https://i.ebayimg.com/images/a/T2eC16VHJHIE9nyseF5YBRIRhSKLUw~~/s-l300.jpg'),
+(4, 'Database System Concepts', 'Abraham Silberschatz', '6', '0073523321', '978-0073523323', 'McGraw-Hill Education', '161.15', 'https://images-na.ssl-images-amazon.com/images/I/51PoU%2BwM0iL._SX395_BO1,204,203,200_.jpg'),
+(5, 'Cracking the Coding Interview: 189 Programming Questions and Solutions', 'Gayle Laakmann McDowell', '6', '0984782869', '978-0984782857', 'CareerCup', '38.00', 'https://images-na.ssl-images-amazon.com/images/I/51l5XzLln%2BL._SX348_BO1,204,203,200_.jpg'),
+(7, 'Database Systems The Complete Book', 'Garcia-Molina ', '2', '933251867X', '978-9332518674', 'PE', '37.90', 'https://images-na.ssl-images-amazon.com/images/I/61pBuMLr1cL.jpg'),
+(8, 'Database Reliability Engineering: Designing and Operating Resilient Database Systems', 'Laine Campbell', '1', '1491925949', '978-1491925942', 'O\'Reilly Media', '39.99', 'https://images-na.ssl-images-amazon.com/images/I/51UvR3a63OL._SX379_BO1,204,203,200_.jpg'),
+(9, 'Calculus: Early Transcendentals', 'James Stewart ', '8', '9781285741550', '978-1285741550', 'Cengage Learning', '230.00', 'https://images-na.ssl-images-amazon.com/images/I/41XZVHND-aL._SX423_BO1,204,203,200_.jpg'),
+(10, 'Data and Computer Communications', 'William Stallings', '10', '0133506487', '978-0133506488', 'Pearson', '165.20', 'https://images-na.ssl-images-amazon.com/images/I/51Dz0SiHhZL._SX381_BO1,204,203,200_.jpg'),
+(11, 'JavaScript and JQuery: Interactive Front-End Web Development', 'Jon Duckett', '1', '9781118531648', '978-1118531648', 'Wiley', '33.99', 'https://images-na.ssl-images-amazon.com/images/I/41y31M-zcgL._SX400_BO1,204,203,200_.jpg'),
+(12, 'Head First JavaScript Programming: A Brain-Friendly Guide', 'Eric Freeman', '1', '9781449340131', '978-1449340131', 'O\'Reilly Media', '33.77', 'https://images-na.ssl-images-amazon.com/images/I/51qQTSKL2nL._SX430_BO1,204,203,200_.jpg'),
+(13, 'PHP for the Web: Visual QuickStart Guide', 'Larry Ullman', '5', '0134291255', '978-0134291253', 'Peachpit Press', '15.65', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg'),
+(14, 'SQL Queries for Mere Mortals: A Hands-On Guide to Data Manipulation in SQL', 'John L. Viescas', '4', '0134858336', '978-0134858333', 'Addison-Wesley Professional', '22.30', 'https://images-na.ssl-images-amazon.com/images/I/51bYGTH%2B1wL._SX381_BO1,204,203,200_.jpg'),
+(15, 'Grokking Algorithms: An illustrated guide for programmers and other curious people', 'Aditya Bhargava', '1', '1617292230', '978-1617292231', '', '36.29', 'https://images-na.ssl-images-amazon.com/images/I/61uUPXbhMxL._SX397_BO1,204,203,200_.jpg'),
+(16, 'Database System Concepts', 'Abraham Silberschatz', '7', '0078022150', '978-0078022159', 'McGraw-Hill Education', '189.22', 'https://images-na.ssl-images-amazon.com/images/I/51cq3aAdqNL._SX402_BO1,204,203,200_.jpg'),
+(17, 'PqwHP for wqWeb: Visual Quick', 'qweq', '1', '0134291255', '978-0134291253', 'wewew', '12.00', 'https://images-na.ssl-images-amazon.com/images/I/51b5LUjYNrL._SX387_BO1,204,203,200_.jpg');
 
 --
 -- Triggers `product`
@@ -176,57 +192,6 @@ DELIMITER $$
 CREATE TRIGGER `insertToList` AFTER INSERT ON `product` FOR EACH ROW INSERT INTO storage VALUES(null, NEW.id, 0)
 $$
 DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `providerorder`
---
-
-CREATE TABLE `providerorder` (
-  `Order_ID` int(11) NOT NULL,
-  `Commission` double NOT NULL,
-  `Amount` double NOT NULL,
-  `Date` date NOT NULL,
-  `Delivered_Date` date NOT NULL,
-  `Status_ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providerorder`
---
-
-INSERT INTO `providerorder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
-(1, 1, 2, '2018-12-05', '2018-12-31', 1),
-(2, 2, 42, '2018-12-01', '2018-12-04', 2),
-(3, 3, 12, '2018-11-06', '2018-12-05', 3),
-(4, 4, 8, '2018-10-02', '2018-11-15', 4),
-(5, 5, 1, '2018-12-07', '2018-12-12', 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `providerorderstatus`
---
-
-CREATE TABLE `providerorderstatus` (
-  `ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `ReceivedCount` int(11) NOT NULL,
-  `FulfilledStatus` int(11) NOT NULL,
-  `Count` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providerorderstatus`
---
-
-INSERT INTO `providerorderstatus` (`ID`, `Product_ID`, `ReceivedCount`, `FulfilledStatus`, `Count`) VALUES
-(1, 1, 12, 1, 14),
-(2, 2, 35, 1, 37),
-(3, 3, 12, 0, 78),
-(4, 4, 11, 0, 15),
-(5, 5, 90, 1, 200);
 
 -- --------------------------------------------------------
 
@@ -254,51 +219,51 @@ INSERT INTO `publisher` (`id`, `name`, `phone_number`, `address`, `city`, `state
 -- --------------------------------------------------------
 
 --
--- Table structure for table `requestlist`
+-- Table structure for table `requestslist`
 --
 
-CREATE TABLE `requestlist` (
-  `Request_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL,
-  `Status` int(11) NOT NULL
+CREATE TABLE `requestslist` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date_requested` datetime DEFAULT NULL,
+  `date_completed` datetime DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `status_id` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `requestslist`
+--
+
+INSERT INTO `requestslist` (`id`, `user_id`, `date_requested`, `date_completed`, `total`, `status_id`) VALUES
+(1, 31, '2018-12-14 00:00:00', NULL, 0, 1),
+(2, 31, '2018-12-14 00:00:00', NULL, 0, 1),
+(3, 31, '2018-12-14 00:00:00', NULL, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `requestorder`
+-- Table structure for table `requeststatus`
 --
 
-CREATE TABLE `requestorder` (
-  `Order_ID` int(11) NOT NULL,
-  `Commission` double NOT NULL,
-  `Amount` double NOT NULL,
-  `Date` date NOT NULL,
-  `Delivered_Date` date NOT NULL,
-  `Status_ID` int(11) NOT NULL
+CREATE TABLE `requeststatus` (
+  `id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `requestorder`
+-- Dumping data for table `requeststatus`
 --
 
-INSERT INTO `requestorder` (`Order_ID`, `Commission`, `Amount`, `Date`, `Delivered_Date`, `Status_ID`) VALUES
-(0, 2.2, 555.9, '2018-12-19', '2018-12-31', 1),
-(1, 24.7, 900.77, '2018-12-04', '0000-00-00', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `session`
---
-
-CREATE TABLE `session` (
-  `Session_ID` bit(16) NOT NULL,
-  `Session_IP` text NOT NULL,
-  `Session_State` bit(3) NOT NULL,
-  `Session_Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `User_Login` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `requeststatus` (`id`, `status`) VALUES
+(1, 'Commission: Waiting for Admin'),
+(2, 'Commission: Waiting for response'),
+(3, 'Commission: Denied'),
+(4, 'Commission: Accepted'),
+(5, 'Processing'),
+(6, 'Ready'),
+(7, 'Completed'),
+(8, 'Cancelled');
 
 -- --------------------------------------------------------
 
@@ -379,7 +344,8 @@ INSERT INTO `user` (`id`, `email`, `password`, `status`) VALUES
 (27, 'pharetra@odiotristique.ca', '$2y$10$1mE8zTlPrDpek7TfeeBhXeXaG76AcCp8.3Vfl798O.ESLNNoF5XPe', 'Admin'),
 (28, 'penatibus.et.magnis@velitSedmalesuada.net', '$2y$10$G7ZwQ0Dp8Fz9yZBucVJ22OKkAwgLEhtDhkiE9YtrD6m/1pwDXSxry', 'Admin'),
 (29, 'sodales.Mauris@netus.edu', '$2y$10$Mu0VNmlR3VwJ7ko03nX9UuoCSdvZbWheLC8aFpExDs.3F7/vnLWTm', 'Employee'),
-(30, 'diam@malesuadamalesuada.ca', '$2y$10$fDQFn4S6zkoHFbAD2Rh8Bu3WsYmE99mk6G1MEG4qWGsyQy06YD1u.', 'Employee');
+(30, 'diam@malesuadamalesuada.ca', '$2y$10$fDQFn4S6zkoHFbAD2Rh8Bu3WsYmE99mk6G1MEG4qWGsyQy06YD1u.', 'Employee'),
+(31, 'inah@gmail.com', '$2y$10$JY0TfzI8s8zeyOHOBVcnHuBFUf.v0HwEG1.UTli1k7mhe88uzHwAK', 'Employee');
 
 --
 -- Triggers `user`
@@ -394,16 +360,13 @@ DELIMITER ;
 --
 
 --
--- Indexes for table `employee`
+-- Indexes for table `cart`
 --
-ALTER TABLE `employee`
-  ADD KEY `Request_ID` (`Request_ID`);
-
---
--- Indexes for table `employeeorderstatus`
---
-ALTER TABLE `employeeorderstatus`
-  ADD PRIMARY KEY (`ID`);
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `requestid` (`requestid`);
 
 --
 -- Indexes for table `info`
@@ -416,7 +379,14 @@ ALTER TABLE `info`
 -- Indexes for table `orderlist`
 --
 ALTER TABLE `orderlist`
-  ADD PRIMARY KEY (`OrderList_ID`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status` (`status`);
+
+--
+-- Indexes for table `orderstatus`
+--
+ALTER TABLE `orderstatus`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `product`
@@ -425,40 +395,24 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `providerorder`
---
-ALTER TABLE `providerorder`
-  ADD PRIMARY KEY (`Order_ID`);
-
---
--- Indexes for table `providerorderstatus`
---
-ALTER TABLE `providerorderstatus`
-  ADD PRIMARY KEY (`ID`) USING BTREE;
-
---
 -- Indexes for table `publisher`
 --
 ALTER TABLE `publisher`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `requestlist`
+-- Indexes for table `requestslist`
 --
-ALTER TABLE `requestlist`
-  ADD PRIMARY KEY (`Request_ID`);
+ALTER TABLE `requestslist`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `requestorder`
+-- Indexes for table `requeststatus`
 --
-ALTER TABLE `requestorder`
-  ADD PRIMARY KEY (`Order_ID`);
-
---
--- Indexes for table `session`
---
-ALTER TABLE `session`
-  ADD PRIMARY KEY (`Session_ID`);
+ALTER TABLE `requeststatus`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `storage`
@@ -478,22 +432,28 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `employeeorderstatus`
+-- AUTO_INCREMENT for table `cart`
 --
-ALTER TABLE `employeeorderstatus`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `info`
 --
 ALTER TABLE `info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
-  MODIFY `OrderList_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `orderstatus`
+--
+ALTER TABLE `orderstatus`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -508,10 +468,16 @@ ALTER TABLE `publisher`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `requestlist`
+-- AUTO_INCREMENT for table `requestslist`
 --
-ALTER TABLE `requestlist`
-  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `requestslist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `requeststatus`
+--
+ALTER TABLE `requeststatus`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `storage`
@@ -523,23 +489,38 @@ ALTER TABLE `storage`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `employee`
+-- Constraints for table `cart`
 --
-ALTER TABLE `employee`
-  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Request_ID`) REFERENCES `requestlist` (`Request_ID`);
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`requestid`) REFERENCES `requestslist` (`id`);
 
 --
 -- Constraints for table `info`
 --
 ALTER TABLE `info`
   ADD CONSTRAINT `info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orderlist`
+--
+ALTER TABLE `orderlist`
+  ADD CONSTRAINT `orderlist_ibfk_1` FOREIGN KEY (`status`) REFERENCES `orderstatus` (`id`);
+
+--
+-- Constraints for table `requestslist`
+--
+ALTER TABLE `requestslist`
+  ADD CONSTRAINT `requestslist_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `requeststatus` (`id`),
+  ADD CONSTRAINT `requestslist_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `storage`

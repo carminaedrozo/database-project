@@ -19,11 +19,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildOrderlistQuery orderByOrderlistId($order = Criteria::ASC) Order by the OrderList_ID column
- * @method     ChildOrderlistQuery orderByOrderId($order = Criteria::ASC) Order by the Order_ID column
+ * @method     ChildOrderlistQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildOrderlistQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     ChildOrderlistQuery orderByQuantity($order = Criteria::ASC) Order by the quantity column
+ * @method     ChildOrderlistQuery orderByStatus($order = Criteria::ASC) Order by the status column
  *
- * @method     ChildOrderlistQuery groupByOrderlistId() Group by the OrderList_ID column
- * @method     ChildOrderlistQuery groupByOrderId() Group by the Order_ID column
+ * @method     ChildOrderlistQuery groupById() Group by the id column
+ * @method     ChildOrderlistQuery groupByTitle() Group by the title column
+ * @method     ChildOrderlistQuery groupByQuantity() Group by the quantity column
+ * @method     ChildOrderlistQuery groupByStatus() Group by the status column
  *
  * @method     ChildOrderlistQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildOrderlistQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -36,18 +40,24 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrderlist findOne(ConnectionInterface $con = null) Return the first ChildOrderlist matching the query
  * @method     ChildOrderlist findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOrderlist matching the query, or a new ChildOrderlist object populated from the query conditions when no match is found
  *
- * @method     ChildOrderlist findOneByOrderlistId(int $OrderList_ID) Return the first ChildOrderlist filtered by the OrderList_ID column
- * @method     ChildOrderlist findOneByOrderId(int $Order_ID) Return the first ChildOrderlist filtered by the Order_ID column *
+ * @method     ChildOrderlist findOneById(int $id) Return the first ChildOrderlist filtered by the id column
+ * @method     ChildOrderlist findOneByTitle(string $title) Return the first ChildOrderlist filtered by the title column
+ * @method     ChildOrderlist findOneByQuantity(int $quantity) Return the first ChildOrderlist filtered by the quantity column
+ * @method     ChildOrderlist findOneByStatus(int $status) Return the first ChildOrderlist filtered by the status column *
 
  * @method     ChildOrderlist requirePk($key, ConnectionInterface $con = null) Return the ChildOrderlist by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrderlist requireOne(ConnectionInterface $con = null) Return the first ChildOrderlist matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildOrderlist requireOneByOrderlistId(int $OrderList_ID) Return the first ChildOrderlist filtered by the OrderList_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrderlist requireOneByOrderId(int $Order_ID) Return the first ChildOrderlist filtered by the Order_ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOrderlist requireOneById(int $id) Return the first ChildOrderlist filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOrderlist requireOneByTitle(string $title) Return the first ChildOrderlist filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOrderlist requireOneByQuantity(int $quantity) Return the first ChildOrderlist filtered by the quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOrderlist requireOneByStatus(int $status) Return the first ChildOrderlist filtered by the status column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildOrderlist[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildOrderlist objects based on current ModelCriteria
- * @method     ChildOrderlist[]|ObjectCollection findByOrderlistId(int $OrderList_ID) Return ChildOrderlist objects filtered by the OrderList_ID column
- * @method     ChildOrderlist[]|ObjectCollection findByOrderId(int $Order_ID) Return ChildOrderlist objects filtered by the Order_ID column
+ * @method     ChildOrderlist[]|ObjectCollection findById(int $id) Return ChildOrderlist objects filtered by the id column
+ * @method     ChildOrderlist[]|ObjectCollection findByTitle(string $title) Return ChildOrderlist objects filtered by the title column
+ * @method     ChildOrderlist[]|ObjectCollection findByQuantity(int $quantity) Return ChildOrderlist objects filtered by the quantity column
+ * @method     ChildOrderlist[]|ObjectCollection findByStatus(int $status) Return ChildOrderlist objects filtered by the status column
  * @method     ChildOrderlist[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -146,7 +156,7 @@ abstract class OrderlistQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT OrderList_ID, Order_ID FROM orderlist WHERE OrderList_ID = :p0';
+        $sql = 'SELECT id, title, quantity, status FROM orderlist WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -220,7 +230,7 @@ abstract class OrderlistQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(OrderlistTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -233,20 +243,20 @@ abstract class OrderlistQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(OrderlistTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the OrderList_ID column
+     * Filter the query on the id column
      *
      * Example usage:
      * <code>
-     * $query->filterByOrderlistId(1234); // WHERE OrderList_ID = 1234
-     * $query->filterByOrderlistId(array(12, 34)); // WHERE OrderList_ID IN (12, 34)
-     * $query->filterByOrderlistId(array('min' => 12)); // WHERE OrderList_ID > 12
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $orderlistId The value to use as filter.
+     * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -254,16 +264,16 @@ abstract class OrderlistQuery extends ModelCriteria
      *
      * @return $this|ChildOrderlistQuery The current query, for fluid interface
      */
-    public function filterByOrderlistId($orderlistId = null, $comparison = null)
+    public function filterById($id = null, $comparison = null)
     {
-        if (is_array($orderlistId)) {
+        if (is_array($id)) {
             $useMinMax = false;
-            if (isset($orderlistId['min'])) {
-                $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $orderlistId['min'], Criteria::GREATER_EQUAL);
+            if (isset($id['min'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($orderlistId['max'])) {
-                $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $orderlistId['max'], Criteria::LESS_EQUAL);
+            if (isset($id['max'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -274,20 +284,45 @@ abstract class OrderlistQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $orderlistId, $comparison);
+        return $this->addUsingAlias(OrderlistTableMap::COL_ID, $id, $comparison);
     }
 
     /**
-     * Filter the query on the Order_ID column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByOrderId(1234); // WHERE Order_ID = 1234
-     * $query->filterByOrderId(array(12, 34)); // WHERE Order_ID IN (12, 34)
-     * $query->filterByOrderId(array('min' => 12)); // WHERE Order_ID > 12
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $orderId The value to use as filter.
+     * @param     string $title The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildOrderlistQuery The current query, for fluid interface
+     */
+    public function filterByTitle($title = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($title)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrderlistTableMap::COL_TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the quantity column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByQuantity(1234); // WHERE quantity = 1234
+     * $query->filterByQuantity(array(12, 34)); // WHERE quantity IN (12, 34)
+     * $query->filterByQuantity(array('min' => 12)); // WHERE quantity > 12
+     * </code>
+     *
+     * @param     mixed $quantity The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -295,16 +330,16 @@ abstract class OrderlistQuery extends ModelCriteria
      *
      * @return $this|ChildOrderlistQuery The current query, for fluid interface
      */
-    public function filterByOrderId($orderId = null, $comparison = null)
+    public function filterByQuantity($quantity = null, $comparison = null)
     {
-        if (is_array($orderId)) {
+        if (is_array($quantity)) {
             $useMinMax = false;
-            if (isset($orderId['min'])) {
-                $this->addUsingAlias(OrderlistTableMap::COL_ORDER_ID, $orderId['min'], Criteria::GREATER_EQUAL);
+            if (isset($quantity['min'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_QUANTITY, $quantity['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($orderId['max'])) {
-                $this->addUsingAlias(OrderlistTableMap::COL_ORDER_ID, $orderId['max'], Criteria::LESS_EQUAL);
+            if (isset($quantity['max'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_QUANTITY, $quantity['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -315,7 +350,48 @@ abstract class OrderlistQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(OrderlistTableMap::COL_ORDER_ID, $orderId, $comparison);
+        return $this->addUsingAlias(OrderlistTableMap::COL_QUANTITY, $quantity, $comparison);
+    }
+
+    /**
+     * Filter the query on the status column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByStatus(1234); // WHERE status = 1234
+     * $query->filterByStatus(array(12, 34)); // WHERE status IN (12, 34)
+     * $query->filterByStatus(array('min' => 12)); // WHERE status > 12
+     * </code>
+     *
+     * @param     mixed $status The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildOrderlistQuery The current query, for fluid interface
+     */
+    public function filterByStatus($status = null, $comparison = null)
+    {
+        if (is_array($status)) {
+            $useMinMax = false;
+            if (isset($status['min'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_STATUS, $status['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($status['max'])) {
+                $this->addUsingAlias(OrderlistTableMap::COL_STATUS, $status['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrderlistTableMap::COL_STATUS, $status, $comparison);
     }
 
     /**
@@ -328,7 +404,7 @@ abstract class OrderlistQuery extends ModelCriteria
     public function prune($orderlist = null)
     {
         if ($orderlist) {
-            $this->addUsingAlias(OrderlistTableMap::COL_ORDERLIST_ID, $orderlist->getOrderlistId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(OrderlistTableMap::COL_ID, $orderlist->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

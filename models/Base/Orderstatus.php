@@ -2,11 +2,10 @@
 
 namespace Base;
 
-use \ProviderorderQuery as ChildProviderorderQuery;
-use \DateTime;
+use \OrderstatusQuery as ChildOrderstatusQuery;
 use \Exception;
 use \PDO;
-use Map\ProviderorderTableMap;
+use Map\OrderstatusTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -18,21 +17,20 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'providerorder' table.
+ * Base class that represents a row from the 'orderstatus' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Providerorder implements ActiveRecordInterface
+abstract class Orderstatus implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\ProviderorderTableMap';
+    const TABLE_MAP = '\\Map\\OrderstatusTableMap';
 
 
     /**
@@ -62,46 +60,18 @@ abstract class Providerorder implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the order_id field.
+     * The value for the id field.
      *
      * @var        int
      */
-    protected $order_id;
+    protected $id;
 
     /**
-     * The value for the commission field.
+     * The value for the status field.
      *
-     * @var        double
+     * @var        string
      */
-    protected $commission;
-
-    /**
-     * The value for the amount field.
-     *
-     * @var        double
-     */
-    protected $amount;
-
-    /**
-     * The value for the date field.
-     *
-     * @var        DateTime
-     */
-    protected $date;
-
-    /**
-     * The value for the delivered_date field.
-     *
-     * @var        DateTime
-     */
-    protected $delivered_date;
-
-    /**
-     * The value for the status_id field.
-     *
-     * @var        int
-     */
-    protected $status_id;
+    protected $status;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,7 +82,7 @@ abstract class Providerorder implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Providerorder object.
+     * Initializes internal state of Base\Orderstatus object.
      */
     public function __construct()
     {
@@ -207,9 +177,9 @@ abstract class Providerorder implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Providerorder</code> instance.  If
-     * <code>obj</code> is an instance of <code>Providerorder</code>, delegates to
-     * <code>equals(Providerorder)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Orderstatus</code> instance.  If
+     * <code>obj</code> is an instance of <code>Orderstatus</code>, delegates to
+     * <code>equals(Orderstatus)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -275,7 +245,7 @@ abstract class Providerorder implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Providerorder The current object, for fluid interface
+     * @return $this|Orderstatus The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -337,204 +307,64 @@ abstract class Providerorder implements ActiveRecordInterface
     }
 
     /**
-     * Get the [order_id] column value.
+     * Get the [id] column value.
      *
      * @return int
      */
-    public function getOrderId()
+    public function getId()
     {
-        return $this->order_id;
+        return $this->id;
     }
 
     /**
-     * Get the [commission] column value.
+     * Get the [status] column value.
      *
-     * @return double
+     * @return string
      */
-    public function getCommission()
+    public function getStatus()
     {
-        return $this->commission;
+        return $this->status;
     }
 
     /**
-     * Get the [amount] column value.
-     *
-     * @return double
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [date] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDate($format = NULL)
-    {
-        if ($format === null) {
-            return $this->date;
-        } else {
-            return $this->date instanceof \DateTimeInterface ? $this->date->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [delivered_date] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDeliveredDate($format = NULL)
-    {
-        if ($format === null) {
-            return $this->delivered_date;
-        } else {
-            return $this->delivered_date instanceof \DateTimeInterface ? $this->delivered_date->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [status_id] column value.
-     *
-     * @return int
-     */
-    public function getStatusId()
-    {
-        return $this->status_id;
-    }
-
-    /**
-     * Set the value of [order_id] column.
+     * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Providerorder The current object (for fluent API support)
+     * @return $this|\Orderstatus The current object (for fluent API support)
      */
-    public function setOrderId($v)
+    public function setId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->order_id !== $v) {
-            $this->order_id = $v;
-            $this->modifiedColumns[ProviderorderTableMap::COL_ORDER_ID] = true;
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[OrderstatusTableMap::COL_ID] = true;
         }
 
         return $this;
-    } // setOrderId()
+    } // setId()
 
     /**
-     * Set the value of [commission] column.
+     * Set the value of [status] column.
      *
-     * @param double $v new value
-     * @return $this|\Providerorder The current object (for fluent API support)
+     * @param string $v new value
+     * @return $this|\Orderstatus The current object (for fluent API support)
      */
-    public function setCommission($v)
+    public function setStatus($v)
     {
         if ($v !== null) {
-            $v = (double) $v;
+            $v = (string) $v;
         }
 
-        if ($this->commission !== $v) {
-            $this->commission = $v;
-            $this->modifiedColumns[ProviderorderTableMap::COL_COMMISSION] = true;
-        }
-
-        return $this;
-    } // setCommission()
-
-    /**
-     * Set the value of [amount] column.
-     *
-     * @param double $v new value
-     * @return $this|\Providerorder The current object (for fluent API support)
-     */
-    public function setAmount($v)
-    {
-        if ($v !== null) {
-            $v = (double) $v;
-        }
-
-        if ($this->amount !== $v) {
-            $this->amount = $v;
-            $this->modifiedColumns[ProviderorderTableMap::COL_AMOUNT] = true;
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[OrderstatusTableMap::COL_STATUS] = true;
         }
 
         return $this;
-    } // setAmount()
-
-    /**
-     * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Providerorder The current object (for fluent API support)
-     */
-    public function setDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->date !== null || $dt !== null) {
-            if ($this->date === null || $dt === null || $dt->format("Y-m-d") !== $this->date->format("Y-m-d")) {
-                $this->date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[ProviderorderTableMap::COL_DATE] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setDate()
-
-    /**
-     * Sets the value of [delivered_date] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Providerorder The current object (for fluent API support)
-     */
-    public function setDeliveredDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->delivered_date !== null || $dt !== null) {
-            if ($this->delivered_date === null || $dt === null || $dt->format("Y-m-d") !== $this->delivered_date->format("Y-m-d")) {
-                $this->delivered_date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[ProviderorderTableMap::COL_DELIVERED_DATE] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setDeliveredDate()
-
-    /**
-     * Set the value of [status_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Providerorder The current object (for fluent API support)
-     */
-    public function setStatusId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->status_id !== $v) {
-            $this->status_id = $v;
-            $this->modifiedColumns[ProviderorderTableMap::COL_STATUS_ID] = true;
-        }
-
-        return $this;
-    } // setStatusId()
+    } // setStatus()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -572,29 +402,11 @@ abstract class Providerorder implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProviderorderTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->order_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : OrderstatusTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProviderorderTableMap::translateFieldName('Commission', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->commission = (null !== $col) ? (double) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ProviderorderTableMap::translateFieldName('Amount', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->amount = (null !== $col) ? (double) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProviderorderTableMap::translateFieldName('Date', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProviderorderTableMap::translateFieldName('DeliveredDate', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->delivered_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProviderorderTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->status_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OrderstatusTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -603,10 +415,10 @@ abstract class Providerorder implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = ProviderorderTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = OrderstatusTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Providerorder'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Orderstatus'), 0, $e);
         }
     }
 
@@ -648,13 +460,13 @@ abstract class Providerorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ProviderorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(OrderstatusTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildProviderorderQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildOrderstatusQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -673,8 +485,8 @@ abstract class Providerorder implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Providerorder::setDeleted()
-     * @see Providerorder::isDeleted()
+     * @see Orderstatus::setDeleted()
+     * @see Orderstatus::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -683,11 +495,11 @@ abstract class Providerorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderstatusTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildProviderorderQuery::create()
+            $deleteQuery = ChildOrderstatusQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -722,7 +534,7 @@ abstract class Providerorder implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProviderorderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderstatusTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -741,7 +553,7 @@ abstract class Providerorder implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProviderorderTableMap::addInstanceToPool($this);
+                OrderstatusTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -798,29 +610,21 @@ abstract class Providerorder implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[OrderstatusTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . OrderstatusTableMap::COL_ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProviderorderTableMap::COL_ORDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Order_ID';
+        if ($this->isColumnModified(OrderstatusTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_COMMISSION)) {
-            $modifiedColumns[':p' . $index++]  = 'Commission';
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_AMOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'Amount';
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'Date';
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_DELIVERED_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'Delivered_Date';
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_STATUS_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'Status_ID';
+        if ($this->isColumnModified(OrderstatusTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'status';
         }
 
         $sql = sprintf(
-            'INSERT INTO providerorder (%s) VALUES (%s)',
+            'INSERT INTO orderstatus (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -829,23 +633,11 @@ abstract class Providerorder implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'Order_ID':
-                        $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Commission':
-                        $stmt->bindValue($identifier, $this->commission, PDO::PARAM_STR);
-                        break;
-                    case 'Amount':
-                        $stmt->bindValue($identifier, $this->amount, PDO::PARAM_STR);
-                        break;
-                    case 'Date':
-                        $stmt->bindValue($identifier, $this->date ? $this->date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Delivered_Date':
-                        $stmt->bindValue($identifier, $this->delivered_date ? $this->delivered_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Status_ID':
-                        $stmt->bindValue($identifier, $this->status_id, PDO::PARAM_INT);
+                    case 'status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -854,6 +646,13 @@ abstract class Providerorder implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -886,7 +685,7 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProviderorderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = OrderstatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -903,22 +702,10 @@ abstract class Providerorder implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getOrderId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getCommission();
-                break;
-            case 2:
-                return $this->getAmount();
-                break;
-            case 3:
-                return $this->getDate();
-                break;
-            case 4:
-                return $this->getDeliveredDate();
-                break;
-            case 5:
-                return $this->getStatusId();
+                return $this->getStatus();
                 break;
             default:
                 return null;
@@ -943,27 +730,15 @@ abstract class Providerorder implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Providerorder'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Orderstatus'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Providerorder'][$this->hashCode()] = true;
-        $keys = ProviderorderTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Orderstatus'][$this->hashCode()] = true;
+        $keys = OrderstatusTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getOrderId(),
-            $keys[1] => $this->getCommission(),
-            $keys[2] => $this->getAmount(),
-            $keys[3] => $this->getDate(),
-            $keys[4] => $this->getDeliveredDate(),
-            $keys[5] => $this->getStatusId(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getStatus(),
         );
-        if ($result[$keys[3]] instanceof \DateTimeInterface) {
-            $result[$keys[3]] = $result[$keys[3]]->format('c');
-        }
-
-        if ($result[$keys[4]] instanceof \DateTimeInterface) {
-            $result[$keys[4]] = $result[$keys[4]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -982,11 +757,11 @@ abstract class Providerorder implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Providerorder
+     * @return $this|\Orderstatus
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProviderorderTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = OrderstatusTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -997,28 +772,16 @@ abstract class Providerorder implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Providerorder
+     * @return $this|\Orderstatus
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setOrderId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setCommission($value);
-                break;
-            case 2:
-                $this->setAmount($value);
-                break;
-            case 3:
-                $this->setDate($value);
-                break;
-            case 4:
-                $this->setDeliveredDate($value);
-                break;
-            case 5:
-                $this->setStatusId($value);
+                $this->setStatus($value);
                 break;
         } // switch()
 
@@ -1044,25 +807,13 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ProviderorderTableMap::getFieldNames($keyType);
+        $keys = OrderstatusTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setOrderId($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setCommission($arr[$keys[1]]);
-        }
-        if (array_key_exists($keys[2], $arr)) {
-            $this->setAmount($arr[$keys[2]]);
-        }
-        if (array_key_exists($keys[3], $arr)) {
-            $this->setDate($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setDeliveredDate($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setStatusId($arr[$keys[5]]);
+            $this->setStatus($arr[$keys[1]]);
         }
     }
 
@@ -1083,7 +834,7 @@ abstract class Providerorder implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Providerorder The current object, for fluid interface
+     * @return $this|\Orderstatus The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1103,25 +854,13 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProviderorderTableMap::DATABASE_NAME);
+        $criteria = new Criteria(OrderstatusTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProviderorderTableMap::COL_ORDER_ID)) {
-            $criteria->add(ProviderorderTableMap::COL_ORDER_ID, $this->order_id);
+        if ($this->isColumnModified(OrderstatusTableMap::COL_ID)) {
+            $criteria->add(OrderstatusTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_COMMISSION)) {
-            $criteria->add(ProviderorderTableMap::COL_COMMISSION, $this->commission);
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_AMOUNT)) {
-            $criteria->add(ProviderorderTableMap::COL_AMOUNT, $this->amount);
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_DATE)) {
-            $criteria->add(ProviderorderTableMap::COL_DATE, $this->date);
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_DELIVERED_DATE)) {
-            $criteria->add(ProviderorderTableMap::COL_DELIVERED_DATE, $this->delivered_date);
-        }
-        if ($this->isColumnModified(ProviderorderTableMap::COL_STATUS_ID)) {
-            $criteria->add(ProviderorderTableMap::COL_STATUS_ID, $this->status_id);
+        if ($this->isColumnModified(OrderstatusTableMap::COL_STATUS)) {
+            $criteria->add(OrderstatusTableMap::COL_STATUS, $this->status);
         }
 
         return $criteria;
@@ -1139,8 +878,8 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildProviderorderQuery::create();
-        $criteria->add(ProviderorderTableMap::COL_ORDER_ID, $this->order_id);
+        $criteria = ChildOrderstatusQuery::create();
+        $criteria->add(OrderstatusTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1153,7 +892,7 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getOrderId();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1173,18 +912,18 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getOrderId();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (order_id column).
+     * Generic method to set the primary key (id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setOrderId($key);
+        $this->setId($key);
     }
 
     /**
@@ -1193,7 +932,7 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getOrderId();
+        return null === $this->getId();
     }
 
     /**
@@ -1202,21 +941,17 @@ abstract class Providerorder implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Providerorder (or compatible) type.
+     * @param      object $copyObj An object of \Orderstatus (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setOrderId($this->getOrderId());
-        $copyObj->setCommission($this->getCommission());
-        $copyObj->setAmount($this->getAmount());
-        $copyObj->setDate($this->getDate());
-        $copyObj->setDeliveredDate($this->getDeliveredDate());
-        $copyObj->setStatusId($this->getStatusId());
+        $copyObj->setStatus($this->getStatus());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1229,7 +964,7 @@ abstract class Providerorder implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Providerorder Clone of current object.
+     * @return \Orderstatus Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1249,12 +984,8 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->order_id = null;
-        $this->commission = null;
-        $this->amount = null;
-        $this->date = null;
-        $this->delivered_date = null;
-        $this->status_id = null;
+        $this->id = null;
+        $this->status = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1284,7 +1015,7 @@ abstract class Providerorder implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProviderorderTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(OrderstatusTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

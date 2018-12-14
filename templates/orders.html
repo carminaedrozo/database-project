@@ -1,0 +1,33 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Orders
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Order #</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in orders %}
+        <tr>
+            <td><a href="{{ base_url() }}/orders/{{ o.id }}">Order#00{{ o.id }}</a></td>
+            <td> {{ o.status }}</td>
+            {% endfor %}
+
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

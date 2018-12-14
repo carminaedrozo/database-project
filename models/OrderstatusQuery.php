@@ -1,9 +1,9 @@
 <?php
 
-use Base\Providerorder as BaseProviderorder;
+use Base\OrderstatusQuery as BaseOrderstatusQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'providerorder' table.
+ * Skeleton subclass for performing query and update operations on the 'orderstatus' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Providerorder as BaseProviderorder;
  * long as it does not already exist in the output directory.
  *
  */
-class Providerorder extends BaseProviderorder
+class OrderstatusQuery extends BaseOrderstatusQuery
 {
 
 }

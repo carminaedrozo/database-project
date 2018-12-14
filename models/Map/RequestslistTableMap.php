@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Requests;
-use \RequestsQuery;
+use \Requestslist;
+use \RequestslistQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'requests' table.
+ * This class defines the structure of the 'requestslist' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class RequestsTableMap extends TableMap
+class RequestslistTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class RequestsTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.RequestsTableMap';
+    const CLASS_NAME = '.Map.RequestslistTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class RequestsTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'requests';
+    const TABLE_NAME = 'requestslist';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Requests';
+    const OM_CLASS = '\\Requestslist';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Requests';
+    const CLASS_DEFAULT = 'Requestslist';
 
     /**
      * The total number of columns
@@ -74,32 +74,32 @@ class RequestsTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'requests.id';
+    const COL_ID = 'requestslist.id';
 
     /**
      * the column name for the user_id field
      */
-    const COL_USER_ID = 'requests.user_id';
+    const COL_USER_ID = 'requestslist.user_id';
 
     /**
      * the column name for the status_id field
      */
-    const COL_STATUS_ID = 'requests.status_id';
+    const COL_STATUS_ID = 'requestslist.status_id';
 
     /**
      * the column name for the total field
      */
-    const COL_TOTAL = 'requests.total';
+    const COL_TOTAL = 'requestslist.total';
 
     /**
      * the column name for the date_requested field
      */
-    const COL_DATE_REQUESTED = 'requests.date_requested';
+    const COL_DATE_REQUESTED = 'requestslist.date_requested';
 
     /**
      * the column name for the date_completed field
      */
-    const COL_DATE_COMPLETED = 'requests.date_completed';
+    const COL_DATE_COMPLETED = 'requestslist.date_completed';
 
     /**
      * The default string format for model objects of the related table
@@ -115,7 +115,7 @@ class RequestsTableMap extends TableMap
     protected static $fieldNames = array (
         self::TYPE_PHPNAME       => array('Id', 'UserId', 'StatusId', 'Total', 'DateRequested', 'DateCompleted', ),
         self::TYPE_CAMELNAME     => array('id', 'userId', 'statusId', 'total', 'dateRequested', 'dateCompleted', ),
-        self::TYPE_COLNAME       => array(RequestsTableMap::COL_ID, RequestsTableMap::COL_USER_ID, RequestsTableMap::COL_STATUS_ID, RequestsTableMap::COL_TOTAL, RequestsTableMap::COL_DATE_REQUESTED, RequestsTableMap::COL_DATE_COMPLETED, ),
+        self::TYPE_COLNAME       => array(RequestslistTableMap::COL_ID, RequestslistTableMap::COL_USER_ID, RequestslistTableMap::COL_STATUS_ID, RequestslistTableMap::COL_TOTAL, RequestslistTableMap::COL_DATE_REQUESTED, RequestslistTableMap::COL_DATE_COMPLETED, ),
         self::TYPE_FIELDNAME     => array('id', 'user_id', 'status_id', 'total', 'date_requested', 'date_completed', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
@@ -129,7 +129,7 @@ class RequestsTableMap extends TableMap
     protected static $fieldKeys = array (
         self::TYPE_PHPNAME       => array('Id' => 0, 'UserId' => 1, 'StatusId' => 2, 'Total' => 3, 'DateRequested' => 4, 'DateCompleted' => 5, ),
         self::TYPE_CAMELNAME     => array('id' => 0, 'userId' => 1, 'statusId' => 2, 'total' => 3, 'dateRequested' => 4, 'dateCompleted' => 5, ),
-        self::TYPE_COLNAME       => array(RequestsTableMap::COL_ID => 0, RequestsTableMap::COL_USER_ID => 1, RequestsTableMap::COL_STATUS_ID => 2, RequestsTableMap::COL_TOTAL => 3, RequestsTableMap::COL_DATE_REQUESTED => 4, RequestsTableMap::COL_DATE_COMPLETED => 5, ),
+        self::TYPE_COLNAME       => array(RequestslistTableMap::COL_ID => 0, RequestslistTableMap::COL_USER_ID => 1, RequestslistTableMap::COL_STATUS_ID => 2, RequestslistTableMap::COL_TOTAL => 3, RequestslistTableMap::COL_DATE_REQUESTED => 4, RequestslistTableMap::COL_DATE_COMPLETED => 5, ),
         self::TYPE_FIELDNAME     => array('id' => 0, 'user_id' => 1, 'status_id' => 2, 'total' => 3, 'date_requested' => 4, 'date_completed' => 5, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
@@ -144,19 +144,19 @@ class RequestsTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('requests');
-        $this->setPhpName('Requests');
+        $this->setName('requestslist');
+        $this->setPhpName('Requestslist');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Requests');
+        $this->setClassName('\\Requestslist');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('user_id', 'UserId', 'INTEGER', true, null, null);
-        $this->addColumn('status_id', 'StatusId', 'INTEGER', true, null, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', true, null, null);
+        $this->addForeignKey('status_id', 'StatusId', 'INTEGER', 'requeststatus', 'id', true, null, null);
         $this->addColumn('total', 'Total', 'DECIMAL', true, 19, null);
-        $this->addColumn('date_requested', 'DateRequested', 'DATE', false, null, null);
-        $this->addColumn('date_completed', 'DateCompleted', 'DATE', false, null, null);
+        $this->addColumn('date_requested', 'DateRequested', 'DATE', true, null, null);
+        $this->addColumn('date_completed', 'DateCompleted', 'DATE', true, null, null);
     } // initialize()
 
     /**
@@ -164,6 +164,27 @@ class RequestsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Requeststatus', '\\Requeststatus', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':status_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Cart', '\\Cart', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':requestid',
+    1 => ':id',
+  ),
+), null, null, 'Carts', false);
     } // buildRelations()
 
     /**
@@ -223,7 +244,7 @@ class RequestsTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? RequestsTableMap::CLASS_DEFAULT : RequestsTableMap::OM_CLASS;
+        return $withPrefix ? RequestslistTableMap::CLASS_DEFAULT : RequestslistTableMap::OM_CLASS;
     }
 
     /**
@@ -237,22 +258,22 @@ class RequestsTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Requests object, last column rank)
+     * @return array           (Requestslist object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = RequestsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = RequestsTableMap::getInstanceFromPool($key))) {
+        $key = RequestslistTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = RequestslistTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + RequestsTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + RequestslistTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = RequestsTableMap::OM_CLASS;
-            /** @var Requests $obj */
+            $cls = RequestslistTableMap::OM_CLASS;
+            /** @var Requestslist $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            RequestsTableMap::addInstanceToPool($obj, $key);
+            RequestslistTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -275,18 +296,18 @@ class RequestsTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = RequestsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = RequestsTableMap::getInstanceFromPool($key))) {
+            $key = RequestslistTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = RequestslistTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Requests $obj */
+                /** @var Requestslist $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                RequestsTableMap::addInstanceToPool($obj, $key);
+                RequestslistTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -307,12 +328,12 @@ class RequestsTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(RequestsTableMap::COL_ID);
-            $criteria->addSelectColumn(RequestsTableMap::COL_USER_ID);
-            $criteria->addSelectColumn(RequestsTableMap::COL_STATUS_ID);
-            $criteria->addSelectColumn(RequestsTableMap::COL_TOTAL);
-            $criteria->addSelectColumn(RequestsTableMap::COL_DATE_REQUESTED);
-            $criteria->addSelectColumn(RequestsTableMap::COL_DATE_COMPLETED);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_ID);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_STATUS_ID);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_TOTAL);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_DATE_REQUESTED);
+            $criteria->addSelectColumn(RequestslistTableMap::COL_DATE_COMPLETED);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.user_id');
@@ -332,7 +353,7 @@ class RequestsTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(RequestsTableMap::DATABASE_NAME)->getTable(RequestsTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(RequestslistTableMap::DATABASE_NAME)->getTable(RequestslistTableMap::TABLE_NAME);
     }
 
     /**
@@ -340,16 +361,16 @@ class RequestsTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(RequestsTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(RequestsTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new RequestsTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(RequestslistTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(RequestslistTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new RequestslistTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Requests or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Requestslist or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Requests object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Requestslist object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -360,27 +381,27 @@ class RequestsTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestslistTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Requests) { // it's a model object
+        } elseif ($values instanceof \Requestslist) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(RequestsTableMap::DATABASE_NAME);
-            $criteria->add(RequestsTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(RequestslistTableMap::DATABASE_NAME);
+            $criteria->add(RequestslistTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = RequestsQuery::create()->mergeWith($criteria);
+        $query = RequestslistQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            RequestsTableMap::clearInstancePool();
+            RequestslistTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                RequestsTableMap::removeInstanceFromPool($singleval);
+                RequestslistTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -388,20 +409,20 @@ class RequestsTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the requests table.
+     * Deletes all rows from the requestslist table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return RequestsQuery::create()->doDeleteAll($con);
+        return RequestslistQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Requests or Criteria object.
+     * Performs an INSERT on the database, given a Requestslist or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Requests object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Requestslist object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -410,18 +431,22 @@ class RequestsTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestslistTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Requests object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Requestslist object
+        }
+
+        if ($criteria->containsKey(RequestslistTableMap::COL_ID) && $criteria->keyContainsValue(RequestslistTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.RequestslistTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = RequestsQuery::create()->mergeWith($criteria);
+        $query = RequestslistQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -430,7 +455,7 @@ class RequestsTableMap extends TableMap
         });
     }
 
-} // RequestsTableMap
+} // RequestslistTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-RequestsTableMap::buildTableMap();
+RequestslistTableMap::buildTableMap();

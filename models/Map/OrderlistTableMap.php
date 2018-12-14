@@ -59,7 +59,7 @@ class OrderlistTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,17 +69,27 @@ class OrderlistTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
-     * the column name for the OrderList_ID field
+     * the column name for the id field
      */
-    const COL_ORDERLIST_ID = 'orderlist.OrderList_ID';
+    const COL_ID = 'orderlist.id';
 
     /**
-     * the column name for the Order_ID field
+     * the column name for the title field
      */
-    const COL_ORDER_ID = 'orderlist.Order_ID';
+    const COL_TITLE = 'orderlist.title';
+
+    /**
+     * the column name for the quantity field
+     */
+    const COL_QUANTITY = 'orderlist.quantity';
+
+    /**
+     * the column name for the status field
+     */
+    const COL_STATUS = 'orderlist.status';
 
     /**
      * The default string format for model objects of the related table
@@ -93,11 +103,11 @@ class OrderlistTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderlistId', 'OrderId', ),
-        self::TYPE_CAMELNAME     => array('orderlistId', 'orderId', ),
-        self::TYPE_COLNAME       => array(OrderlistTableMap::COL_ORDERLIST_ID, OrderlistTableMap::COL_ORDER_ID, ),
-        self::TYPE_FIELDNAME     => array('OrderList_ID', 'Order_ID', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Quantity', 'Status', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'quantity', 'status', ),
+        self::TYPE_COLNAME       => array(OrderlistTableMap::COL_ID, OrderlistTableMap::COL_TITLE, OrderlistTableMap::COL_QUANTITY, OrderlistTableMap::COL_STATUS, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'quantity', 'status', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -107,11 +117,11 @@ class OrderlistTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderlistId' => 0, 'OrderId' => 1, ),
-        self::TYPE_CAMELNAME     => array('orderlistId' => 0, 'orderId' => 1, ),
-        self::TYPE_COLNAME       => array(OrderlistTableMap::COL_ORDERLIST_ID => 0, OrderlistTableMap::COL_ORDER_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('OrderList_ID' => 0, 'Order_ID' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Quantity' => 2, 'Status' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'quantity' => 2, 'status' => 3, ),
+        self::TYPE_COLNAME       => array(OrderlistTableMap::COL_ID => 0, OrderlistTableMap::COL_TITLE => 1, OrderlistTableMap::COL_QUANTITY => 2, OrderlistTableMap::COL_STATUS => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'quantity' => 2, 'status' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -131,8 +141,10 @@ class OrderlistTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('OrderList_ID', 'OrderlistId', 'INTEGER', true, null, null);
-        $this->addColumn('Order_ID', 'OrderId', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
+        $this->addColumn('quantity', 'Quantity', 'INTEGER', true, null, null);
+        $this->addColumn('status', 'Status', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -158,11 +170,11 @@ class OrderlistTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -182,7 +194,7 @@ class OrderlistTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('OrderlistId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -283,11 +295,15 @@ class OrderlistTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(OrderlistTableMap::COL_ORDERLIST_ID);
-            $criteria->addSelectColumn(OrderlistTableMap::COL_ORDER_ID);
+            $criteria->addSelectColumn(OrderlistTableMap::COL_ID);
+            $criteria->addSelectColumn(OrderlistTableMap::COL_TITLE);
+            $criteria->addSelectColumn(OrderlistTableMap::COL_QUANTITY);
+            $criteria->addSelectColumn(OrderlistTableMap::COL_STATUS);
         } else {
-            $criteria->addSelectColumn($alias . '.OrderList_ID');
-            $criteria->addSelectColumn($alias . '.Order_ID');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.quantity');
+            $criteria->addSelectColumn($alias . '.status');
         }
     }
 
@@ -339,7 +355,7 @@ class OrderlistTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(OrderlistTableMap::DATABASE_NAME);
-            $criteria->add(OrderlistTableMap::COL_ORDERLIST_ID, (array) $values, Criteria::IN);
+            $criteria->add(OrderlistTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = OrderlistQuery::create()->mergeWith($criteria);
@@ -387,8 +403,8 @@ class OrderlistTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Orderlist object
         }
 
-        if ($criteria->containsKey(OrderlistTableMap::COL_ORDERLIST_ID) && $criteria->keyContainsValue(OrderlistTableMap::COL_ORDERLIST_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.OrderlistTableMap::COL_ORDERLIST_ID.')');
+        if ($criteria->containsKey(OrderlistTableMap::COL_ID) && $criteria->keyContainsValue(OrderlistTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.OrderlistTableMap::COL_ID.')');
         }
 
 
