@@ -77,9 +77,9 @@ class CartTableMap extends TableMap
     const COL_ID = 'cart.id';
 
     /**
-     * the column name for the request_id field
+     * the column name for the requestid field
      */
-    const COL_REQUEST_ID = 'cart.request_id';
+    const COL_REQUESTID = 'cart.requestid';
 
     /**
      * the column name for the product_id field
@@ -123,10 +123,10 @@ class CartTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'RequestId', 'ProductId', 'Quantity', 'Price', 'TotalPrice', 'UserId', 'Status', ),
-        self::TYPE_CAMELNAME     => array('id', 'requestId', 'productId', 'quantity', 'price', 'totalPrice', 'userId', 'status', ),
-        self::TYPE_COLNAME       => array(CartTableMap::COL_ID, CartTableMap::COL_REQUEST_ID, CartTableMap::COL_PRODUCT_ID, CartTableMap::COL_QUANTITY, CartTableMap::COL_PRICE, CartTableMap::COL_TOTAL_PRICE, CartTableMap::COL_USER_ID, CartTableMap::COL_STATUS, ),
-        self::TYPE_FIELDNAME     => array('id', 'request_id', 'product_id', 'quantity', 'price', 'total_price', 'user_id', 'status', ),
+        self::TYPE_PHPNAME       => array('Id', 'Requestid', 'ProductId', 'Quantity', 'Price', 'TotalPrice', 'UserId', 'Status', ),
+        self::TYPE_CAMELNAME     => array('id', 'requestid', 'productId', 'quantity', 'price', 'totalPrice', 'userId', 'status', ),
+        self::TYPE_COLNAME       => array(CartTableMap::COL_ID, CartTableMap::COL_REQUESTID, CartTableMap::COL_PRODUCT_ID, CartTableMap::COL_QUANTITY, CartTableMap::COL_PRICE, CartTableMap::COL_TOTAL_PRICE, CartTableMap::COL_USER_ID, CartTableMap::COL_STATUS, ),
+        self::TYPE_FIELDNAME     => array('id', 'requestid', 'product_id', 'quantity', 'price', 'total_price', 'user_id', 'status', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -137,10 +137,10 @@ class CartTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'RequestId' => 1, 'ProductId' => 2, 'Quantity' => 3, 'Price' => 4, 'TotalPrice' => 5, 'UserId' => 6, 'Status' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'requestId' => 1, 'productId' => 2, 'quantity' => 3, 'price' => 4, 'totalPrice' => 5, 'userId' => 6, 'status' => 7, ),
-        self::TYPE_COLNAME       => array(CartTableMap::COL_ID => 0, CartTableMap::COL_REQUEST_ID => 1, CartTableMap::COL_PRODUCT_ID => 2, CartTableMap::COL_QUANTITY => 3, CartTableMap::COL_PRICE => 4, CartTableMap::COL_TOTAL_PRICE => 5, CartTableMap::COL_USER_ID => 6, CartTableMap::COL_STATUS => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'request_id' => 1, 'product_id' => 2, 'quantity' => 3, 'price' => 4, 'total_price' => 5, 'user_id' => 6, 'status' => 7, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Requestid' => 1, 'ProductId' => 2, 'Quantity' => 3, 'Price' => 4, 'TotalPrice' => 5, 'UserId' => 6, 'Status' => 7, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'requestid' => 1, 'productId' => 2, 'quantity' => 3, 'price' => 4, 'totalPrice' => 5, 'userId' => 6, 'status' => 7, ),
+        self::TYPE_COLNAME       => array(CartTableMap::COL_ID => 0, CartTableMap::COL_REQUESTID => 1, CartTableMap::COL_PRODUCT_ID => 2, CartTableMap::COL_QUANTITY => 3, CartTableMap::COL_PRICE => 4, CartTableMap::COL_TOTAL_PRICE => 5, CartTableMap::COL_USER_ID => 6, CartTableMap::COL_STATUS => 7, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'requestid' => 1, 'product_id' => 2, 'quantity' => 3, 'price' => 4, 'total_price' => 5, 'user_id' => 6, 'status' => 7, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -162,7 +162,7 @@ class CartTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('request_id', 'RequestId', 'INTEGER', true, null, null);
+        $this->addForeignKey('requestid', 'Requestid', 'INTEGER', 'requestslist', 'id', true, null, null);
         $this->addForeignKey('product_id', 'ProductId', 'INTEGER', 'product', 'id', true, null, null);
         $this->addColumn('quantity', 'Quantity', 'INTEGER', true, null, null);
         $this->addColumn('price', 'Price', 'DECIMAL', true, 19, null);
@@ -187,6 +187,13 @@ class CartTableMap extends TableMap
   0 =>
   array (
     0 => ':product_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Requestslist', '\\Requestslist', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':requestid',
     1 => ':id',
   ),
 ), null, null, null, false);
@@ -334,7 +341,7 @@ class CartTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(CartTableMap::COL_ID);
-            $criteria->addSelectColumn(CartTableMap::COL_REQUEST_ID);
+            $criteria->addSelectColumn(CartTableMap::COL_REQUESTID);
             $criteria->addSelectColumn(CartTableMap::COL_PRODUCT_ID);
             $criteria->addSelectColumn(CartTableMap::COL_QUANTITY);
             $criteria->addSelectColumn(CartTableMap::COL_PRICE);
@@ -343,7 +350,7 @@ class CartTableMap extends TableMap
             $criteria->addSelectColumn(CartTableMap::COL_STATUS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.request_id');
+            $criteria->addSelectColumn($alias . '.requestid');
             $criteria->addSelectColumn($alias . '.product_id');
             $criteria->addSelectColumn($alias . '.quantity');
             $criteria->addSelectColumn($alias . '.price');

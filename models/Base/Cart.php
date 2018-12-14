@@ -5,6 +5,8 @@ namespace Base;
 use \CartQuery as ChildCartQuery;
 use \Product as ChildProduct;
 use \ProductQuery as ChildProductQuery;
+use \Requestslist as ChildRequestslist;
+use \RequestslistQuery as ChildRequestslistQuery;
 use \User as ChildUser;
 use \UserQuery as ChildUserQuery;
 use \Exception;
@@ -71,11 +73,11 @@ abstract class Cart implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the request_id field.
+     * The value for the requestid field.
      *
      * @var        int
      */
-    protected $request_id;
+    protected $requestid;
 
     /**
      * The value for the product_id field.
@@ -129,6 +131,11 @@ abstract class Cart implements ActiveRecordInterface
      * @var        ChildProduct
      */
     protected $aProduct;
+
+    /**
+     * @var        ChildRequestslist
+     */
+    protected $aRequestslist;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -387,13 +394,13 @@ abstract class Cart implements ActiveRecordInterface
     }
 
     /**
-     * Get the [request_id] column value.
+     * Get the [requestid] column value.
      *
      * @return int
      */
-    public function getRequestId()
+    public function getRequestid()
     {
-        return $this->request_id;
+        return $this->requestid;
     }
 
     /**
@@ -477,24 +484,28 @@ abstract class Cart implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [request_id] column.
+     * Set the value of [requestid] column.
      *
      * @param int $v new value
      * @return $this|\Cart The current object (for fluent API support)
      */
-    public function setRequestId($v)
+    public function setRequestid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->request_id !== $v) {
-            $this->request_id = $v;
-            $this->modifiedColumns[CartTableMap::COL_REQUEST_ID] = true;
+        if ($this->requestid !== $v) {
+            $this->requestid = $v;
+            $this->modifiedColumns[CartTableMap::COL_REQUESTID] = true;
+        }
+
+        if ($this->aRequestslist !== null && $this->aRequestslist->getId() !== $v) {
+            $this->aRequestslist = null;
         }
 
         return $this;
-    } // setRequestId()
+    } // setRequestid()
 
     /**
      * Set the value of [product_id] column.
@@ -667,8 +678,8 @@ abstract class Cart implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CartTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CartTableMap::translateFieldName('RequestId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->request_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CartTableMap::translateFieldName('Requestid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->requestid = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CartTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_id = (null !== $col) ? (int) $col : null;
@@ -717,6 +728,9 @@ abstract class Cart implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aRequestslist !== null && $this->requestid !== $this->aRequestslist->getId()) {
+            $this->aRequestslist = null;
+        }
         if ($this->aProduct !== null && $this->product_id !== $this->aProduct->getId()) {
             $this->aProduct = null;
         }
@@ -764,6 +778,7 @@ abstract class Cart implements ActiveRecordInterface
 
             $this->aUser = null;
             $this->aProduct = null;
+            $this->aRequestslist = null;
         } // if (deep)
     }
 
@@ -886,6 +901,13 @@ abstract class Cart implements ActiveRecordInterface
                 $this->setProduct($this->aProduct);
             }
 
+            if ($this->aRequestslist !== null) {
+                if ($this->aRequestslist->isModified() || $this->aRequestslist->isNew()) {
+                    $affectedRows += $this->aRequestslist->save($con);
+                }
+                $this->setRequestslist($this->aRequestslist);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -926,8 +948,8 @@ abstract class Cart implements ActiveRecordInterface
         if ($this->isColumnModified(CartTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(CartTableMap::COL_REQUEST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'request_id';
+        if ($this->isColumnModified(CartTableMap::COL_REQUESTID)) {
+            $modifiedColumns[':p' . $index++]  = 'requestid';
         }
         if ($this->isColumnModified(CartTableMap::COL_PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'product_id';
@@ -961,8 +983,8 @@ abstract class Cart implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'request_id':
-                        $stmt->bindValue($identifier, $this->request_id, PDO::PARAM_INT);
+                    case 'requestid':
+                        $stmt->bindValue($identifier, $this->requestid, PDO::PARAM_INT);
                         break;
                     case 'product_id':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
@@ -1048,7 +1070,7 @@ abstract class Cart implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getRequestId();
+                return $this->getRequestid();
                 break;
             case 2:
                 return $this->getProductId();
@@ -1099,7 +1121,7 @@ abstract class Cart implements ActiveRecordInterface
         $keys = CartTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getRequestId(),
+            $keys[1] => $this->getRequestid(),
             $keys[2] => $this->getProductId(),
             $keys[3] => $this->getQuantity(),
             $keys[4] => $this->getPrice(),
@@ -1143,6 +1165,21 @@ abstract class Cart implements ActiveRecordInterface
 
                 $result[$key] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->aRequestslist) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'requestslist';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'requestslist';
+                        break;
+                    default:
+                        $key = 'Requestslist';
+                }
+
+                $result[$key] = $this->aRequestslist->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
         }
 
         return $result;
@@ -1181,7 +1218,7 @@ abstract class Cart implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setRequestId($value);
+                $this->setRequestid($value);
                 break;
             case 2:
                 $this->setProductId($value);
@@ -1231,7 +1268,7 @@ abstract class Cart implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setRequestId($arr[$keys[1]]);
+            $this->setRequestid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setProductId($arr[$keys[2]]);
@@ -1295,8 +1332,8 @@ abstract class Cart implements ActiveRecordInterface
         if ($this->isColumnModified(CartTableMap::COL_ID)) {
             $criteria->add(CartTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(CartTableMap::COL_REQUEST_ID)) {
-            $criteria->add(CartTableMap::COL_REQUEST_ID, $this->request_id);
+        if ($this->isColumnModified(CartTableMap::COL_REQUESTID)) {
+            $criteria->add(CartTableMap::COL_REQUESTID, $this->requestid);
         }
         if ($this->isColumnModified(CartTableMap::COL_PRODUCT_ID)) {
             $criteria->add(CartTableMap::COL_PRODUCT_ID, $this->product_id);
@@ -1402,7 +1439,7 @@ abstract class Cart implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setRequestId($this->getRequestId());
+        $copyObj->setRequestid($this->getRequestid());
         $copyObj->setProductId($this->getProductId());
         $copyObj->setQuantity($this->getQuantity());
         $copyObj->setPrice($this->getPrice());
@@ -1540,6 +1577,57 @@ abstract class Cart implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildRequestslist object.
+     *
+     * @param  ChildRequestslist $v
+     * @return $this|\Cart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setRequestslist(ChildRequestslist $v = null)
+    {
+        if ($v === null) {
+            $this->setRequestid(NULL);
+        } else {
+            $this->setRequestid($v->getId());
+        }
+
+        $this->aRequestslist = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildRequestslist object, it will not be re-added.
+        if ($v !== null) {
+            $v->addCart($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildRequestslist object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildRequestslist The associated ChildRequestslist object.
+     * @throws PropelException
+     */
+    public function getRequestslist(ConnectionInterface $con = null)
+    {
+        if ($this->aRequestslist === null && ($this->requestid != 0)) {
+            $this->aRequestslist = ChildRequestslistQuery::create()->findPk($this->requestid, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aRequestslist->addCarts($this);
+             */
+        }
+
+        return $this->aRequestslist;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -1552,8 +1640,11 @@ abstract class Cart implements ActiveRecordInterface
         if (null !== $this->aProduct) {
             $this->aProduct->removeCart($this);
         }
+        if (null !== $this->aRequestslist) {
+            $this->aRequestslist->removeCart($this);
+        }
         $this->id = null;
-        $this->request_id = null;
+        $this->requestid = null;
         $this->product_id = null;
         $this->quantity = null;
         $this->price = null;
@@ -1583,6 +1674,7 @@ abstract class Cart implements ActiveRecordInterface
 
         $this->aUser = null;
         $this->aProduct = null;
+        $this->aRequestslist = null;
     }
 
     /**

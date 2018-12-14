@@ -140,6 +140,13 @@ class RequeststatusTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Requestslist', '\\Requestslist', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':status_id',
+    1 => ':id',
+  ),
+), null, null, 'Requestslists', false);
     } // buildRelations()
 
     /**

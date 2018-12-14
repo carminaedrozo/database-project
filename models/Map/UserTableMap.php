@@ -166,6 +166,13 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, 'Infos', false);
+        $this->addRelation('Requestslist', '\\Requestslist', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, 'Requestslists', false);
     } // buildRelations()
     /**
      * Method to invalidate the instance pool of all tables related to user     * by a foreign key with ON DELETE CASCADE

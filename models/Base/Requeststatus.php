@@ -2,15 +2,20 @@
 
 namespace Base;
 
+use \Requestslist as ChildRequestslist;
+use \RequestslistQuery as ChildRequestslistQuery;
+use \Requeststatus as ChildRequeststatus;
 use \RequeststatusQuery as ChildRequeststatusQuery;
 use \Exception;
 use \PDO;
+use Map\RequestslistTableMap;
 use Map\RequeststatusTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -74,12 +79,24 @@ abstract class Requeststatus implements ActiveRecordInterface
     protected $status;
 
     /**
+     * @var        ObjectCollection|ChildRequestslist[] Collection to store aggregation of ChildRequestslist objects.
+     */
+    protected $collRequestslists;
+    protected $collRequestslistsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildRequestslist[]
+     */
+    protected $requestslistsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Requeststatus object.
@@ -476,6 +493,8 @@ abstract class Requeststatus implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collRequestslists = null;
+
         } // if (deep)
     }
 
@@ -588,6 +607,23 @@ abstract class Requeststatus implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->requestslistsScheduledForDeletion !== null) {
+                if (!$this->requestslistsScheduledForDeletion->isEmpty()) {
+                    \RequestslistQuery::create()
+                        ->filterByPrimaryKeys($this->requestslistsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->requestslistsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collRequestslists !== null) {
+                foreach ($this->collRequestslists as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -724,10 +760,11 @@ abstract class Requeststatus implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Requeststatus'][$this->hashCode()])) {
@@ -744,6 +781,23 @@ abstract class Requeststatus implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collRequestslists) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'requestslists';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'requestslists';
+                        break;
+                    default:
+                        $key = 'Requestslists';
+                }
+
+                $result[$key] = $this->collRequestslists->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -949,6 +1003,20 @@ abstract class Requeststatus implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setStatus($this->getStatus());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getRequestslists() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addRequestslist($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -975,6 +1043,273 @@ abstract class Requeststatus implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Requestslist' == $relationName) {
+            $this->initRequestslists();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collRequestslists collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addRequestslists()
+     */
+    public function clearRequestslists()
+    {
+        $this->collRequestslists = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collRequestslists collection loaded partially.
+     */
+    public function resetPartialRequestslists($v = true)
+    {
+        $this->collRequestslistsPartial = $v;
+    }
+
+    /**
+     * Initializes the collRequestslists collection.
+     *
+     * By default this just sets the collRequestslists collection to an empty array (like clearcollRequestslists());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initRequestslists($overrideExisting = true)
+    {
+        if (null !== $this->collRequestslists && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = RequestslistTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collRequestslists = new $collectionClassName;
+        $this->collRequestslists->setModel('\Requestslist');
+    }
+
+    /**
+     * Gets an array of ChildRequestslist objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildRequeststatus is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildRequestslist[] List of ChildRequestslist objects
+     * @throws PropelException
+     */
+    public function getRequestslists(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collRequestslistsPartial && !$this->isNew();
+        if (null === $this->collRequestslists || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collRequestslists) {
+                // return empty collection
+                $this->initRequestslists();
+            } else {
+                $collRequestslists = ChildRequestslistQuery::create(null, $criteria)
+                    ->filterByRequeststatus($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collRequestslistsPartial && count($collRequestslists)) {
+                        $this->initRequestslists(false);
+
+                        foreach ($collRequestslists as $obj) {
+                            if (false == $this->collRequestslists->contains($obj)) {
+                                $this->collRequestslists->append($obj);
+                            }
+                        }
+
+                        $this->collRequestslistsPartial = true;
+                    }
+
+                    return $collRequestslists;
+                }
+
+                if ($partial && $this->collRequestslists) {
+                    foreach ($this->collRequestslists as $obj) {
+                        if ($obj->isNew()) {
+                            $collRequestslists[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collRequestslists = $collRequestslists;
+                $this->collRequestslistsPartial = false;
+            }
+        }
+
+        return $this->collRequestslists;
+    }
+
+    /**
+     * Sets a collection of ChildRequestslist objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $requestslists A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildRequeststatus The current object (for fluent API support)
+     */
+    public function setRequestslists(Collection $requestslists, ConnectionInterface $con = null)
+    {
+        /** @var ChildRequestslist[] $requestslistsToDelete */
+        $requestslistsToDelete = $this->getRequestslists(new Criteria(), $con)->diff($requestslists);
+
+
+        $this->requestslistsScheduledForDeletion = $requestslistsToDelete;
+
+        foreach ($requestslistsToDelete as $requestslistRemoved) {
+            $requestslistRemoved->setRequeststatus(null);
+        }
+
+        $this->collRequestslists = null;
+        foreach ($requestslists as $requestslist) {
+            $this->addRequestslist($requestslist);
+        }
+
+        $this->collRequestslists = $requestslists;
+        $this->collRequestslistsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Requestslist objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Requestslist objects.
+     * @throws PropelException
+     */
+    public function countRequestslists(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collRequestslistsPartial && !$this->isNew();
+        if (null === $this->collRequestslists || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collRequestslists) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getRequestslists());
+            }
+
+            $query = ChildRequestslistQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByRequeststatus($this)
+                ->count($con);
+        }
+
+        return count($this->collRequestslists);
+    }
+
+    /**
+     * Method called to associate a ChildRequestslist object to this object
+     * through the ChildRequestslist foreign key attribute.
+     *
+     * @param  ChildRequestslist $l ChildRequestslist
+     * @return $this|\Requeststatus The current object (for fluent API support)
+     */
+    public function addRequestslist(ChildRequestslist $l)
+    {
+        if ($this->collRequestslists === null) {
+            $this->initRequestslists();
+            $this->collRequestslistsPartial = true;
+        }
+
+        if (!$this->collRequestslists->contains($l)) {
+            $this->doAddRequestslist($l);
+
+            if ($this->requestslistsScheduledForDeletion and $this->requestslistsScheduledForDeletion->contains($l)) {
+                $this->requestslistsScheduledForDeletion->remove($this->requestslistsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildRequestslist $requestslist The ChildRequestslist object to add.
+     */
+    protected function doAddRequestslist(ChildRequestslist $requestslist)
+    {
+        $this->collRequestslists[]= $requestslist;
+        $requestslist->setRequeststatus($this);
+    }
+
+    /**
+     * @param  ChildRequestslist $requestslist The ChildRequestslist object to remove.
+     * @return $this|ChildRequeststatus The current object (for fluent API support)
+     */
+    public function removeRequestslist(ChildRequestslist $requestslist)
+    {
+        if ($this->getRequestslists()->contains($requestslist)) {
+            $pos = $this->collRequestslists->search($requestslist);
+            $this->collRequestslists->remove($pos);
+            if (null === $this->requestslistsScheduledForDeletion) {
+                $this->requestslistsScheduledForDeletion = clone $this->collRequestslists;
+                $this->requestslistsScheduledForDeletion->clear();
+            }
+            $this->requestslistsScheduledForDeletion[]= clone $requestslist;
+            $requestslist->setRequeststatus(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Requeststatus is new, it will return
+     * an empty collection; or if this Requeststatus has previously
+     * been saved, it will retrieve related Requestslists from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Requeststatus.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildRequestslist[] List of ChildRequestslist objects
+     */
+    public function getRequestslistsJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildRequestslistQuery::create(null, $criteria);
+        $query->joinWith('User', $joinBehavior);
+
+        return $this->getRequestslists($query, $con);
     }
 
     /**
@@ -1004,8 +1339,14 @@ abstract class Requeststatus implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collRequestslists) {
+                foreach ($this->collRequestslists as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collRequestslists = null;
     }
 
     /**

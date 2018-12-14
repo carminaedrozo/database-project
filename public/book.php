@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by IntelliJ IDEA.
- * User: CARMINA
+ * User: CARMINA EDROZO
  * Date: 11/23/2018
  * Time: 10:41 PM
  */
@@ -198,6 +198,7 @@ $app->post('/create/account', function ($request, $response, $args) {
 
 $app->get('/users', function ($request, $response, $args) {
 
+
     $user = UserQuery::create()->find();
 
     $info = InfoQuery::create()->find();
@@ -255,8 +256,8 @@ $app->get('/request', function ($request, $response, $args) {
 });
 $app->post('/cart/{id}', function ($request, $response, $args) {
 
-    $cart_check = CartQuery::create()->findOneByProductId($args['id']);
-    $cart_count_check = CartQuery::create()->filterByProductId($args['id'])->count();
+    $cart_check = CartQuery::create()->filterByStatus("Pending")->filterByUserId($_SESSION["user_id"])->findOneByProductId($args['id']);
+    $cart_count_check = CartQuery::create()->filterByProductId($args['id'])->filterByStatus("Pending")->count();
     if ($cart_count_check >= 1) {
         $quantity_added = $_POST["quantity"];
         $current_quantity = $cart_check->getQuantity();
@@ -288,19 +289,31 @@ $app->post('/cart/{id}', function ($request, $response, $args) {
 
 $app->get('/cart', function ($request, $response, $args) {
 
-    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"]);
+    $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"])->filterByStatus("Pending")->find();
     $product = ProductQuery::create()->find();
+
+
     $this->view->render($response, 'cart.html', [
         "cart" => $cart,
         "product" => $product
     ]);
 });
 
-$app->post('/sub/req}', function ($request, $response, $args) {
+$app->post('/sub/req', function ($request, $response, $args) {
 
-    $c = CartQuery::create()->filterByUserId($_SESSION["user_id"])->findByStatus("Pending");
-    $c->setStatus("Submitted");
-    $c->save();
+    $t = time();
+    $n = new Requestslist();
+    $n->setUserId($_SESSION["user_id"]);
+    $n->setDateRequested(date("Y-m-d", $t));
+    $n->setDateCompleted(null);
+    $n->setTotal(0);
+    $n->setStatusId(1);
+    $n->save();
+
+    CartQuery::create()
+        ->filterByUserId($_SESSION["user_id"])
+        ->filterByStatus("Pending")
+        ->update(array('Status' => 'Submitted', 'Requestid' => $n->getId()));
 
     $cart = CartQuery::create()->filterByUserId($_SESSION["user_id"])->filterByStatus("Pending");
     $product = ProductQuery::create()->find();
@@ -311,6 +324,82 @@ $app->post('/sub/req}', function ($request, $response, $args) {
     return $response;
 
 });
+
+
+$app->get('/create/order', function ($request, $response, $args) {
+
+    $publisher = PublisherQuery::create()->find();
+    $this->view->render($response, 'create-order.html', [
+        "publisher" => $publisher
+    ]);
+    return $response;
+});
+$app->post('/create/order', function ($request, $response, $args) {
+    $title = $request->getParam("title");
+    $quantity = $request->getParam("quantity");
+
+    $o = new Orderlist();
+    $o->setTitle($title);
+    $o->setQuantity($quantity);
+    $o->setStatus(1);
+    $o->save();
+
+    $data = array('orderid' => $o->getId());
+    $newResponse = $response->withJson($data);
+    return $newResponse;
+});
+$app->get('/requests', function ($request, $response, $args) {
+
+    $r = RequestslistQuery::create()->find();
+    $s = RequeststatusQuery::create()->find();
+    $u = UserQuery::create()->find();
+    $this->view->render($response, 'requests.html', [
+        "requests" => $r,
+        "stat" => $s,
+        "user" => $u
+
+    ]);
+    return $response;
+});
+
+
+$app->get('/request/{id}', function ($request, $response, $args) {
+
+
+    $r = RequestslistQuery::create()->filterById($args["id"]);
+    $c = CartQuery::create()->filterByRequestid($args["id"])->findOne();
+    $s = RequeststatusQuery::create()->find();
+    $p = ProductQuery::create()->find();
+    $u = UserQuery::create()->find();
+    $this->view->render($response, 'request-info.html', [
+        "requests" => $r,
+        "stats" => $s,
+        "user" => $u,
+        "cart" => $c,
+        "product" => $p
+    ]);
+    return $response;
+});
+$app->get('/orders', function ($request, $response, $args) {
+
+
+    $o = OrderlistQuery::create()->find();
+    $this->view->render($response, 'orders.html', [
+        "orders" => $o
+
+    ]);
+    return $response;
+});
+
+$app->get('/orders/{id}', function ($request, $response, $args) {
+    $o = OrderlistQuery::create()->findById($args['id']);
+    $this->view->render($response, 'order-info.html', [
+        "orders" => $o
+
+    ]);
+    return $response;
+});
+
 //////////////////////
 // App run
 //////////////////////

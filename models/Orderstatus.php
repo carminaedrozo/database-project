@@ -1,9 +1,9 @@
 <?php
 
-use Base\RequestsQuery as BaseRequestsQuery;
+use Base\Orderstatus as BaseOrderstatus;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'requests' table.
+ * Skeleton subclass for representing a row from the 'orderstatus' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\RequestsQuery as BaseRequestsQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class RequestsQuery extends BaseRequestsQuery
+class Orderstatus extends BaseOrderstatus
 {
 
 }

@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `request_id` INTEGER NOT NULL,
+    `requestid` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
     `quantity` INTEGER NOT NULL,
     `price` DECIMAL(19,2) NOT NULL,
@@ -22,12 +22,16 @@ CREATE TABLE `cart`
     PRIMARY KEY (`id`),
     INDEX `user_id` (`user_id`),
     INDEX `product_id` (`product_id`),
+    INDEX `requestid` (`requestid`),
     CONSTRAINT `cart_ibfk_2`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`),
     CONSTRAINT `cart_ibfk_3`
         FOREIGN KEY (`product_id`)
-        REFERENCES `product` (`id`)
+        REFERENCES `product` (`id`),
+    CONSTRAINT `cart_ibfk_4`
+        FOREIGN KEY (`requestid`)
+        REFERENCES `requestslist` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -76,9 +80,24 @@ DROP TABLE IF EXISTS `orderlist`;
 
 CREATE TABLE `orderlist`
 (
-    `OrderList_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Order_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`OrderList_ID`)
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `quantity` INTEGER NOT NULL,
+    `status` INTEGER NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- orderstatus
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `orderstatus`;
+
+CREATE TABLE `orderstatus`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `status` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -102,39 +121,6 @@ CREATE TABLE `product`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- providerorder
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `providerorder`;
-
-CREATE TABLE `providerorder`
-(
-    `Order_ID` INTEGER NOT NULL,
-    `Commission` DOUBLE NOT NULL,
-    `Amount` DOUBLE NOT NULL,
-    `Date` DATE NOT NULL,
-    `Delivered_Date` DATE NOT NULL,
-    `Status_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`Order_ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- providerorderstatus
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `providerorderstatus`;
-
-CREATE TABLE `providerorderstatus`
-(
-    `ID` INTEGER NOT NULL,
-    `Product_ID` INTEGER NOT NULL,
-    `ReceivedCount` INTEGER NOT NULL,
-    `FulfilledStatus` INTEGER NOT NULL,
-    `Count` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- publisher
 -- ---------------------------------------------------------------------
 
@@ -153,20 +139,28 @@ CREATE TABLE `publisher`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- requests
+-- requestslist
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `requests`;
+DROP TABLE IF EXISTS `requestslist`;
 
-CREATE TABLE `requests`
+CREATE TABLE `requestslist`
 (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `status_id` INTEGER NOT NULL,
-    `total` DECIMAL(19,4) NOT NULL,
-    `date_requested` DATE,
-    `date_completed` DATE,
-    PRIMARY KEY (`id`)
+    `total` DECIMAL(19,2) NOT NULL,
+    `date_requested` DATE NOT NULL,
+    `date_completed` DATE NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `status_id` (`status_id`),
+    INDEX `requestslist_ibfi_1` (`user_id`),
+    CONSTRAINT `requestslist_ibfk_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `requestslist_ibfk_2`
+        FOREIGN KEY (`status_id`)
+        REFERENCES `requeststatus` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

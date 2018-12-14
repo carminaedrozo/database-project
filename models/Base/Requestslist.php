@@ -2,16 +2,25 @@
 
 namespace Base;
 
-use \RequestsQuery as ChildRequestsQuery;
+use \Cart as ChildCart;
+use \CartQuery as ChildCartQuery;
+use \Requestslist as ChildRequestslist;
+use \RequestslistQuery as ChildRequestslistQuery;
+use \Requeststatus as ChildRequeststatus;
+use \RequeststatusQuery as ChildRequeststatusQuery;
+use \User as ChildUser;
+use \UserQuery as ChildUserQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\RequestsTableMap;
+use Map\CartTableMap;
+use Map\RequestslistTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -21,18 +30,18 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'requests' table.
+ * Base class that represents a row from the 'requestslist' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Requests implements ActiveRecordInterface
+abstract class Requestslist implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\RequestsTableMap';
+    const TABLE_MAP = '\\Map\\RequestslistTableMap';
 
 
     /**
@@ -104,6 +113,22 @@ abstract class Requests implements ActiveRecordInterface
     protected $date_completed;
 
     /**
+     * @var        ChildUser
+     */
+    protected $aUser;
+
+    /**
+     * @var        ChildRequeststatus
+     */
+    protected $aRequeststatus;
+
+    /**
+     * @var        ObjectCollection|ChildCart[] Collection to store aggregation of ChildCart objects.
+     */
+    protected $collCarts;
+    protected $collCartsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -112,7 +137,13 @@ abstract class Requests implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Base\Requests object.
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildCart[]
+     */
+    protected $cartsScheduledForDeletion = null;
+
+    /**
+     * Initializes internal state of Base\Requestslist object.
      */
     public function __construct()
     {
@@ -207,9 +238,9 @@ abstract class Requests implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Requests</code> instance.  If
-     * <code>obj</code> is an instance of <code>Requests</code>, delegates to
-     * <code>equals(Requests)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Requestslist</code> instance.  If
+     * <code>obj</code> is an instance of <code>Requestslist</code>, delegates to
+     * <code>equals(Requestslist)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -275,7 +306,7 @@ abstract class Requests implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Requests The current object, for fluid interface
+     * @return $this|Requestslist The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -420,7 +451,7 @@ abstract class Requests implements ActiveRecordInterface
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -430,7 +461,7 @@ abstract class Requests implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[RequestsTableMap::COL_ID] = true;
+            $this->modifiedColumns[RequestslistTableMap::COL_ID] = true;
         }
 
         return $this;
@@ -440,7 +471,7 @@ abstract class Requests implements ActiveRecordInterface
      * Set the value of [user_id] column.
      *
      * @param int $v new value
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setUserId($v)
     {
@@ -450,7 +481,11 @@ abstract class Requests implements ActiveRecordInterface
 
         if ($this->user_id !== $v) {
             $this->user_id = $v;
-            $this->modifiedColumns[RequestsTableMap::COL_USER_ID] = true;
+            $this->modifiedColumns[RequestslistTableMap::COL_USER_ID] = true;
+        }
+
+        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+            $this->aUser = null;
         }
 
         return $this;
@@ -460,7 +495,7 @@ abstract class Requests implements ActiveRecordInterface
      * Set the value of [status_id] column.
      *
      * @param int $v new value
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setStatusId($v)
     {
@@ -470,7 +505,11 @@ abstract class Requests implements ActiveRecordInterface
 
         if ($this->status_id !== $v) {
             $this->status_id = $v;
-            $this->modifiedColumns[RequestsTableMap::COL_STATUS_ID] = true;
+            $this->modifiedColumns[RequestslistTableMap::COL_STATUS_ID] = true;
+        }
+
+        if ($this->aRequeststatus !== null && $this->aRequeststatus->getId() !== $v) {
+            $this->aRequeststatus = null;
         }
 
         return $this;
@@ -480,7 +519,7 @@ abstract class Requests implements ActiveRecordInterface
      * Set the value of [total] column.
      *
      * @param string $v new value
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setTotal($v)
     {
@@ -490,7 +529,7 @@ abstract class Requests implements ActiveRecordInterface
 
         if ($this->total !== $v) {
             $this->total = $v;
-            $this->modifiedColumns[RequestsTableMap::COL_TOTAL] = true;
+            $this->modifiedColumns[RequestslistTableMap::COL_TOTAL] = true;
         }
 
         return $this;
@@ -501,7 +540,7 @@ abstract class Requests implements ActiveRecordInterface
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setDateRequested($v)
     {
@@ -509,7 +548,7 @@ abstract class Requests implements ActiveRecordInterface
         if ($this->date_requested !== null || $dt !== null) {
             if ($this->date_requested === null || $dt === null || $dt->format("Y-m-d") !== $this->date_requested->format("Y-m-d")) {
                 $this->date_requested = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[RequestsTableMap::COL_DATE_REQUESTED] = true;
+                $this->modifiedColumns[RequestslistTableMap::COL_DATE_REQUESTED] = true;
             }
         } // if either are not null
 
@@ -521,7 +560,7 @@ abstract class Requests implements ActiveRecordInterface
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
-     * @return $this|\Requests The current object (for fluent API support)
+     * @return $this|\Requestslist The current object (for fluent API support)
      */
     public function setDateCompleted($v)
     {
@@ -529,7 +568,7 @@ abstract class Requests implements ActiveRecordInterface
         if ($this->date_completed !== null || $dt !== null) {
             if ($this->date_completed === null || $dt === null || $dt->format("Y-m-d") !== $this->date_completed->format("Y-m-d")) {
                 $this->date_completed = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[RequestsTableMap::COL_DATE_COMPLETED] = true;
+                $this->modifiedColumns[RequestslistTableMap::COL_DATE_COMPLETED] = true;
             }
         } // if either are not null
 
@@ -572,25 +611,25 @@ abstract class Requests implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestsTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : RequestslistTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestsTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : RequestslistTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->user_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : RequestsTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : RequestslistTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->status_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : RequestsTableMap::translateFieldName('Total', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : RequestslistTableMap::translateFieldName('Total', TableMap::TYPE_PHPNAME, $indexType)];
             $this->total = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : RequestsTableMap::translateFieldName('DateRequested', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : RequestslistTableMap::translateFieldName('DateRequested', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->date_requested = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : RequestsTableMap::translateFieldName('DateCompleted', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : RequestslistTableMap::translateFieldName('DateCompleted', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
@@ -603,10 +642,10 @@ abstract class Requests implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = RequestsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = RequestslistTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Requests'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Requestslist'), 0, $e);
         }
     }
 
@@ -625,6 +664,12 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
+            $this->aUser = null;
+        }
+        if ($this->aRequeststatus !== null && $this->status_id !== $this->aRequeststatus->getId()) {
+            $this->aRequeststatus = null;
+        }
     } // ensureConsistency
 
     /**
@@ -648,13 +693,13 @@ abstract class Requests implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(RequestsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(RequestslistTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildRequestsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildRequestslistQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -663,6 +708,10 @@ abstract class Requests implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->aUser = null;
+            $this->aRequeststatus = null;
+            $this->collCarts = null;
 
         } // if (deep)
     }
@@ -673,8 +722,8 @@ abstract class Requests implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Requests::setDeleted()
-     * @see Requests::isDeleted()
+     * @see Requestslist::setDeleted()
+     * @see Requestslist::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -683,11 +732,11 @@ abstract class Requests implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestslistTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildRequestsQuery::create()
+            $deleteQuery = ChildRequestslistQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -722,7 +771,7 @@ abstract class Requests implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(RequestsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(RequestslistTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -741,7 +790,7 @@ abstract class Requests implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                RequestsTableMap::addInstanceToPool($this);
+                RequestslistTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -767,6 +816,25 @@ abstract class Requests implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aUser !== null) {
+                if ($this->aUser->isModified() || $this->aUser->isNew()) {
+                    $affectedRows += $this->aUser->save($con);
+                }
+                $this->setUser($this->aUser);
+            }
+
+            if ($this->aRequeststatus !== null) {
+                if ($this->aRequeststatus->isModified() || $this->aRequeststatus->isNew()) {
+                    $affectedRows += $this->aRequeststatus->save($con);
+                }
+                $this->setRequeststatus($this->aRequeststatus);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -776,6 +844,23 @@ abstract class Requests implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->cartsScheduledForDeletion !== null) {
+                if (!$this->cartsScheduledForDeletion->isEmpty()) {
+                    \CartQuery::create()
+                        ->filterByPrimaryKeys($this->cartsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->cartsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCarts !== null) {
+                foreach ($this->collCarts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -798,29 +883,33 @@ abstract class Requests implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[RequestslistTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . RequestslistTableMap::COL_ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(RequestsTableMap::COL_ID)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_USER_ID)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = 'user_id';
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_STATUS_ID)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_STATUS_ID)) {
             $modifiedColumns[':p' . $index++]  = 'status_id';
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_TOTAL)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_TOTAL)) {
             $modifiedColumns[':p' . $index++]  = 'total';
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_DATE_REQUESTED)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_DATE_REQUESTED)) {
             $modifiedColumns[':p' . $index++]  = 'date_requested';
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_DATE_COMPLETED)) {
+        if ($this->isColumnModified(RequestslistTableMap::COL_DATE_COMPLETED)) {
             $modifiedColumns[':p' . $index++]  = 'date_completed';
         }
 
         $sql = sprintf(
-            'INSERT INTO requests (%s) VALUES (%s)',
+            'INSERT INTO requestslist (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -855,6 +944,13 @@ abstract class Requests implements ActiveRecordInterface
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
 
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
+
         $this->setNew(false);
     }
 
@@ -886,7 +982,7 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestslistTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -937,17 +1033,18 @@ abstract class Requests implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Requests'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Requestslist'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Requests'][$this->hashCode()] = true;
-        $keys = RequestsTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Requestslist'][$this->hashCode()] = true;
+        $keys = RequestslistTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUserId(),
@@ -969,6 +1066,53 @@ abstract class Requests implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aUser) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'user';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'user';
+                        break;
+                    default:
+                        $key = 'User';
+                }
+
+                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aRequeststatus) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'requeststatus';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'requeststatus';
+                        break;
+                    default:
+                        $key = 'Requeststatus';
+                }
+
+                $result[$key] = $this->aRequeststatus->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collCarts) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'carts';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'carts';
+                        break;
+                    default:
+                        $key = 'Carts';
+                }
+
+                $result[$key] = $this->collCarts->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -982,11 +1126,11 @@ abstract class Requests implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Requests
+     * @return $this|\Requestslist
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = RequestsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = RequestslistTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -997,7 +1141,7 @@ abstract class Requests implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Requests
+     * @return $this|\Requestslist
      */
     public function setByPosition($pos, $value)
     {
@@ -1044,7 +1188,7 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = RequestsTableMap::getFieldNames($keyType);
+        $keys = RequestslistTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
@@ -1083,7 +1227,7 @@ abstract class Requests implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Requests The current object, for fluid interface
+     * @return $this|\Requestslist The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1103,25 +1247,25 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(RequestsTableMap::DATABASE_NAME);
+        $criteria = new Criteria(RequestslistTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(RequestsTableMap::COL_ID)) {
-            $criteria->add(RequestsTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(RequestslistTableMap::COL_ID)) {
+            $criteria->add(RequestslistTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_USER_ID)) {
-            $criteria->add(RequestsTableMap::COL_USER_ID, $this->user_id);
+        if ($this->isColumnModified(RequestslistTableMap::COL_USER_ID)) {
+            $criteria->add(RequestslistTableMap::COL_USER_ID, $this->user_id);
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_STATUS_ID)) {
-            $criteria->add(RequestsTableMap::COL_STATUS_ID, $this->status_id);
+        if ($this->isColumnModified(RequestslistTableMap::COL_STATUS_ID)) {
+            $criteria->add(RequestslistTableMap::COL_STATUS_ID, $this->status_id);
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_TOTAL)) {
-            $criteria->add(RequestsTableMap::COL_TOTAL, $this->total);
+        if ($this->isColumnModified(RequestslistTableMap::COL_TOTAL)) {
+            $criteria->add(RequestslistTableMap::COL_TOTAL, $this->total);
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_DATE_REQUESTED)) {
-            $criteria->add(RequestsTableMap::COL_DATE_REQUESTED, $this->date_requested);
+        if ($this->isColumnModified(RequestslistTableMap::COL_DATE_REQUESTED)) {
+            $criteria->add(RequestslistTableMap::COL_DATE_REQUESTED, $this->date_requested);
         }
-        if ($this->isColumnModified(RequestsTableMap::COL_DATE_COMPLETED)) {
-            $criteria->add(RequestsTableMap::COL_DATE_COMPLETED, $this->date_completed);
+        if ($this->isColumnModified(RequestslistTableMap::COL_DATE_COMPLETED)) {
+            $criteria->add(RequestslistTableMap::COL_DATE_COMPLETED, $this->date_completed);
         }
 
         return $criteria;
@@ -1139,8 +1283,8 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildRequestsQuery::create();
-        $criteria->add(RequestsTableMap::COL_ID, $this->id);
+        $criteria = ChildRequestslistQuery::create();
+        $criteria->add(RequestslistTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1202,21 +1346,35 @@ abstract class Requests implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Requests (or compatible) type.
+     * @param      object $copyObj An object of \Requestslist (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setId($this->getId());
         $copyObj->setUserId($this->getUserId());
         $copyObj->setStatusId($this->getStatusId());
         $copyObj->setTotal($this->getTotal());
         $copyObj->setDateRequested($this->getDateRequested());
         $copyObj->setDateCompleted($this->getDateCompleted());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getCarts() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCart($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1229,7 +1387,7 @@ abstract class Requests implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Requests Clone of current object.
+     * @return \Requestslist Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1243,12 +1401,412 @@ abstract class Requests implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildUser object.
+     *
+     * @param  ChildUser $v
+     * @return $this|\Requestslist The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUser(ChildUser $v = null)
+    {
+        if ($v === null) {
+            $this->setUserId(NULL);
+        } else {
+            $this->setUserId($v->getId());
+        }
+
+        $this->aUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addRequestslist($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildUser object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildUser The associated ChildUser object.
+     * @throws PropelException
+     */
+    public function getUser(ConnectionInterface $con = null)
+    {
+        if ($this->aUser === null && ($this->user_id != 0)) {
+            $this->aUser = ChildUserQuery::create()->findPk($this->user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUser->addRequestslists($this);
+             */
+        }
+
+        return $this->aUser;
+    }
+
+    /**
+     * Declares an association between this object and a ChildRequeststatus object.
+     *
+     * @param  ChildRequeststatus $v
+     * @return $this|\Requestslist The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setRequeststatus(ChildRequeststatus $v = null)
+    {
+        if ($v === null) {
+            $this->setStatusId(NULL);
+        } else {
+            $this->setStatusId($v->getId());
+        }
+
+        $this->aRequeststatus = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildRequeststatus object, it will not be re-added.
+        if ($v !== null) {
+            $v->addRequestslist($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildRequeststatus object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildRequeststatus The associated ChildRequeststatus object.
+     * @throws PropelException
+     */
+    public function getRequeststatus(ConnectionInterface $con = null)
+    {
+        if ($this->aRequeststatus === null && ($this->status_id != 0)) {
+            $this->aRequeststatus = ChildRequeststatusQuery::create()->findPk($this->status_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aRequeststatus->addRequestslists($this);
+             */
+        }
+
+        return $this->aRequeststatus;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Cart' == $relationName) {
+            $this->initCarts();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collCarts collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCarts()
+     */
+    public function clearCarts()
+    {
+        $this->collCarts = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collCarts collection loaded partially.
+     */
+    public function resetPartialCarts($v = true)
+    {
+        $this->collCartsPartial = $v;
+    }
+
+    /**
+     * Initializes the collCarts collection.
+     *
+     * By default this just sets the collCarts collection to an empty array (like clearcollCarts());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCarts($overrideExisting = true)
+    {
+        if (null !== $this->collCarts && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = CartTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collCarts = new $collectionClassName;
+        $this->collCarts->setModel('\Cart');
+    }
+
+    /**
+     * Gets an array of ChildCart objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildRequestslist is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildCart[] List of ChildCart objects
+     * @throws PropelException
+     */
+    public function getCarts(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCartsPartial && !$this->isNew();
+        if (null === $this->collCarts || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCarts) {
+                // return empty collection
+                $this->initCarts();
+            } else {
+                $collCarts = ChildCartQuery::create(null, $criteria)
+                    ->filterByRequestslist($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCartsPartial && count($collCarts)) {
+                        $this->initCarts(false);
+
+                        foreach ($collCarts as $obj) {
+                            if (false == $this->collCarts->contains($obj)) {
+                                $this->collCarts->append($obj);
+                            }
+                        }
+
+                        $this->collCartsPartial = true;
+                    }
+
+                    return $collCarts;
+                }
+
+                if ($partial && $this->collCarts) {
+                    foreach ($this->collCarts as $obj) {
+                        if ($obj->isNew()) {
+                            $collCarts[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCarts = $collCarts;
+                $this->collCartsPartial = false;
+            }
+        }
+
+        return $this->collCarts;
+    }
+
+    /**
+     * Sets a collection of ChildCart objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $carts A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildRequestslist The current object (for fluent API support)
+     */
+    public function setCarts(Collection $carts, ConnectionInterface $con = null)
+    {
+        /** @var ChildCart[] $cartsToDelete */
+        $cartsToDelete = $this->getCarts(new Criteria(), $con)->diff($carts);
+
+
+        $this->cartsScheduledForDeletion = $cartsToDelete;
+
+        foreach ($cartsToDelete as $cartRemoved) {
+            $cartRemoved->setRequestslist(null);
+        }
+
+        $this->collCarts = null;
+        foreach ($carts as $cart) {
+            $this->addCart($cart);
+        }
+
+        $this->collCarts = $carts;
+        $this->collCartsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Cart objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Cart objects.
+     * @throws PropelException
+     */
+    public function countCarts(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCartsPartial && !$this->isNew();
+        if (null === $this->collCarts || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCarts) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCarts());
+            }
+
+            $query = ChildCartQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByRequestslist($this)
+                ->count($con);
+        }
+
+        return count($this->collCarts);
+    }
+
+    /**
+     * Method called to associate a ChildCart object to this object
+     * through the ChildCart foreign key attribute.
+     *
+     * @param  ChildCart $l ChildCart
+     * @return $this|\Requestslist The current object (for fluent API support)
+     */
+    public function addCart(ChildCart $l)
+    {
+        if ($this->collCarts === null) {
+            $this->initCarts();
+            $this->collCartsPartial = true;
+        }
+
+        if (!$this->collCarts->contains($l)) {
+            $this->doAddCart($l);
+
+            if ($this->cartsScheduledForDeletion and $this->cartsScheduledForDeletion->contains($l)) {
+                $this->cartsScheduledForDeletion->remove($this->cartsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildCart $cart The ChildCart object to add.
+     */
+    protected function doAddCart(ChildCart $cart)
+    {
+        $this->collCarts[]= $cart;
+        $cart->setRequestslist($this);
+    }
+
+    /**
+     * @param  ChildCart $cart The ChildCart object to remove.
+     * @return $this|ChildRequestslist The current object (for fluent API support)
+     */
+    public function removeCart(ChildCart $cart)
+    {
+        if ($this->getCarts()->contains($cart)) {
+            $pos = $this->collCarts->search($cart);
+            $this->collCarts->remove($pos);
+            if (null === $this->cartsScheduledForDeletion) {
+                $this->cartsScheduledForDeletion = clone $this->collCarts;
+                $this->cartsScheduledForDeletion->clear();
+            }
+            $this->cartsScheduledForDeletion[]= clone $cart;
+            $cart->setRequestslist(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Requestslist is new, it will return
+     * an empty collection; or if this Requestslist has previously
+     * been saved, it will retrieve related Carts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Requestslist.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildCart[] List of ChildCart objects
+     */
+    public function getCartsJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildCartQuery::create(null, $criteria);
+        $query->joinWith('User', $joinBehavior);
+
+        return $this->getCarts($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Requestslist is new, it will return
+     * an empty collection; or if this Requestslist has previously
+     * been saved, it will retrieve related Carts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Requestslist.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildCart[] List of ChildCart objects
+     */
+    public function getCartsJoinProduct(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildCartQuery::create(null, $criteria);
+        $query->joinWith('Product', $joinBehavior);
+
+        return $this->getCarts($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aUser) {
+            $this->aUser->removeRequestslist($this);
+        }
+        if (null !== $this->aRequeststatus) {
+            $this->aRequeststatus->removeRequestslist($this);
+        }
         $this->id = null;
         $this->user_id = null;
         $this->status_id = null;
@@ -1273,8 +1831,16 @@ abstract class Requests implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collCarts) {
+                foreach ($this->collCarts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collCarts = null;
+        $this->aUser = null;
+        $this->aRequeststatus = null;
     }
 
     /**
@@ -1284,7 +1850,7 @@ abstract class Requests implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(RequestsTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(RequestslistTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

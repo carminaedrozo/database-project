@@ -1,0 +1,21 @@
+{% extends 'layout-dashboard.html' %}
+
+{% block title %}
+Order - Info
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    {% for o in orders %}
+    <p>Request#00{{ o.id }}</p>
+    <p>Title {{ o.title }}</p>
+    <p>Quantity {{ o.quantity }}</p>
+    {% endfor %}
+
+</div>
+{% endblock %}
