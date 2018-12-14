@@ -26,9 +26,12 @@ $("#addBtnBook").on("click", function () {
         },
         dataType: "json",
         type: "POST"
+        // success: function(data){
+        //
+        // }
     }).done(function (response) {
         console.log(response);
-        
+
         $("#inputTitle").val("");
         $("#inputAuthor").val("");
         $("#inputEdition").val("");
@@ -41,4 +44,25 @@ $("#addBtnBook").on("click", function () {
 
     });
     return false;
+
+    // $( 'form' ).on( 'submit', function( event ) {
+  	// var $form = $( this );
+    //
+    // event.preventDefault();
+    // $('.js-alert').addClass('d-none');
+    // $('.js-btn').button('loading');
+    //
+    // $.ajax({
+    //   url: baseurl,
+    //   type: 'POST',
+    //   data: {
+    //   	json: $form.serialize(),
+  	// 		delay: 2
+    //   },
+    // }).done(function(response){
+    //   $('.js-alert').removeClass('d-none');
+    //   $('.js-btn').button('reset');
+    // });
+
+
 });
